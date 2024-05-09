@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+    <title>Solicitud de Reserva</title>
+    <h:outputStylesheet library="primefaces"/>  </h:head>
+
+<h:body>
+    <h:form id="reservaForm">
+        <div class="container">
+            <h1>Solicitud de Reserva</h1>
+
+            <div class="form-group">
+                <h:outputLabel for="fechaEntrada" value="Fecha de Entrada:" />
+                <p:calendar id="fechaEntrada"
+                            value="#{reservaBean.reservaActual.fechaEntrada}"
+                            pattern="dd/MM/yyyy HH:mm"
+                            showButtonPanel="true"
+                            showOn="button"
+                            mindate="today" />
+            </div>
+
+            <div class="form-group">
+                <h:outputLabel for="fechaSalida" value="Fecha de Salida:" />
+                <p:calendar id="fechaSalida"
+                            value="#{reservaBean.reservaActual.fechaSalida}"
+                            pattern="dd/MM/yyyy HH:mm"
+                            showButtonPanel="true"
+                            showOn="button"
+                            mindate="#{reservaBean.reservaActual.fechaEntrada}" />
+            </div>
+
+            <div class="form-group">
+                <h:outputLabel for="cantidadPersonas" value="Cantidad de Personas:" />
+                <p:spinner id="cantidadPersonas"
+                           value="#{reservaBean.reservaActual.cantidadPersonas}"
+                           min="1" max="15" />
+            </div>
+
+            <div class="form-group">
+                <h:outputLabel for="asunto" value="Asunto de la Reserva:" />
+                <h:inputText id="asunto" value="#{reservaBean.reservaActual.asuntoReserva}" />
+            </div>
+
+            <div class="form-group">
+                <h:outputLabel for="nombreEstudiante" value="Nombre del Estudiante:" />
+                <h:inputText id="nombreEstudiante" value="#{reservaBean.reservaActual.nombreEstudiante}" />
+            </div>
+
+            <div class="form-group">
+                <h:outputLabel value="Extras:" />
+                <h:panelGrid columns="2">
+                    <h:selectBooleanCheckbox id="usarPizarra"
+                                             value="#{reservaBean.reservaActual.usarPizarra}"
+                                             disabled="#{reservaBean.pizarraUsada}" />
+                    <h:outputLabel for="usarPizarra" value="Pizarra" />
+
+                    <h:selectBooleanCheckbox id="usarProyector"
+                                             value="#{reservaBean.reservaActual.usarProyector}"
+                                             disabled="#{reservaBean.proyectorUsado}" />
+                    <h:outputLabel for="usarProyector" value="Proyector" />
+
+                    <h:selectBooleanCheckbox id="usarComputadora"
+                                             value="#{reservaBean.reservaActual.usarComputadora}"
+                                             disabled="#{reservaBean.computadoraUsada}" />
+                    <h:outputLabel for="usarComputadora" value="Computadora" />
+                </h:panelGrid>
+            </div>
+
+            <div class="form-group">
+                <h:commandButton value="Guardar Reserva"
+                                 action="#{reservaBean.guardarReserva}"
+                                 update="@form" />
+                <p:messages autoUpdate="true" globalOnly="true" />
+            </div>
+
+            <h2 class="mt-4">Calendario de Reservas</h2>
+        </div>
+    </h:form>
+</h:body>
+</html>
