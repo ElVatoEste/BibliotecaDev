@@ -27,16 +27,16 @@ public class ReservaDAOImpl implements ReservaDAO {
     }
 
     @Override
-    public void eliminar(Long cif) {
-        Reserva reserva = buscarPorCif(cif);
+    public void eliminar(Long IdReserva) {
+        Reserva reserva = buscarPorCif(IdReserva);
         if (reserva != null) {
             entityManager.remove(reserva);
         }
     }
 
     @Override
-    public Reserva buscarPorCif(Long cif) {
-        return entityManager.find(Reserva.class, cif);
+    public Reserva buscarPorCif(Long IdReserva) {
+        return entityManager.find(Reserva.class, IdReserva);
     }
 
     @Override

@@ -12,10 +12,10 @@ public interface ReservaDAO {
     void actualizar(Reserva reserva);
 
     // Eliminar una reserva por su CIF
-    void eliminar(Long cif);
+    void eliminar(Long IdReserva);
 
     // Buscar una reserva por su CIF
-    Reserva buscarPorCif(Long cif);
+    Reserva buscarPorCif(Long IdReserva);
 
     // Obtener todas las reservas
     List<Reserva> obtenerTodas();

@@ -20,8 +20,11 @@
 
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
+        @Column(name = "IdReserva", nullable = false)
+        private Long IdReserva; // Clave primaria
+
         @Column(name = "cif", nullable = false)
-        private long cif;  // Clave primaria
+        private Long cif;
 
         @Temporal(TemporalType.DATE)
         @Column(name = "dia_reserva", nullable = false)

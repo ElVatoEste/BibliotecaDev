@@ -3,47 +3,45 @@ package beans;
 import entity.Reserva;
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.RequestScoped;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import service.ReservaDAO;
 import org.primefaces.model.DefaultScheduleEvent;
 import org.primefaces.model.DefaultScheduleModel;
 import org.primefaces.model.ScheduleModel;
-import service.ReservaDAO;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.List;
 
+
 @Named
-@ApplicationScoped
+@RequestScoped
+@Data
 public class ReservaBean {
 
     @Inject
     private ReservaDAO reservaDAO;
 
-    @Getter @Setter
-    private Reserva reservaActual = new Reserva(); // Initialize here
-
-    @Getter
+    private Reserva reservaActual;
     private List<Reserva> reservas;
-
-    @Getter
-    private ScheduleModel eventModel = new DefaultScheduleModel(); // Initialize here
-
-    private String newEventTitle;
-    private String newEventDescription;
-    private java.util.Date newEventStartDate;
-    private java.util.Date newEventEndDate;
+    private ScheduleModel scheduleModel;
 
     @PostConstruct
     public void init() {
-        reservas = reservaDAO.obtenerTodas(); // Fetch all reservations on init
+        reservaActual = new Reserva();
+        reservas = reservaDAO.obtenerTodas();
+        scheduleModel = new DefaultScheduleModel();
 
-        // Populate scheduleModel with events from reservas (same logic)
+        // Populate scheduleModel with events from reservas
         for (Reserva reserva : reservas) {
             LocalDateTime startDate = LocalDateTime.ofInstant(reserva.getFechaEntrada().toInstant(), ZoneId.systemDefault());
             LocalDateTime endDate = LocalDateTime.ofInstant(reserva.getFechaSalida().toInstant(), ZoneId.systemDefault());
@@ -52,13 +50,12 @@ public class ReservaBean {
                     .startDate(startDate)
                     .endDate(endDate)
                     .build();
-            eventModel.addEvent(event);
+            scheduleModel.addEvent(event);
         }
     }
 
-
     public String guardarReserva() {
-        // Check for reservation conflicts (same logic)
+        // Check for reservation conflicts
         if (reservaDAO.hayChoqueDeReservas(reservaActual.getFechaEntrada(), reservaActual.getFechaSalida())) {
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR,
                     "Error", "Ya existe una reserva para el horario seleccionado.");
@@ -66,7 +63,7 @@ public class ReservaBean {
             return null;
         }
 
-        // Validate number of people (same logic)
+        // Validate number of people
         if (reservaActual.getCantidadPersonas() > 15) {
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR,
                     "Error", "La cantidad de personas excede la capacidad máxima de la sala.");
@@ -77,9 +74,9 @@ public class ReservaBean {
         // Save the reservation
         reservaDAO.guardar(reservaActual);
 
-        // Update UI after successful save
-        reservas = reservaDAO.obtenerTodas(); // Refresh list
-        eventModel.clear(); // Clear existing events
+        // Update reservas and scheduleModel
+        reservas = reservaDAO.obtenerTodas();
+        scheduleModel.clear();
         for (Reserva reserva : reservas) {
             LocalDateTime startDate = LocalDateTime.ofInstant(reserva.getFechaEntrada().toInstant(), ZoneId.systemDefault());
             LocalDateTime endDate = LocalDateTime.ofInstant(reserva.getFechaSalida().toInstant(), ZoneId.systemDefault());
@@ -88,7 +85,7 @@ public class ReservaBean {
                     .startDate(startDate)
                     .endDate(endDate)
                     .build();
-            eventModel.addEvent(event);
+            scheduleModel.addEvent(event);
         }
 
         // Reset reservaActual
