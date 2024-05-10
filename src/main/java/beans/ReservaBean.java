@@ -41,7 +41,12 @@ public class ReservaBean implements Serializable {
     @PostConstruct
     public void init() {
         reservaActual = new Reserva();
-        reservas = reservaDAO.obtenerTodas();
+        List<Reserva> listaReserva = reservaDAO.obtenerTodas();
+
+        if (!listaReserva.isEmpty()){
+            reservas = listaReserva;
+        }
+        
         scheduleModel = new DefaultScheduleModel();
         
         fechaMinima = LocalDateTime.now();
