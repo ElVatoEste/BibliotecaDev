@@ -24,7 +24,6 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.List;
 
-
 @Named
 @RequestScoped
 @Data
@@ -37,13 +36,16 @@ public class ReservaBean implements Serializable {
     private Reserva reservaActual;
     private List<Reserva> reservas;
     private ScheduleModel scheduleModel;
+    private LocalDateTime fechaMinima;
 
     @PostConstruct
     public void init() {
         reservaActual = new Reserva();
         reservas = reservaDAO.obtenerTodas();
         scheduleModel = new DefaultScheduleModel();
-
+        
+        fechaMinima = LocalDateTime.now();
+        
         // Populate scheduleModel with events from reservas
         for (Reserva reserva : reservas) {
             LocalDateTime startDate = LocalDateTime.ofInstant(reserva.getFechaEntrada().toInstant(), ZoneId.systemDefault());
