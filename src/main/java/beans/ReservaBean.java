@@ -41,11 +41,20 @@ public class ReservaBean implements Serializable {
     @PostConstruct
     public void init() {
         reservaActual = new Reserva();
-        List<Reserva> listaReserva = reservaDAO.obtenerTodas();
 
-        if (!listaReserva.isEmpty()){
-            reservas = listaReserva;
-        }
+        List<Reserva> listaReserva = new ArrayList<>();
+
+        Reserva reserva1 = new Reserva();
+        reserva1.setCif(123456789L);
+        reserva1.setDiaReserva(new Date());
+        reserva1.setFechaEntrada(new Date());
+        reserva1.setFechaSalida(new Date());
+        reserva1.setCantidadPersonas(5);
+        reserva1.setAsuntoReserva("Reunión de equipo");
+        reserva1.setUtilizaPizarra(true);
+        reserva1.setUtilizaProyector(true);
+        reserva1.setUtilizaComputadora(false);
+        listaReserva.add(reserva1);
         
         scheduleModel = new DefaultScheduleModel();
         
