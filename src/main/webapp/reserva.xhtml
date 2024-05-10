@@ -6,25 +6,26 @@
 
 <h:head>
     <title>Solicitud de Reserva</title>
+    <link rel="stylesheet" href="https://primefaces.org/showcase/ui/primeicons.css" />
+    <link rel="stylesheet" href="https://unpkg.com/primeflex@latest/primeflex.css"/>
 </h:head>
 
 <h:body>
+<div class="card">
     <h:form id="reservaForm">
         <h1>Solicitud de Reserva</h1>
 
         <h:panelGrid columns="2" columnClasses="label, input">
-            <h:outputLabel for="fechaEntrada" value="Fecha de Entrada:"/>
-            <p:calendar id="fechaEntrada"
+            <h:outputLabel for="fechaEntrada" value="Fecha de Entrada "/>
+            <p:datePicker id="fechaEntrada"
                         value="#{reservaBean.reservaActual.fechaEntrada}"
-                        pattern="dd/MM/yyyy HH:mm"  showButtonPanel="true"
-                        showOn="button"
-                        mindate="today"/>
+                        pattern="dd.MM.yyyy" showIcon="true" showTime="true"
+                        mindate="#{reservaBean.fechaMinima}"/>
 
             <h:outputLabel for="fechaSalida" value="Fecha de Salida:"/>
-            <p:calendar id="fechaSalida"
+            <p:datePicker id="fechaSalida"
                         value="#{reservaBean.reservaActual.fechaSalida}"
-                        pattern="dd/MM/yyyy HH:mm"  showButtonPanel="true"
-                        showOn="button"
+                        pattern="dd.MM.yyyy" showIcon="true" showTime="true"
                         mindate="#{reservaBean.reservaActual.fechaEntrada}"/>
 
             <h:outputLabel for="cantidadPersonas" value="Cantidad de Personas:"/>
@@ -55,6 +56,11 @@
                                          disabled="#{reservaBean.computadoraUsado}" />
                 <h:outputLabel for="usarComputadora" value="Computadora"/>
             </h:panelGroup>
+<!--
+        <p:selectManyCheckbox id="pageDirection" value="#{reservaBean.valoresSeleccionado}" layout="pageDirection">
+            <f:selectItems value="#{reservaBean.valores}" var="valor" itemLabel="#{valor}" itemValue="#{valor}"/>
+        </p:selectManyCheckbox>
+-->
         </h:panelGrid>
 
         <h:commandButton value="Guardar Reserva"
@@ -73,5 +79,6 @@
 
         <h:commandButton value="Limpiar Formulario" action="#{reservaBean.clearReserva}" />
     </h:form>
+</div>
 </h:body>
 </html>
