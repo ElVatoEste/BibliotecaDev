@@ -5,12 +5,10 @@
              version="3.0">
     <persistence-unit name="default">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
-        <non-jta-data-source>java://comp/env/jdbc/BibliotecaProyect</non-jta-data-source>
+        <non-jta-data-source>java://comp/env/jdbc/BibliotecaProject</non-jta-data-source>
         <properties>
             <property name="javax.persistence.schema-generation.database.action" value="update"/>
             <property name="hibernate.show_sql" value="true"/>
-            <property name="hibernate.format_sql" value="true"/>
-            <property name="hibernate.dialect" value="org.hibernate.dialect.SQLServerDialect"/>
         </properties>
     </persistence-unit>
 </persistence>

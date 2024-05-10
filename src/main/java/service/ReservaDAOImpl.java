@@ -1,5 +1,6 @@
 package service;
 import entity.Reserva;
+import jakarta.inject.Named;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
@@ -9,8 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Date;
 import java.util.List;
 
-@Repository
-@Transactional
+@Named("ReservaDAOImpl")
 public class ReservaDAOImpl implements ReservaDAO {
 
     @PersistenceContext

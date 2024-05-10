@@ -17,7 +17,9 @@ import service.ReservaDAO;
 import org.primefaces.model.DefaultScheduleEvent;
 import org.primefaces.model.DefaultScheduleModel;
 import org.primefaces.model.ScheduleModel;
+import service.ReservaDAOImpl;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.List;
@@ -26,9 +28,10 @@ import java.util.List;
 @Named
 @RequestScoped
 @Data
-public class ReservaBean {
+public class ReservaBean implements Serializable {
 
     @Inject
+    @Named ("ReservaDAOImpl")
     private ReservaDAO reservaDAO;
 
     private Reserva reservaActual;
