@@ -4,8 +4,6 @@ import jakarta.inject.Named;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
-import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -28,14 +26,14 @@ public class ReservaDAOImpl implements ReservaDAO {
 
     @Override
     public void eliminar(Long IdReserva) {
-        Reserva reserva = buscarPorCif(IdReserva);
+        Reserva reserva = buscarPorID(IdReserva);
         if (reserva != null) {
             entityManager.remove(reserva);
         }
     }
 
     @Override
-    public Reserva buscarPorCif(Long IdReserva) {
+    public Reserva buscarPorID(Long IdReserva) {
         return entityManager.find(Reserva.class, IdReserva);
     }
 

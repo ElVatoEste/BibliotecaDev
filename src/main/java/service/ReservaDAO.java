@@ -1,6 +1,6 @@
 package service;
 import entity.Reserva;
-import java.util.List;
+
 import java.util.Date;
 import java.util.List;
 
@@ -15,7 +15,7 @@ public interface ReservaDAO {
     void eliminar(Long IdReserva);
 
     // Buscar una reserva por su CIF
-    Reserva buscarPorCif(Long IdReserva);
+    Reserva buscarPorID(Long IdReserva);
 
     // Obtener todas las reservas
     List<Reserva> obtenerTodas();

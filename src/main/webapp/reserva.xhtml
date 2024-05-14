@@ -42,25 +42,18 @@
             <h:outputLabel value="Extras:"/>
             <h:panelGroup>
                 <h:selectBooleanCheckbox id="usarPizarra"
-                                         value="#{reservaBean.reservaActual.usarPizarra}"
-                                         disabled="#{reservaBean.pizarraUsada}" />
+                                         value="#{reservaBean.reservaActual.utilizaPizarra}"/>
                 <h:outputLabel for="usarPizarra" value="Pizarra"/>
 
                 <h:selectBooleanCheckbox id="usarProyector"
-                                         value="#{reservaBean.reservaActual.usarProyector}"
-                                         disabled="#{reservaBean.proyectorUsado}" />
+                                         value="#{reservaBean.reservaActual.utilizaProyector}"/>
                 <h:outputLabel for="usarProyector" value="Proyector"/>
 
                 <h:selectBooleanCheckbox id="usarComputadora"
-                                         value="#{reservaBean.reservaActual.usarComputadora}"
-                                         disabled="#{reservaBean.computadoraUsado}" />
+                                         value="#{reservaBean.reservaActual.utilizaComputadora}"/>
                 <h:outputLabel for="usarComputadora" value="Computadora"/>
             </h:panelGroup>
-<!--
-        <p:selectManyCheckbox id="pageDirection" value="#{reservaBean.valoresSeleccionado}" layout="pageDirection">
-            <f:selectItems value="#{reservaBean.valores}" var="valor" itemLabel="#{valor}" itemValue="#{valor}"/>
-        </p:selectManyCheckbox>
--->
+
         </h:panelGrid>
 
         <h:commandButton value="Guardar Reserva"
@@ -69,6 +62,7 @@
         <p:messages autoUpdate="true" globalOnly="true"/>
 
         <h2>Calendario de Reservas</h2>
+        <!--
         <p:schedule id="calendarioReservas"
                     value="#{reservaBean.reservas}"
                     var="reserva"
@@ -76,8 +70,7 @@
                     startDate="#{reserva.fechaEntrada}"
                     endDate="#{reserva.fechaSalida}"
                     style="height: 400px;"/>
-
-        <h:commandButton value="Limpiar Formulario" action="#{reservaBean.clearReserva}" />
+-->
     </h:form>
 </div>
 </h:body>

@@ -22,6 +22,8 @@ import service.ReservaDAOImpl;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Named
@@ -42,7 +44,7 @@ public class ReservaBean implements Serializable {
     public void init() {
         reservaActual = new Reserva();
 
-        List<Reserva> listaReserva = new ArrayList<>();
+        reservas = new ArrayList<>();
 
         Reserva reserva1 = new Reserva();
         reserva1.setCif(123456789L);
@@ -54,7 +56,8 @@ public class ReservaBean implements Serializable {
         reserva1.setUtilizaPizarra(true);
         reserva1.setUtilizaProyector(true);
         reserva1.setUtilizaComputadora(false);
-        listaReserva.add(reserva1);
+        reservas.add(reserva1);
+
         
         scheduleModel = new DefaultScheduleModel();
         
