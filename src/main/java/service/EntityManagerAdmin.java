@@ -3,8 +3,10 @@ package service;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
+import jakarta.persistence.TypedQuery;
 
 import javax.xml.stream.events.EntityReference;
+import java.util.Date;
 
 public class EntityManagerAdmin {
     private static EntityManager instance;
@@ -20,3 +22,4 @@ public class EntityManagerAdmin {
 
     private EntityManagerAdmin(){}
 }
+

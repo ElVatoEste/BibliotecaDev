@@ -11,11 +11,8 @@ import java.util.List;
 @Named("ReservaDAOImpl")
 public class ReservaDAOImpl implements ReservaDAO {
 
-    @PersistenceContext
-    private EntityManager entityManager;
-
     @Override
-    public <T> List<T> getAll(String namedQuery, Class<T> clazz) {
+    public <T> List<T> obtenerTodas(String namedQuery, Class<T> clazz) {
         EntityManager em = EntityManagerAdmin.getInstance();
 
         try {
@@ -143,7 +140,8 @@ public class ReservaDAOImpl implements ReservaDAO {
 
     @Override
     public boolean hayChoqueDeReservas(Date fechaEntrada, Date fechaSalida) {
-        TypedQuery<Long> query = entityManager.createQuery(
+        EntityManager em = EntityManagerAdmin.getInstance();
+        TypedQuery<Long> query = em.createQuery(
                 "SELECT COUNT(r) FROM Reserva r WHERE " +
                         "(r.fechaEntrada < :fechaSalida AND r.fechaSalida > :fechaEntrada)", Long.class);
         query.setParameter("fechaEntrada", fechaEntrada);

@@ -7,7 +7,7 @@ import java.util.List;
 public interface ReservaDAO {
     // Guardar una nueva reserva
 
-    <T> List<T> getAll(String namedQuery, Class<T> clazz);
+    <T> List<T> obtenerTodas(String namedQuery, Class<T> clazz);
 
     <T> List<T> get(String namedQuery, Class<T> clazz, Object... params);
 

@@ -48,7 +48,6 @@ public class ReservaBean implements Serializable {
 
         Reserva reserva1 = new Reserva();
         reserva1.setCif(123456789L);
-        reserva1.setDiaReserva(new Date());
         reserva1.setFechaEntrada(new Date());
         reserva1.setFechaSalida(new Date());
         reserva1.setCantidadPersonas(5);
@@ -95,20 +94,6 @@ public class ReservaBean implements Serializable {
 
         // Save the reservation
         reservaDAO.guardar(reservaActual);
-
-        // Update reservas and scheduleModel
-        reservas = reservaDAO.obtenerTodas();
-        scheduleModel.clear();
-        for (Reserva reserva : reservas) {
-            LocalDateTime startDate = LocalDateTime.ofInstant(reserva.getFechaEntrada().toInstant(), ZoneId.systemDefault());
-            LocalDateTime endDate = LocalDateTime.ofInstant(reserva.getFechaSalida().toInstant(), ZoneId.systemDefault());
-            DefaultScheduleEvent event = DefaultScheduleEvent.builder()
-                    .title(reserva.getAsuntoReserva())
-                    .startDate(startDate)
-                    .endDate(endDate)
-                    .build();
-            scheduleModel.addEvent(event);
-        }
 
         // Reset reservaActual
         reservaActual = new Reserva();
