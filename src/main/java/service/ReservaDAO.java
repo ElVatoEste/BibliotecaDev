@@ -6,19 +6,19 @@ import java.util.List;
 
 public interface ReservaDAO {
     // Guardar una nueva reserva
-    void guardar(Reserva reserva);
 
-    // Actualizar una reserva existente
-    void actualizar(Reserva reserva);
+    <T> List<T> getAll(String namedQuery, Class<T> clazz);
 
-    // Eliminar una reserva por su CIF
-    void eliminar(Long IdReserva);
+    <T> List<T> get(String namedQuery, Class<T> clazz, Object... params);
+
+    <T> T Actualizar(T entity);
+
+    <T> T guardar(T entity);
+
+    <T> void eliminar(T entity);
 
     // Buscar una reserva por su CIF
-    Reserva buscarPorID(Long IdReserva);
-
-    // Obtener todas las reservas
-    List<Reserva> obtenerTodas();
+    <T, ID> T buscarPorId(Class<T> clazz, ID id);
 
     // Verificar si hay un choque de reservas en un rango de tiempo
     boolean hayChoqueDeReservas(Date fechaEntrada, Date fechaSalida);
