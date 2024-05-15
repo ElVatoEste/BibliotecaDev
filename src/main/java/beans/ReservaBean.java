@@ -28,7 +28,6 @@ import java.util.List;
 
 @Named
 @RequestScoped
-@Data
 public class ReservaBean implements Serializable {
 
     @Inject
@@ -57,11 +56,11 @@ public class ReservaBean implements Serializable {
         reserva1.setUtilizaComputadora(false);
         reservas.add(reserva1);
 
-        
+
         scheduleModel = new DefaultScheduleModel();
-        
+
         fechaMinima = LocalDateTime.now();
-        
+
         // Populate scheduleModel with events from reservas
         for (Reserva reserva : reservas) {
             LocalDateTime startDate = LocalDateTime.ofInstant(reserva.getFechaEntrada().toInstant(), ZoneId.systemDefault());

@@ -3,7 +3,6 @@
         import lombok.Getter;
         import lombok.Setter;
 
-        import java.time.LocalDateTime;
         import java.util.Date;
 
         @Entity
@@ -23,11 +22,11 @@
             @Column(name = "id_reserva", nullable = false)
             private Long IdReserva; // Clave primaria
 
-            @Column(name = "cif", nullable = true)
-            private Long cif;
-
             @Column(name = "Nombre", length = 50 ,nullable = false)
             private String nombreEstudiante;
+
+            @Column(name = "cif", nullable = false)
+            private Long cif;
 
             @Column(name = "asunto_reserva", length = 75, nullable = false)
             private String asuntoReserva;

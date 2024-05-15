@@ -16,6 +16,21 @@
         <h1>Solicitud de Reserva</h1>
 
         <h:panelGrid columns="2" columnClasses="label, input">
+
+            <h:outputLabel for="nombreEstudiante" value="Nombre del Estudiante:"/>
+            <h:inputText id="nombreEstudiante" value="#{reservaBean.reservaActual.nombreEstudiante}" />
+
+            <h:outputLabel for="cif" value="Cif del Estudiante:"/>
+            <h:inputText id="cif" value="#{reservaBean.reservaActual.cif}" />
+
+            <h:outputLabel for="asunto" value="Asunto de la Reserva:"/>
+            <h:inputText id="asunto" value="#{reservaBean.reservaActual.asuntoReserva}"/>
+
+            <h:outputLabel for="cantidadPersonas" value="Cantidad de Personas:"/>
+            <p:spinner id="cantidadPersonas"
+                       value="#{reservaBean.reservaActual.cantidadPersonas}"
+                       min="1" max="15"/>
+
             <h:outputLabel for="fechaEntrada" value="Fecha de Entrada "/>
             <p:datePicker id="fechaEntrada"
                         value="#{reservaBean.reservaActual.fechaEntrada}"
@@ -27,17 +42,6 @@
                         value="#{reservaBean.reservaActual.fechaSalida}"
                         pattern="dd.MM.yyyy" showIcon="true" showTime="true"
                         mindate="#{reservaBean.reservaActual.fechaEntrada}"/>
-
-            <h:outputLabel for="cantidadPersonas" value="Cantidad de Personas:"/>
-            <p:spinner id="cantidadPersonas"
-                       value="#{reservaBean.reservaActual.cantidadPersonas}"
-                       min="1" max="15"/>
-
-            <h:outputLabel for="asunto" value="Asunto de la Reserva:"/>
-            <h:inputText id="asunto" value="#{reservaBean.reservaActual.asuntoReserva}"/>
-
-            <h:outputLabel for="nombreEstudiante" value="Nombre del Estudiante:"/>
-            <h:inputText id="nombreEstudiante" value="#{reservaBean.reservaActual.nombreEstudiante}" />
 
             <h:outputLabel value="Extras:"/>
             <h:panelGroup>
