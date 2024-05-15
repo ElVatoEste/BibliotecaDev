@@ -9,6 +9,7 @@ import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import lombok.Getter;
 import lombok.Setter;
+import org.primefaces.event.SelectEvent;
 import org.primefaces.model.DefaultScheduleEvent;
 import org.primefaces.model.DefaultScheduleModel;
 import org.primefaces.model.ScheduleModel;
@@ -38,6 +39,8 @@ public class ReservaBean implements Serializable {
     private String newEventDescription;
     private Date newEventStartDate;
     private Date newEventEndDate;
+
+    private Reserva selectedEvent;
 
     @PostConstruct
     public void init() {
@@ -81,6 +84,20 @@ public class ReservaBean implements Serializable {
 
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Evento agregado con éxito", null);
         FacesContext.getCurrentInstance().addMessage(null, message);
+    }
+
+    public void onEventSelect(SelectEvent<Reserva> event) {
+        selectedEvent = (Reserva) event.getObject();
+    }
+    public void onDateSelect(SelectEvent<Date> event) {
+        Date selectedDate = event.getObject();
+
+        // Define la fecha mínima para la selección de la fecha de salida
+        fechaMinima = selectedDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+
+        // Establece la fecha de entrada y salida predeterminadas en la reserva actual
+        reservaActual.setFechaEntrada(fechaMinima);
+        reservaActual.setFechaSalida(fechaMinima.plusHours(1));
     }
 
     public String guardarReserva() {
