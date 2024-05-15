@@ -1,11 +1,9 @@
 package service;
-import entity.Reserva;
 import jakarta.inject.Named;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Named("ReservaDAOImpl")
@@ -139,7 +137,25 @@ public class ReservaDAOImpl implements ReservaDAO {
     }
 
     @Override
-    public boolean hayChoqueDeReservas(Date fechaEntrada, Date fechaSalida) {
+    public <T> void insert(T entity) {
+        EntityManager em = EntityManagerAdmin.getInstance();
+        try {
+            em.getTransaction().begin();
+            em.persist(entity);
+            em.flush();
+            em.getTransaction().commit();
+        }
+        catch(Exception e){
+            e.printStackTrace();
+            em.getTransaction().rollback();
+        }
+        finally {
+            em.close();
+        }
+    }
+
+    @Override
+    public boolean hayChoqueDeReservas(LocalDateTime fechaEntrada, LocalDateTime fechaSalida) {
         EntityManager em = EntityManagerAdmin.getInstance();
         TypedQuery<Long> query = em.createQuery(
                 "SELECT COUNT(r) FROM Reserva r WHERE " +

@@ -2,76 +2,85 @@ package beans;
 
 import entity.Reserva;
 import jakarta.annotation.PostConstruct;
-import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import service.ReservaDAO;
 import org.primefaces.model.DefaultScheduleEvent;
 import org.primefaces.model.DefaultScheduleModel;
 import org.primefaces.model.ScheduleModel;
-import service.ReservaDAOImpl;
+import service.ReservaDAO;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 @Named
 @RequestScoped
+@Getter
+@Setter
 public class ReservaBean implements Serializable {
 
     @Inject
-    @Named ("ReservaDAOImpl")
     private ReservaDAO reservaDAO;
 
-    private Reserva reservaActual;
+    private Reserva reservaActual = new Reserva();
     private List<Reserva> reservas;
-    private ScheduleModel scheduleModel;
+    private ScheduleModel eventModel;
     private LocalDateTime fechaMinima;
+
+    private String newEventTitle;
+    private String newEventDescription;
+    private Date newEventStartDate;
+    private Date newEventEndDate;
 
     @PostConstruct
     public void init() {
-        reservaActual = new Reserva();
+        eventModel = new DefaultScheduleModel();
 
-        reservas = new ArrayList<>();
+        // Obtén la lista de todas las reservas
+        reservas = reservaDAO.obtenerTodas("Reserva.findAll", Reserva.class);
 
-        Reserva reserva1 = new Reserva();
-        reserva1.setCif(123456789L);
-        reserva1.setFechaEntrada(new Date());
-        reserva1.setFechaSalida(new Date());
-        reserva1.setCantidadPersonas(5);
-        reserva1.setAsuntoReserva("Reunión de equipo");
-        reserva1.setUtilizaPizarra(true);
-        reserva1.setUtilizaProyector(true);
-        reserva1.setUtilizaComputadora(false);
-        reservas.add(reserva1);
-
-
-        scheduleModel = new DefaultScheduleModel();
-
-        fechaMinima = LocalDateTime.now();
-
-        // Populate scheduleModel with events from reservas
+        // Convierte los eventos de la base de datos a objetos DefaultScheduleEvent y agrégales al modelo
         for (Reserva reserva : reservas) {
-            LocalDateTime startDate = LocalDateTime.ofInstant(reserva.getFechaEntrada().toInstant(), ZoneId.systemDefault());
-            LocalDateTime endDate = LocalDateTime.ofInstant(reserva.getFechaSalida().toInstant(), ZoneId.systemDefault());
-            DefaultScheduleEvent event = DefaultScheduleEvent.builder()
-                    .title(reserva.getAsuntoReserva())
-                    .startDate(startDate)
-                    .endDate(endDate)
+            DefaultScheduleEvent<?> event = DefaultScheduleEvent.builder()
+                    .title(reserva.getNombreEstudiante())
+                    .description(reserva.getAsuntoReserva())
+                    .startDate(reserva.getFechaEntrada())
+                    .endDate(reserva.getFechaSalida())
                     .build();
-            scheduleModel.addEvent(event);
+            eventModel.addEvent(event);
         }
+    }
+
+    public void addEvent() {
+        DefaultScheduleEvent<?> newEvent = DefaultScheduleEvent.builder()
+                .title(newEventTitle)
+                .description(newEventDescription)
+                .startDate(newEventStartDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime())
+                .endDate(newEventEndDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime())
+                .build();
+
+        // Agrega el evento al modelo
+        eventModel.addEvent(newEvent);
+
+        // Guarda el nuevo evento en la base de datos
+        Reserva reserva = new Reserva();
+        reserva.setNombreEstudiante(newEventTitle);
+        reserva.setAsuntoReserva(newEventDescription);
+        reserva.setFechaEntrada(newEvent.getStartDate());
+        reserva.setFechaSalida(newEvent.getEndDate());
+
+        reservaDAO.insert(reserva);
+        System.out.println("ID asignado: " + reserva.getIdReserva());
+
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Evento agregado con éxito", null);
+        FacesContext.getCurrentInstance().addMessage(null, message);
     }
 
     public String guardarReserva() {
@@ -99,4 +108,12 @@ public class ReservaBean implements Serializable {
 
         return "success";
     }
+    // Getter para eventModel
+    public ScheduleModel getEventModel() {
+        if (eventModel == null) {
+            eventModel = new DefaultScheduleModel();
+        }
+        return eventModel;
+    }
+
 }

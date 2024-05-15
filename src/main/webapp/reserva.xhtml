@@ -66,15 +66,9 @@
         <p:messages autoUpdate="true" globalOnly="true"/>
 
         <h2>Calendario de Reservas</h2>
-        <!--
-        <p:schedule id="calendarioReservas"
-                    value="#{reservaBean.reservas}"
-                    var="reserva"
-                    title="#{reserva.asuntoReserva}"
-                    startDate="#{reserva.fechaEntrada}"
-                    endDate="#{reserva.fechaSalida}"
-                    style="height: 400px;"/>
--->
+
+        <p:schedule id="schedule" value="#{reservaBean.eventModel}" widgetVar="myschedule"/>
+
     </h:form>
 </div>
 </h:body>

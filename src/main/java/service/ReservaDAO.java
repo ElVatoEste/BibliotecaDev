@@ -1,7 +1,6 @@
 package service;
-import entity.Reserva;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface ReservaDAO {
@@ -15,11 +14,13 @@ public interface ReservaDAO {
 
     <T> T guardar(T entity);
 
+    <T> void insert(T entity);
+
     <T> void eliminar(T entity);
 
     // Buscar una reserva por su CIF
     <T, ID> T buscarPorId(Class<T> clazz, ID id);
 
     // Verificar si hay un choque de reservas en un rango de tiempo
-    boolean hayChoqueDeReservas(Date fechaEntrada, Date fechaSalida);
+    boolean hayChoqueDeReservas(LocalDateTime fechaEntrada, LocalDateTime fechaSalida);
 }

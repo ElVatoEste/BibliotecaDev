@@ -3,6 +3,7 @@
         import lombok.Getter;
         import lombok.Setter;
 
+        import java.time.LocalDateTime;
         import java.util.Date;
 
         @Entity
@@ -11,8 +12,8 @@
         @Setter
         @NamedQueries({
                 @NamedQuery(
-                        name = "Agenda.FindEventByCIF",
-                        query = "SELECT a FROM Reserva a WHERE a = :id_reserva"
+                        name = "Reserva.findAll",
+                        query = "SELECT r FROM Reserva r"
                 )
         })
         public class Reserva {
@@ -36,11 +37,11 @@
 
             @Temporal(TemporalType.TIMESTAMP)
             @Column(name = "fecha_entrada", nullable = false)
-            private Date fechaEntrada;
+            private LocalDateTime fechaEntrada;
 
             @Temporal(TemporalType.TIMESTAMP)
             @Column(name = "fecha_salida", nullable = false)
-            private Date fechaSalida;
+            private LocalDateTime fechaSalida;
 
             @Column(name = "utiliza_pizarra", nullable = false)
             private boolean utilizaPizarra;
