@@ -128,6 +128,9 @@ public class ReservaBean implements Serializable {
 
         reservaDAO.guardar(reservaActual);
         reservaActual = new Reserva();
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Reserva guardada con éxito", null);
+        FacesContext.getCurrentInstance().addMessage(null, message);
+
         return "success";
     }
 
