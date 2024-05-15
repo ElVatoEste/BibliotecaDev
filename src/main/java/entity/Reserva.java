@@ -51,4 +51,31 @@
 
             @Column(name = "utiliza_computadora", nullable = false)
             private boolean utilizaComputadora;
+
+            public Boolean getUtilizaPizarra() {
+                return utilizaPizarra;
+            }
+
+            public Boolean getUtilizaProyector() {
+                return utilizaProyector;
+            }
+            public Boolean getUtilizaComputadora() {
+                return utilizaComputadora;
+            }
+
+            public void setUtilizaPizarra(Boolean utilizaPizarra) {
+                this.utilizaPizarra = utilizaPizarra;
+            }
+
+            public void setUtilizaProyector(Boolean utilizaProyector) {
+                this.utilizaProyector = utilizaProyector;
+            }
+
+            public void setUtilizaComputadora(Boolean utilizaComputadora) {
+                this.utilizaComputadora = utilizaComputadora;
+            }
+
+
+
         }
+

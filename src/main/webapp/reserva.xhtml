@@ -11,66 +11,73 @@
 </h:head>
 
 <h:body>
-<div class="card">
-    <h:form id="reservaForm">
-        <h1>Solicitud de Reserva</h1>
+    <div class="card">
+        <h:form>
+            <p:growl id="messages" showDetail="true"/>
 
-        <h:panelGrid columns="2" columnClasses="label, input">
+            <p:schedule id="schedule" value="#{reservaBean.eventModel}" widgetVar="myschedule"
+                        timeZone="#{reservaBean.serverTimeZone}" clientTimeZone="#{reservaBean.serverTimeZone}">
 
-            <h:outputLabel for="nombreEstudiante" value="Nombre del Estudiante:"/>
-            <h:inputText id="nombreEstudiante" value="#{reservaBean.reservaActual.nombreEstudiante}" />
+                <p:ajax event="dateSelect" listener="#{reservaBean.onDateSelect}" update="eventDetails"
+                        oncomplete="PF('eventDialog').show();"/>
+                <p:ajax event="eventSelect" listener="#{reservaBean.onEventSelect}" update="eventDetails"
+                        oncomplete="PF('eventDialog').show();"/>
+            </p:schedule>
 
-            <h:outputLabel for="cif" value="Cif del Estudiante:"/>
-            <h:inputText id="cif" value="#{reservaBean.reservaActual.cif}" />
+            <p:dialog widgetVar="eventDialog" header="Detalles del Evento" showEffect="fade" hideEffect="fade" modal="true" resizable="false" draggable="false">
+                <h:panelGrid id="eventDetails" columns="2" cellpadding="7" columnClasses="label, input">
 
-            <h:outputLabel for="asunto" value="Asunto de la Reserva:"/>
-            <h:inputText id="asunto" value="#{reservaBean.reservaActual.asuntoReserva}"/>
+                    <h:outputLabel for="nombreEstudiante" value="Nombre del Estudiante:"/>
+                    <h:inputText id="nombreEstudiante" value="#{reservaBean.reservaActual.nombreEstudiante}" required="true"/>
 
-            <h:outputLabel for="cantidadPersonas" value="Cantidad de Personas:"/>
-            <p:spinner id="cantidadPersonas"
-                       value="#{reservaBean.reservaActual.cantidadPersonas}"
-                       min="1" max="15"/>
+                    <h:outputLabel for="cif" value="Cif del Estudiante:"/>
+                    <h:inputText id="cif" value="#{reservaBean.reservaActual.cif}" required="true"/>
 
-            <h:outputLabel for="fechaEntrada" value="Fecha de Entrada "/>
-            <p:datePicker id="fechaEntrada"
-                        value="#{reservaBean.reservaActual.fechaEntrada}"
-                        pattern="dd.MM.yyyy" showIcon="true" showTime="true"
-                        mindate="#{reservaBean.fechaMinima}"/>
+                    <h:outputLabel for="asunto" value="Asunto de la Reserva:"/>
+                    <h:inputText id="asunto" value="#{reservaBean.reservaActual.asuntoReserva}" required="true"/>
 
-            <h:outputLabel for="fechaSalida" value="Fecha de Salida:"/>
-            <p:datePicker id="fechaSalida"
-                        value="#{reservaBean.reservaActual.fechaSalida}"
-                        pattern="dd.MM.yyyy" showIcon="true" showTime="true"
-                        mindate="#{reservaBean.reservaActual.fechaEntrada}"/>
+                    <h:outputLabel for="cantidadPersonas" value="Cantidad de Personas:"/>
+                    <p:spinner id="cantidadPersonas"
+                               value="#{reservaBean.reservaActual.cantidadPersonas}"
+                               min="1" max="15" required="true"/>
 
-            <h:outputLabel value="Extras:"/>
-            <h:panelGroup>
-                <h:selectBooleanCheckbox id="usarPizarra"
-                                         value="#{reservaBean.reservaActual.utilizaPizarra}"/>
-                <h:outputLabel for="usarPizarra" value="Pizarra"/>
+                    <h:outputLabel for="fechaEntrada" value="Fecha de Entrada:"/>
+                    <p:datePicker id="fechaEntrada"
+                                  value="#{reservaBean.reservaActual.fechaEntrada}"
+                                  pattern="dd.MM.yyyy" showIcon="true" showTime="true"
+                                  mindate="#{reservaBean.fechaMinima}" required="true"/>
 
-                <h:selectBooleanCheckbox id="usarProyector"
-                                         value="#{reservaBean.reservaActual.utilizaProyector}"/>
-                <h:outputLabel for="usarProyector" value="Proyector"/>
+                    <h:outputLabel for="fechaSalida" value="Fecha de Salida:"/>
+                    <p:datePicker id="fechaSalida"
+                                  value="#{reservaBean.reservaActual.fechaSalida}"
+                                  pattern="dd.MM.yyyy" showIcon="true" showTime="true"
+                                  mindate="#{reservaBean.reservaActual.fechaEntrada}" required="true"/>
 
-                <h:selectBooleanCheckbox id="usarComputadora"
-                                         value="#{reservaBean.reservaActual.utilizaComputadora}"/>
-                <h:outputLabel for="usarComputadora" value="Computadora"/>
-            </h:panelGroup>
+                    <h:outputLabel value="Extras:"/>
+                    <h:panelGroup>
+                        <h:selectBooleanCheckbox id="usarPizarra"
+                                                 value="#{reservaBean.reservaActual.utilizaPizarra}"/>
+                        <h:outputLabel for="usarPizarra" value="Pizarra"/>
 
-        </h:panelGrid>
+                        <h:selectBooleanCheckbox id="usarProyector"
+                                                 value="#{reservaBean.reservaActual.utilizaProyector}"/>
+                        <h:outputLabel for="usarProyector" value="Proyector"/>
 
-        <h:commandButton value="Guardar Reserva"
-                         action="#{reservaBean.guardarReserva}"
-                         update="@form"/>
-        <p:messages autoUpdate="true" globalOnly="true"/>
+                        <h:selectBooleanCheckbox id="usarComputadora"
+                                                 value="#{reservaBean.reservaActual.utilizaComputadora}"/>
+                        <h:outputLabel for="usarComputadora" value="Computadora"/>
+                    </h:panelGroup>
 
-        <h2>Calendario de Reservas</h2>
+                </h:panelGrid>
 
-        <p:schedule id="schedule" value="#{reservaBean.eventModel}" widgetVar="myschedule"/>
+                <div class="flex justify-content-between mt-3">
+                    <p:commandButton id="addButton" value="Guardar" action="#{reservaBean.guardarReserva}"
+                                     update="@form"
+                                     oncomplete="PF('myschedule').update();PF('eventDialog').hide();"/>
+                </div>
+            </p:dialog>
 
-
-    </h:form>
-</div>
+        </h:form>
+    </div>
 </h:body>
 </html>

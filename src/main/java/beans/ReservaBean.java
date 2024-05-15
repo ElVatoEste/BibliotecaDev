@@ -12,6 +12,7 @@ import lombok.Setter;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.DefaultScheduleEvent;
 import org.primefaces.model.DefaultScheduleModel;
+import org.primefaces.model.ScheduleEvent;
 import org.primefaces.model.ScheduleModel;
 import service.ReservaDAO;
 
@@ -41,6 +42,11 @@ public class ReservaBean implements Serializable {
     private Date newEventEndDate;
 
     private Reserva selectedEvent;
+
+    // Implementaciones nuevas
+    private String serverTimeZone = ZoneId.systemDefault().toString();
+    private String clientTimeZone = "local";
+    private ScheduleEvent<?> event = new DefaultScheduleEvent<>();
 
     @PostConstruct
     public void init() {
@@ -86,21 +92,40 @@ public class ReservaBean implements Serializable {
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
 
-    public void onEventSelect(SelectEvent<Reserva> event) {
+    /*public void onEventSelect(SelectEvent<Reserva> event) {
         selectedEvent = (Reserva) event.getObject();
+    }*/
+
+    public void onEventSelect(SelectEvent<ScheduleEvent<?>> selectEvent) {
+        event = selectEvent.getObject();
     }
-    public void onDateSelect(SelectEvent<Date> event) {
-        Date selectedDate = event.getObject();
 
-        // Define la fecha mínima para la selección de la fecha de salida
-        fechaMinima = selectedDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
 
-        // Establece la fecha de entrada y salida predeterminadas en la reserva actual
-        reservaActual.setFechaEntrada(fechaMinima);
-        reservaActual.setFechaSalida(fechaMinima.plusHours(1));
+    public void onDateSelect(SelectEvent<LocalDateTime> selectEvent) {
+        LocalDateTime selectedDate = selectEvent.getObject();
+
+        // Crear un nuevo evento con la fecha seleccionada y una duración de una hora
+        DefaultScheduleEvent<?> newEvent = DefaultScheduleEvent.builder()
+                .startDate(selectedDate)
+                .endDate(selectedDate.plusHours(1))
+                .build();
+
+        // Agregar el nuevo evento al modelo del calendario
+        eventModel.addEvent(newEvent);
     }
 
     public String guardarReserva() {
+
+        if (reservaActual.getUtilizaPizarra() == null) {
+            reservaActual.setUtilizaPizarra(false);
+        }
+        if (reservaActual.getUtilizaProyector() == null) {
+            reservaActual.setUtilizaProyector(false);
+        }
+        if (reservaActual.getUtilizaComputadora() == null) {
+            reservaActual.setUtilizaComputadora(false);
+        }
+
         // Check for reservation conflicts
         if (reservaDAO.hayChoqueDeReservas(reservaActual.getFechaEntrada(), reservaActual.getFechaSalida())) {
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR,
