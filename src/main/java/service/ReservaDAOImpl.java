@@ -154,15 +154,16 @@ public class ReservaDAOImpl implements ReservaDAO {
         }
     }
 
-    @Override
-    public boolean hayChoqueDeReservas(LocalDateTime fechaEntrada, LocalDateTime fechaSalida) {
+    // ReservaDAO.java
+    public int obtenerTotalPersonasReservadas(LocalDateTime inicio, LocalDateTime fin) {
         EntityManager em = EntityManagerAdmin.getInstance();
-        TypedQuery<Long> query = em.createQuery(
-                "SELECT COUNT(r) FROM Reserva r WHERE " +
-                        "(r.fechaEntrada < :fechaSalida AND r.fechaSalida > :fechaEntrada)", Long.class);
-        query.setParameter("fechaEntrada", fechaEntrada);
-        query.setParameter("fechaSalida", fechaSalida);
-        Long count = query.getSingleResult();
-        return count > 0;
+        String queryStr = "SELECT SUM(r.cantidadPersonas) FROM Reserva r WHERE " +
+                "(r.fechaEntrada < :fin AND r.fechaSalida > :inicio)";
+        TypedQuery<Long> query = em.createQuery(queryStr, Long.class);
+        query.setParameter("inicio", inicio);
+        query.setParameter("fin", fin);
+        Long result = query.getSingleResult();
+        return result != null ? result.intValue() : 0;
     }
+
 }

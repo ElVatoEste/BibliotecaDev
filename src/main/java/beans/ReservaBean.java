@@ -21,6 +21,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 @Named
 @RequestScoped
@@ -43,7 +44,6 @@ public class ReservaBean implements Serializable {
 
     private Reserva selectedEvent;
 
-    // Implementaciones nuevas
     private String serverTimeZone = ZoneId.systemDefault().toString();
     private String clientTimeZone = "local";
     private ScheduleEvent<?> event = new DefaultScheduleEvent<>();
@@ -51,34 +51,34 @@ public class ReservaBean implements Serializable {
     @PostConstruct
     public void init() {
         eventModel = new DefaultScheduleModel();
-
-        // Obtén la lista de todas las reservas
         reservas = reservaDAO.obtenerTodas("Reserva.findAll", Reserva.class);
 
-        // Convierte los eventos de la base de datos a objetos DefaultScheduleEvent y agrégales al modelo
         for (Reserva reserva : reservas) {
+            String borderColor = generarColorAleatorio();
             DefaultScheduleEvent<?> event = DefaultScheduleEvent.builder()
                     .title(reserva.getNombreEstudiante())
                     .description(reserva.getAsuntoReserva())
                     .startDate(reserva.getFechaEntrada())
                     .endDate(reserva.getFechaSalida())
+                    .borderColor(borderColor)
                     .build();
             eventModel.addEvent(event);
         }
     }
 
     public void addEvent() {
+        String borderColor = generarColorAleatorio();
+
         DefaultScheduleEvent<?> newEvent = DefaultScheduleEvent.builder()
                 .title(newEventTitle)
                 .description(newEventDescription)
                 .startDate(newEventStartDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime())
                 .endDate(newEventEndDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime())
+                .borderColor(borderColor)
                 .build();
 
-        // Agrega el evento al modelo
         eventModel.addEvent(newEvent);
 
-        // Guarda el nuevo evento en la base de datos
         Reserva reserva = new Reserva();
         reserva.setNombreEstudiante(newEventTitle);
         reserva.setAsuntoReserva(newEventDescription);
@@ -92,30 +92,20 @@ public class ReservaBean implements Serializable {
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
 
-    /*public void onEventSelect(SelectEvent<Reserva> event) {
-        selectedEvent = (Reserva) event.getObject();
-    }*/
-
     public void onEventSelect(SelectEvent<ScheduleEvent<?>> selectEvent) {
         event = selectEvent.getObject();
     }
 
-
     public void onDateSelect(SelectEvent<LocalDateTime> selectEvent) {
         LocalDateTime selectedDate = selectEvent.getObject();
-
-        // Crear un nuevo evento con la fecha seleccionada y una duración de una hora
         DefaultScheduleEvent<?> newEvent = DefaultScheduleEvent.builder()
                 .startDate(selectedDate)
                 .endDate(selectedDate.plusHours(1))
                 .build();
-
-        // Agregar el nuevo evento al modelo del calendario
         eventModel.addEvent(newEvent);
     }
 
     public String guardarReserva() {
-
         if (reservaActual.getUtilizaPizarra() == null) {
             reservaActual.setUtilizaPizarra(false);
         }
@@ -126,31 +116,21 @@ public class ReservaBean implements Serializable {
             reservaActual.setUtilizaComputadora(false);
         }
 
-        // Check for reservation conflicts
-        if (reservaDAO.hayChoqueDeReservas(reservaActual.getFechaEntrada(), reservaActual.getFechaSalida())) {
-            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR,
-                    "Error", "Ya existe una reserva para el horario seleccionado.");
-            FacesContext.getCurrentInstance().addMessage(null, message);
-            return null;
-        }
+        int totalPersonasReservadas = reservaDAO.obtenerTotalPersonasReservadas(
+                reservaActual.getFechaEntrada(), reservaActual.getFechaSalida());
 
-        // Validate number of people
-        if (reservaActual.getCantidadPersonas() > 15) {
+        if (totalPersonasReservadas + reservaActual.getCantidadPersonas() > 15) {
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR,
                     "Error", "La cantidad de personas excede la capacidad máxima de la sala.");
             FacesContext.getCurrentInstance().addMessage(null, message);
             return null;
         }
 
-        // Save the reservation
         reservaDAO.guardar(reservaActual);
-
-        // Reset reservaActual
         reservaActual = new Reserva();
-
         return "success";
     }
-    // Getter para eventModel
+
     public ScheduleModel getEventModel() {
         if (eventModel == null) {
             eventModel = new DefaultScheduleModel();
@@ -158,4 +138,11 @@ public class ReservaBean implements Serializable {
         return eventModel;
     }
 
+    public String generarColorAleatorio() {
+        Random rand = new Random();
+        int r = rand.nextInt(256);
+        int g = rand.nextInt(256);
+        int b = rand.nextInt(256);
+        return String.format("#%02x%02x%02x", r, g, b);
+    }
 }
