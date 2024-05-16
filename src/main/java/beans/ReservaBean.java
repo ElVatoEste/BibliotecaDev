@@ -126,6 +126,30 @@ public class ReservaBean implements Serializable {
             return null;
         }
 
+        if (reservaActual.getUtilizaPizarra() && !reservaDAO.hayPizarraDisponible(
+                reservaActual.getFechaEntrada(), reservaActual.getFechaSalida())) {
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                    "Error", "La pizarra no está disponible en el horario seleccionado.");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+            return null;
+        }
+
+        if (reservaActual.getUtilizaProyector() && !reservaDAO.hayProyectorDisponible(
+                reservaActual.getFechaEntrada(), reservaActual.getFechaSalida())) {
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                    "Error", "El proyector no está disponible en el horario seleccionado.");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+            return null;
+        }
+
+        if (reservaActual.getUtilizaComputadora() && !reservaDAO.hayComputadoraDisponible(
+                reservaActual.getFechaEntrada(), reservaActual.getFechaSalida())) {
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                    "Error", "La computadora no está disponible en el horario seleccionado.");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+            return null;
+        }
+
         reservaDAO.guardar(reservaActual);
         reservaActual = new Reserva();
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Reserva guardada con éxito", null);

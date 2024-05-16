@@ -22,5 +22,11 @@ public interface ReservaDAO {
     <T, ID> T buscarPorId(Class<T> clazz, ID id);
 
     // Verificar si hay un choque de reservas en un rango de tiempo
-     int obtenerTotalPersonasReservadas(LocalDateTime fechaEntrada, LocalDateTime fechaSalida);
+    int obtenerTotalPersonasReservadas(LocalDateTime fechaEntrada, LocalDateTime fechaSalida);
+
+    boolean hayComputadoraDisponible(LocalDateTime fechaEntrada, LocalDateTime fechaSalida);
+
+    boolean hayProyectorDisponible(LocalDateTime fechaEntrada, LocalDateTime fechaSalida);
+
+    boolean hayPizarraDisponible(LocalDateTime fechaEntrada, LocalDateTime fechaSalida);
 }
