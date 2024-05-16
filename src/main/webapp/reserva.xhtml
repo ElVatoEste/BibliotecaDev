@@ -16,7 +16,8 @@
             <p:growl id="messages" showDetail="true"/>
 
             <p:schedule id="schedule" value="#{reservaBean.eventModel}" widgetVar="myschedule"
-                        timeZone="#{reservaBean.serverTimeZone}" clientTimeZone="#{reservaBean.serverTimeZone}">
+                        timeZone="#{reservaBean.serverTimeZone}" clientTimeZone="#{reservaBean.serverTimeZone}"
+                        selectionListener="#{reservaBean.onEventSelect}">
 
                 <p:ajax event="dateSelect" listener="#{reservaBean.onDateSelect}" update="eventDetails"
                         oncomplete="PF('eventDialog').show();"/>
@@ -75,6 +76,8 @@
                                      update="@form"
                                      oncomplete="PF('myschedule').update();PF('eventDialog').hide();"/>
                 </div>
+
+
             </p:dialog>
 
         </h:form>

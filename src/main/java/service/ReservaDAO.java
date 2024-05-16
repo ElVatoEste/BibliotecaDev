@@ -1,5 +1,7 @@
 package service;
 
+import entity.Reserva;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -29,4 +31,6 @@ public interface ReservaDAO {
     boolean hayProyectorDisponible(LocalDateTime fechaEntrada, LocalDateTime fechaSalida);
 
     boolean hayPizarraDisponible(LocalDateTime fechaEntrada, LocalDateTime fechaSalida);
+
+    <T> List<T> obtenerReservasMensuales(int mesActual, int anioActual);
 }

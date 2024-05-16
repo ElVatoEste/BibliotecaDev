@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+    <title>Reporte Mensual de Reservas</title>
+</h:head>
+
+<h:body>
+    <h1>Reporte Mensual de Reservas</h1>
+
+    <h:form>
+        <p:dataTable id="dataTableId" value="#{reporteMensualBean.reservas}" var="reserva" emptyMessage="No hay reservas para este mes">
+            <p:column headerText="Nombre del Estudiante">
+                #{reserva.nombreEstudiante}
+            </p:column>
+            <p:column headerText="CIF">
+                #{reserva.cif}
+            </p:column>
+            <p:column headerText="Asunto">
+                #{reserva.asuntoReserva}
+            </p:column>
+            <p:column headerText="Cantidad de Personas">
+                #{reserva.cantidadPersonas}
+            </p:column>
+            <p:column headerText="Día de la Reserva">
+                #{reserva.fechaEntrada.toLocalDate()}
+            </p:column>
+            <p:column headerText="Hora de Entrada">
+                #{reserva.fechaEntrada.toLocalTime()}
+            </p:column>
+            <p:column headerText="Hora de Salida">
+                #{reserva.fechaSalida.toLocalTime()}
+            </p:column>
+            <p:column headerText="Extras">
+                <h:panelGroup rendered="#{reserva.utilizaPizarra}">
+                    Pizarra
+                </h:panelGroup>
+                <h:panelGroup rendered="#{reserva.utilizaProyector}">
+                    Proyector
+                </h:panelGroup>
+                <h:panelGroup rendered="#{reserva.utilizaComputadora}">
+                    Computadora
+                </h:panelGroup>
+            </p:column>
+            <p:column headerText="Acciones">
+                <p:commandButton value="Editar" action="#{reporteMensualBean.editarReserva(reserva)}" />
+                <p:commandButton value="Eliminar" action="#{reporteMensualBean.eliminarReserva(reserva)}" update="dataTableId" />
+            </p:column>
+        </p:dataTable>
+    </h:form>
+</h:body>
+</html>

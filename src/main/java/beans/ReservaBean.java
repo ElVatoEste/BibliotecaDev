@@ -93,14 +93,33 @@ public class ReservaBean implements Serializable {
     }
 
     public void onEventSelect(SelectEvent<ScheduleEvent<?>> selectEvent) {
-        event = selectEvent.getObject();
+        if (selectEvent != null && selectEvent.getObject() != null) {
+            event = selectEvent.getObject();
+            selectedEvent = null; // Reiniciar la reserva seleccionada
+
+            String selectedEventTitle = event.getTitle();
+            String selectedEventDescription = event.getDescription();
+
+            for (Reserva reserva : reservas) {
+                if (reserva.getNombreEstudiante().equals(selectedEventTitle) &&
+                        reserva.getAsuntoReserva().equals(selectedEventDescription)) {
+                    selectedEvent = reserva;
+                    break;
+                }
+            }
+        }
     }
+
+
+
 
     public void onDateSelect(SelectEvent<LocalDateTime> selectEvent) {
         LocalDateTime selectedDate = selectEvent.getObject();
+        LocalDateTime endDate = selectedDate.plusMinutes(30); // Añadir 30 minutos al inicio para obtener el final
+
         DefaultScheduleEvent<?> newEvent = DefaultScheduleEvent.builder()
                 .startDate(selectedDate)
-                .endDate(selectedDate.plusHours(1))
+                .endDate(endDate)
                 .build();
         eventModel.addEvent(newEvent);
     }
@@ -156,6 +175,28 @@ public class ReservaBean implements Serializable {
         FacesContext.getCurrentInstance().addMessage(null, message);
 
         return "success";
+    }
+
+    public void actualizarReserva() {
+        if (selectedEvent != null) {
+            reservaDAO.Actualizar(selectedEvent);
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Reserva actualizada con éxito", null);
+            FacesContext.getCurrentInstance().addMessage(null, message);
+        } else {
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se ha seleccionado ninguna reserva para actualizar.");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+        }
+    }
+
+    public void eliminarReserva() {
+        if (selectedEvent != null) {
+            reservaDAO.eliminar(selectedEvent);
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Reserva eliminada con éxito", null);
+            FacesContext.getCurrentInstance().addMessage(null, message);
+        } else {
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se ha seleccionado ninguna reserva para eliminar.");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+        }
     }
 
     public ScheduleModel getEventModel() {

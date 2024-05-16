@@ -133,16 +133,23 @@ public class ReservaDAOImpl implements ReservaDAO {
         }
     }
 
+
     public int obtenerTotalPersonasReservadas(LocalDateTime inicio, LocalDateTime fin) {
-        EntityManager em = EntityManagerAdmin.getInstance();
-        String queryStr = "SELECT SUM(r.cantidadPersonas) FROM Reserva r WHERE " +
-                "(r.fechaEntrada < :fin AND r.fechaSalida > :inicio)";
-        TypedQuery<Long> query = em.createQuery(queryStr, Long.class);
-        query.setParameter("inicio", inicio);
-        query.setParameter("fin", fin);
-        Long result = query.getSingleResult();
-        return result != null ? result.intValue() : 0;
+        try (EntityManager em = EntityManagerAdmin.getInstance()) {
+            String queryStr = "SELECT SUM(r.cantidadPersonas) FROM Reserva r WHERE " +
+                    "(r.fechaEntrada < :fin AND r.fechaSalida > :inicio)";
+            TypedQuery<Long> query = em.createQuery(queryStr, Long.class);
+            query.setParameter("inicio", inicio);
+            query.setParameter("fin", fin);
+            Long result = query.getSingleResult();
+            return result != null ? result.intValue() : 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
     }
+
+
 
     public boolean hayPizarraDisponible(LocalDateTime fechaEntrada, LocalDateTime fechaSalida) {
         List<Reserva> reservasEnHorario = obtenerReservasEnHorario(fechaEntrada, fechaSalida);
@@ -154,6 +161,25 @@ public class ReservaDAOImpl implements ReservaDAO {
         }
         return true; // La pizarra está disponible en este horario
     }
+
+    @Override
+    public List<Reserva> obtenerReservasMensuales(int mesActual, int anioActual) {
+        EntityManager em = EntityManagerAdmin.getInstance();
+        try {
+            String queryStr = "SELECT r FROM Reserva r WHERE MONTH(r.fechaEntrada) = :mes AND YEAR(r.fechaEntrada) = :anio";
+            TypedQuery<Reserva> query = em.createQuery(queryStr, Reserva.class);
+            query.setParameter("mes", mesActual);
+            query.setParameter("anio", anioActual);
+            return query.getResultList();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            em.close();
+        }
+    }
+
+
 
     public boolean hayProyectorDisponible(LocalDateTime fechaEntrada, LocalDateTime fechaSalida) {
         List<Reserva> reservasEnHorario = obtenerReservasEnHorario(fechaEntrada, fechaSalida);
