@@ -12,7 +12,12 @@
     <h1>Editar Reserva</h1>
 
     <h:form>
+        <f:metadata>
+            <f:viewParam name="id" value="#{cargaReserva.idReservaActual}" />
+        </f:metadata>
+
         <h:panelGrid columns="2">
+
             <h:outputLabel for="nombreEstudiante" value="Nombre del Estudiante:"/>
             <h:inputText id="nombreEstudiante" value="#{cargaReserva.reservaActual.nombreEstudiante}" required="true"/>
 
@@ -34,9 +39,10 @@
             <!-- Agregar campos para extras si es necesario -->
 
             <h:panelGroup>
-                <p:commandButton value="Guardar" action="#{cargaReserva.guardarCambios()}" update="@form"/>
+                <p:commandButton value="Guardar" action="#{cargaReserva.guardarCambios}" update="@form"/>
                 <p:commandButton value="Cancelar" action="#{cargaReserva.cancelarEdicion}" immediate="true"/>
             </h:panelGroup>
+
         </h:panelGrid>
     </h:form>
 </h:body>
