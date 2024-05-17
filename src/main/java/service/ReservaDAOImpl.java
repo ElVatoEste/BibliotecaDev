@@ -5,11 +5,12 @@
     import jakarta.persistence.EntityManager;
     import jakarta.persistence.TypedQuery;
 
+    import java.io.Serializable;
     import java.time.LocalDateTime;
     import java.util.List;
 
     @Named("ReservaDAOImpl")
-    public class ReservaDAOImpl implements ReservaDAO {
+    public class ReservaDAOImpl implements ReservaDAO, Serializable {
 
         @Override
         public <T> List<T> obtenerTodas(String namedQuery, Class<T> clazz) {
