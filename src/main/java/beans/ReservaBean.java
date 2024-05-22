@@ -177,27 +177,6 @@ public class ReservaBean implements Serializable {
         return "success";
     }
 
-    public void actualizarReserva() {
-        if (selectedEvent != null) {
-            reservaDAO.Actualizar(selectedEvent);
-            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Reserva actualizada con éxito", null);
-            FacesContext.getCurrentInstance().addMessage(null, message);
-        } else {
-            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se ha seleccionado ninguna reserva para actualizar.");
-            FacesContext.getCurrentInstance().addMessage(null, message);
-        }
-    }
-
-    public void eliminarReserva() {
-        if (selectedEvent != null) {
-            reservaDAO.eliminar(selectedEvent);
-            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Reserva eliminada con éxito", null);
-            FacesContext.getCurrentInstance().addMessage(null, message);
-        } else {
-            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se ha seleccionado ninguna reserva para eliminar.");
-            FacesContext.getCurrentInstance().addMessage(null, message);
-        }
-    }
 
     public ScheduleModel getEventModel() {
         if (eventModel == null) {
