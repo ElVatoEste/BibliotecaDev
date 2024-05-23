@@ -8,6 +8,8 @@ import jakarta.faces.context.FacesContext;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
+
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.Map;
 import lombok.Getter;
@@ -15,7 +17,7 @@ import lombok.Setter;
 import service.ReservaDAO;
 
 @Named("CargarReserva")
-@ViewScoped
+@SessionScoped
 @Getter
 @Setter
 public class CargaReservaBean implements Serializable{
@@ -27,7 +29,7 @@ public class CargaReservaBean implements Serializable{
     private Long idReservaActual; // Campo para almacenar el ID de la reserva
 
     @PostConstruct
-        public void init() {
+    public void init() {
         // Obtener el ID de la reserva de la URL
         Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
         String idReservaString = params.get("id");
@@ -64,11 +66,16 @@ public class CargaReservaBean implements Serializable{
         try {
             if (idReservaActual != null) {
                 // Guardar los cambios realizados en la reserva
-                reservaActual = reservaDAO.Actualizar(reservaActual);
+                reservaDAO.Actualizar(reservaActual);
+
                 // Redirigir a la página de reporte mensual
+                FacesContext.getCurrentInstance().getExternalContext().redirect("reporteMensual.xhtml");
             } else {
                 System.out.println("No se puede guardar porque el ID de la reserva es null.");
             }
+        } catch (IOException e) {
+            // Manejar cualquier excepción de redirección
+            e.printStackTrace();
         } catch (Exception e) {
             // Manejar cualquier otra excepción que pueda ocurrir
             System.out.println("Ocurrió un error al guardar los cambios en la reserva.");
@@ -76,9 +83,12 @@ public class CargaReservaBean implements Serializable{
         }
     }
 
-
-    public String cancelarEdicion() {
-        // Redirigir de vuelta a la página de reporte mensual
-        return "reporteMensual.xhtml?faces-redirect=true";
+    public void cancelarEdicion() {
+        try {
+            // Redirigir de vuelta a la página de reporte mensual
+            FacesContext.getCurrentInstance().getExternalContext().redirect("reporteMensual.xhtml");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
