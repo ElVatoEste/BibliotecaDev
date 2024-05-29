@@ -10,7 +10,7 @@
     import java.util.List;
 
     @Named("ReservaDAOImpl")
-    public class ReservaDAOImpl implements ReservaDAO, Serializable {
+    public class ReservaDAOImpl implements ReservaDAO, Serializable{
 
         @Override
         public <T> List<T> obtenerTodas(String namedQuery, Class<T> clazz) {
@@ -48,12 +48,28 @@
         }
 
         @Override
-        public <T> T Actualizar(T entity) {
+        public <T> T update(T entity) {
             EntityManager em = EntityManagerAdmin.getInstance();
             T entityUpdate = null;
             try {
                 em.getTransaction().begin();
                 entityUpdate = em.merge(entity);
+                em.flush();
+                em.getTransaction().commit();
+            }
+            catch(Exception e){
+                e.printStackTrace();
+                em.getTransaction().rollback();
+            } finally {
+                em.close();
+            } return entityUpdate;
+        }
+        @Override
+        public <T> void insert(T entity) {
+            EntityManager em = EntityManagerAdmin.getInstance();
+            try {
+                em.getTransaction().begin();
+                em.persist(entity);
                 em.flush();
                 em.getTransaction().commit();
             } catch (Exception e) {
@@ -62,11 +78,9 @@
             } finally {
                 em.close();
             }
-            return entityUpdate;
         }
-
         @Override
-        public <T> T guardar(T entity) {
+        public <T> void guardar(T entity) {
             EntityManager em = EntityManagerAdmin.getInstance();
             try {
                 em.getTransaction().begin();
@@ -76,13 +90,11 @@
                     em.persist(entity);
                 }
                 em.getTransaction().commit();
-                return entity;
             } catch (Exception e) {
                 e.printStackTrace();
                 if (em.getTransaction().isActive()) {
                     em.getTransaction().rollback();
                 }
-                return null;
             } finally {
                 em.close();
             }
@@ -117,23 +129,6 @@
                 em.close();
             }
         }
-
-        @Override
-        public <T> void insert(T entity) {
-            EntityManager em = EntityManagerAdmin.getInstance();
-            try {
-                em.getTransaction().begin();
-                em.persist(entity);
-                em.flush();
-                em.getTransaction().commit();
-            } catch (Exception e) {
-                e.printStackTrace();
-                em.getTransaction().rollback();
-            } finally {
-                em.close();
-            }
-        }
-
 
         public int obtenerTotalPersonasReservadas(LocalDateTime inicio, LocalDateTime fin) {
             try (EntityManager em = EntityManagerAdmin.getInstance()) {

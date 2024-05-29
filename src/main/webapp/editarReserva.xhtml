@@ -15,35 +15,38 @@
 
         <h:panelGrid columns="2">
 
-            <h:outputLabel value="ID de la Reserva:" rendered="#{not empty reservaBean.reservaActual}" />
-            <h:outputText value="#{CargarReserva.idReservaActual}" rendered="#{not empty reservaBean.reservaActual}" />
+            <p:outputLabel value="ID de la Reserva:" rendered="#{not empty reservaBean.reservaActual}" />
+            <h:outputLabel value="#{CargarReserva.idReservaActual}" rendered="#{not empty reservaBean.reservaActual}" />
 
-            <!-- Almacenar el ID de la reserva en un label oculto -->
-            <h:outputLabel id="idReservaLabel" value="#{CargarReserva.idReservaActual}" style="display:none" />
+            <p:outputLabel for="nombreEstudiante" value="Nombre del Estudiante:"/>
+            <p:inputText id="nombreEstudiante" value="#{CargarReserva.reservaActual.nombreEstudiante}" required="true"/>
 
-            <h:outputLabel for="nombreEstudiante" value="Nombre del Estudiante:"/>
-            <h:inputText id="nombreEstudiante" value="#{CargarReserva.reservaActual.nombreEstudiante}" required="true"/>
+            <p:outputLabel for="cif" value="CIF del Estudiante:"/>
+            <p:inputText id="cif" value="#{CargarReserva.reservaActual.cif}" required="true"/>
 
-            <h:outputLabel for="cif" value="CIF del Estudiante:"/>
-            <h:inputText id="cif" value="#{CargarReserva.reservaActual.cif}" required="true"/>
+            <p:outputLabel for="asunto" value="Asunto de la Reserva:"/>
+            <p:inputText id="asunto" value="#{CargarReserva.reservaActual.asuntoReserva}" required="true"/>
 
-            <h:outputLabel for="asunto" value="Asunto de la Reserva:"/>
-            <h:inputText id="asunto" value="#{CargarReserva.reservaActual.asuntoReserva}" required="true"/>
+            <p:outputLabel for="cantidadPersonas" value="Cantidad de Personas:"/>
+            <p:inputText id="cantidadPersonas" value="#{CargarReserva.reservaActual.cantidadPersonas}" required="true"/>
 
-            <h:outputLabel for="cantidadPersonas" value="Cantidad de Personas:"/>
-            <h:inputText id="cantidadPersonas" value="#{CargarReserva.reservaActual.cantidadPersonas}" required="true"/>
-
-            <h:outputLabel for="fechaEntrada" value="Fecha de Entrada:"/>
-            <h:inputText id="fechaEntrada" value="#{CargarReserva.reservaActual.fechaEntrada}" required="true"/>
+            <p:outputLabel for="fechaEntrada" value="Fecha de Entrada:"/>
+            <p:datePicker id="fechaEntrada"
+                          value="#{CargarReserva.reservaActual.fechaEntrada}"
+                          pattern="dd.MM.yyyy HH:mm" showIcon="true" showTime="true"
+                          mindate="#{CargarReserva.reservaActual.fechaEntrada}" stepMinute="30" required="true"/>
 
             <h:outputLabel for="fechaSalida" value="Fecha de Salida:"/>
-            <h:inputText id="fechaSalida" value="#{CargarReserva.reservaActual.fechaSalida}" required="true"/>
+            <p:datePicker id="fechaSalida"
+                          value="#{CargarReserva.reservaActual.fechaSalida}"
+                          pattern="dd.MM.yyyy HH:mm" showIcon="true" showTime="true"
+                          mindate="#{CargarReserva.reservaActual.fechaSalida}" stepMinute="30" required="true"/>
 
             <!-- Agregar campos para extras si es necesario -->
 
             <h:panelGroup>
-                <p:commandButton value="Guardar" action="#{CargarReserva.guardarCambios()}" update="@form" immediate="true"/>
-                <p:commandButton value="Cancelar" action="#{CargarReserva.cancelarEdicion()}" immediate="true"/>
+                <p:commandButton value="Guardar" action="#{CargarReserva.guardarCambios()}" />
+                <p:commandButton value="Cancelar" action="#{CargarReserva.cancelarEdicion()}" />
             </h:panelGroup>
 
         </h:panelGrid>

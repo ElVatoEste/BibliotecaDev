@@ -1,7 +1,5 @@
 package service;
 
-import entity.Reserva;
-
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -12,9 +10,9 @@ public interface ReservaDAO {
 
     <T> List<T> get(String namedQuery, Class<T> clazz, Object... params);
 
-    <T> T Actualizar(T entity);
+    <T> T update(T entity);
 
-    <T> T guardar(T entity);
+    <T> void guardar(T entity);
 
     <T> void insert(T entity);
 
