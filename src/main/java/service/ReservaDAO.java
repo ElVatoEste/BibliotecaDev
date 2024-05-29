@@ -31,4 +31,5 @@ public interface ReservaDAO {
     boolean hayPizarraDisponible(LocalDateTime fechaEntrada, LocalDateTime fechaSalida);
 
     <T> List<T> obtenerReservasMensuales(int mesActual, int anioActual);
+
 }

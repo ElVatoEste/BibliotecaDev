@@ -60,7 +60,7 @@ public class ReporteMensualBean implements Serializable {
                 // Llamar al método en el DAO para eliminar la reserva de la base de datos
                 reservaDAO.eliminar(reserva);
                 // Eliminar la reserva de la lista local de reservas
-                    reservas.remove(reserva);
+                reservas.remove(reserva);
                 // Mostrar un mensaje de éxito o cualquier acción adicional
                 FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Éxito", "La reserva ha sido eliminada.");
                 FacesContext.getCurrentInstance().addMessage(null, message);
