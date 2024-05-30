@@ -4,32 +4,56 @@ import entity.Reserva;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
+import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
+import lombok.Getter;
 import service.ReservaDAO;
 
 import java.io.IOException;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.format.TextStyle;
 import java.util.List;
+import java.util.Locale;
 
 @Named
-@RequestScoped
+@ViewScoped
 public class ReporteMensualBean implements Serializable {
 
     @Inject
     private ReservaDAO reservaDAO;
 
+    @Getter
     private List<Reserva> reservas;
+    private LocalDate fechaActual;
 
-    public List<Reserva> getReservas() {
-        // Obtener reservas del mes actual
-        LocalDate fechaActual = LocalDate.now();
+    public ReporteMensualBean() {
+        // Inicializa con el mes y año actuales
+        this.fechaActual = LocalDate.now();
+    }
+
+    private void actualizarReservas() {
         int mesActual = fechaActual.getMonthValue();
         int anioActual = fechaActual.getYear();
         reservas = reservaDAO.obtenerReservasMensuales(mesActual, anioActual);
-        return reservas;
     }
+
+    public void avanzarMes() {
+        // Avanzar un mes
+        fechaActual = fechaActual.plusMonths(1);
+        actualizarReservas();
+    }
+
+    public void retrocederMes() {
+        // Retroceder un mes
+        fechaActual = fechaActual.minusMonths(1);
+        actualizarReservas();
+    }
+
+        public String getNombreMesActual() {
+            return fechaActual.getMonth().getDisplayName(TextStyle.FULL, new Locale("es")).toUpperCase();
+        }
 
     public void editarReserva(Reserva reserva) {
         // Verificar si la reserva no es nula
@@ -51,6 +75,16 @@ public class ReporteMensualBean implements Serializable {
         }
     }
 
+    public void irAgenda() {
+        try {
+            FacesContext.getCurrentInstance().getExternalContext().redirect("reserva.xhtml");
+        } catch (IOException e) {
+            // Manejar cualquier excepción de redirección
+            e.printStackTrace();
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Ocurrió un error al intentar redirigir la vista de reservas.");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+        }
+    }
 
     public void eliminarReserva(Reserva reserva) {
         // Verificar si la reserva no es nula
@@ -76,5 +110,4 @@ public class ReporteMensualBean implements Serializable {
             FacesContext.getCurrentInstance().addMessage(null, message);
         }
     }
-
 }

@@ -9,9 +9,21 @@
 </h:head>
 
 <h:body>
-    <h1>Reporte Mensual de Reservas</h1>
+    <h:form id="formReporteMensual">
+        <p:toolbar>
+            <p:toolbarGroup>
+                <p:commandButton value="Regresar al calendario" action="#{reporteMensualBean.irAgenda}" icon="pi pi-calendar" styleClass="mr-2" />
+            </p:toolbarGroup>
 
-    <h:form>
+            <p:toolbarGroup align="right">
+                <p:commandButton value="Mes anterior" action="#{reporteMensualBean.retrocederMes}" icon="pi pi-arrow-left" style="margin-right: 10px;" update=":formReporteMensual:dataTableId, :formReporteMensual:mesActual" />
+                <h:outputText value="#{reporteMensualBean.nombreMesActual}" id="mesActual" style="margin-right: 10px;" />
+                <p:commandButton value="Mes siguiente" action="#{reporteMensualBean.avanzarMes}" icon="pi pi-arrow-right" style="margin-right: 10px;" update=":formReporteMensual:dataTableId, :formReporteMensual:mesActual" />
+            </p:toolbarGroup>
+        </p:toolbar>
+
+        <h1>Reporte Mensual de Reservas</h1>
+
         <p:dataTable id="dataTableId" value="#{reporteMensualBean.reservas}" var="reserva" emptyMessage="No hay reservas para este mes">
             <p:column headerText="Nombre del Estudiante">
                 #{reserva.nombreEstudiante}
@@ -47,7 +59,7 @@
             </p:column>
             <p:column headerText="Acciones">
                 <p:commandButton value="Editar" action="#{reporteMensualBean.editarReserva(reserva)}" />
-                <p:commandButton value="Eliminar" action="#{reporteMensualBean.eliminarReserva(reserva)}" update="dataTableId" />
+                <p:commandButton value="Eliminar" action="#{reporteMensualBean.eliminarReserva(reserva)}" update=":formReporteMensual:dataTableId" />
             </p:column>
         </p:dataTable>
     </h:form>

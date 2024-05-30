@@ -4,6 +4,7 @@ import entity.Reserva;
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.faces.application.FacesMessage;
+
 import jakarta.faces.context.FacesContext;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
@@ -16,6 +17,7 @@ import org.primefaces.model.ScheduleEvent;
 import org.primefaces.model.ScheduleModel;
 import service.ReservaDAO;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -192,4 +194,16 @@ public class ReservaBean implements Serializable {
         int b = rand.nextInt(256);
         return String.format("#%02x%02x%02x", r, g, b);
     }
-}
+
+    public void irReporte() {
+        try {
+            FacesContext.getCurrentInstance().getExternalContext().redirect("reporteMensual.xhtml");
+        } catch (IOException e) {
+            // Manejar cualquier excepción de redirección
+            e.printStackTrace();
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Ocurrió un error al intentar redirigir al reporte mensual.");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+        }
+    }
+
+    }

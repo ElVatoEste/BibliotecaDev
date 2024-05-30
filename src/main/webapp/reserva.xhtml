@@ -10,10 +10,19 @@
     <link rel="stylesheet" href="https://unpkg.com/primeflex@latest/primeflex.css"/>
 </h:head>
 
+<h:form>
+    <p:toolbar style="margin-bottom: 20px;" >
+        <p:toolbarGroup align="right">
+            <p:commandButton value="Generar Reporte" action="#{reservaBean.irReporte}" icon="pi pi-book" styleClass="mr-2" />
+        </p:toolbarGroup>
+    </p:toolbar>
+</h:form>
+
 <h:body>
     <div class="card">
+
         <h:form>
-            <p:growl id="messages" showDetail="true"/>
+            <p:growl id="messages" showDetail="true" autoUpdate="true"/>
 
             <p:schedule id="schedule" value="#{reservaBean.eventModel}" widgetVar="myschedule"
                         timeZone="#{reservaBean.serverTimeZone}" clientTimeZone="#{reservaBean.serverTimeZone}"
@@ -73,10 +82,9 @@
 
                 <div class="flex justify-content-between mt-3">
                     <p:commandButton id="addButton" value="Guardar" action="#{reservaBean.guardarReserva}"
-                                     update="@form"
+                                     update="@form, messages"
                                      oncomplete="PF('myschedule').update();PF('eventDialog').hide();"/>
                 </div>
-
 
             </p:dialog>
 
