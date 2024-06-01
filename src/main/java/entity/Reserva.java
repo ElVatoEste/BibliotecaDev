@@ -24,24 +24,27 @@
                 @Column(name = "id_reserva", nullable = false)
                 private Long IdReserva; // Clave primaria
 
-                @Column(name = "Nombre", length = 50 ,nullable = false)
+                @Column(name = "Nombre", length = 50)
                 private String nombreEstudiante;
 
-                @Column(name = "cif", nullable = false)
+                @Column(name = "cif")
                 private Long cif;
 
-                @Column(name = "asunto_reserva", length = 75, nullable = false)
+                @Column(name = "correo")
+                private String correo;
+
+                @Column(name = "asunto_reserva", length = 75)
                 private String asuntoReserva;
 
-                @Column(name = "cantidad_personas", nullable = false)
+                @Column(name = "cantidad_personas")
                 private int cantidadPersonas;
 
                 @Temporal(TemporalType.TIMESTAMP)
-                @Column(name = "fecha_entrada", nullable = false)
+                @Column(name = "fecha_entrada")
                 private LocalDateTime fechaEntrada;
 
                 @Temporal(TemporalType.TIMESTAMP)
-                @Column(name = "fecha_salida", nullable = false)
+                @Column(name = "fecha_salida")
                 private LocalDateTime fechaSalida;
 
                 @Column(name = "utiliza_pizarra", nullable = false)
@@ -52,6 +55,9 @@
 
                 @Column(name = "utiliza_computadora", nullable = false)
                 private boolean utilizaComputadora;
+
+                @Column(name = "asistencia")
+                private boolean asistencia;
 
                 public Boolean getUtilizaPizarra() {
                     return utilizaPizarra;

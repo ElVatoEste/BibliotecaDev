@@ -1,6 +1,7 @@
 package beans;
 
 import entity.Reserva;
+import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
@@ -33,6 +34,7 @@ public class ReporteMensualBean implements Serializable {
         this.fechaActual = LocalDate.now();
     }
 
+    @PostConstruct
     private void actualizarReservas() {
         int mesActual = fechaActual.getMonthValue();
         int anioActual = fechaActual.getYear();

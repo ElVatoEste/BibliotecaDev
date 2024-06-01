@@ -22,31 +22,34 @@
             </p:toolbarGroup>
         </p:toolbar>
 
-        <h1>Reporte Mensual de Reservas</h1>
+        <h1 style="text-align: center;">Reporte Mensual de Reservas</h1>
 
         <p:dataTable id="dataTableId" value="#{reporteMensualBean.reservas}" var="reserva" emptyMessage="No hay reservas para este mes">
-            <p:column headerText="Nombre del Estudiante">
+            <p:column headerText="Nombre del Estudiante" style="text-align: center;">
                 #{reserva.nombreEstudiante}
             </p:column>
-            <p:column headerText="CIF">
+            <p:column headerText="CIF" style="text-align: center;">
                 #{reserva.cif}
             </p:column>
-            <p:column headerText="Asunto">
+            <p:column headerText="Correo" style="text-align: center; width: 250px;">
+                #{reserva.correo}
+            </p:column>
+            <p:column headerText="Asunto" style="text-align: center;">
                 #{reserva.asuntoReserva}
             </p:column>
-            <p:column headerText="Cantidad de Personas">
+            <p:column headerText="Cantidad de Personas" style="text-align: center;">
                 #{reserva.cantidadPersonas}
             </p:column>
-            <p:column headerText="Día de la Reserva">
+            <p:column headerText="Día de la Reserva" style="text-align: center;">
                 #{reserva.fechaEntrada.toLocalDate()}
             </p:column>
-            <p:column headerText="Hora de Entrada">
+            <p:column headerText="Hora de Entrada" style="text-align: center;">
                 #{reserva.fechaEntrada.toLocalTime()}
             </p:column>
-            <p:column headerText="Hora de Salida">
+            <p:column headerText="Hora de Salida" style="text-align: center;">
                 #{reserva.fechaSalida.toLocalTime()}
             </p:column>
-            <p:column headerText="Extras">
+            <p:column headerText="Extras" style="text-align: center;">
                 <h:panelGroup rendered="#{reserva.utilizaPizarra}">
                     Pizarra
                 </h:panelGroup>
@@ -57,10 +60,19 @@
                     Computadora
                 </h:panelGroup>
             </p:column>
-            <p:column headerText="Acciones">
+            <p:column headerText="Acciones" style="text-align: center;">
                 <p:commandButton value="Editar" action="#{reporteMensualBean.editarReserva(reserva)}" />
-                <p:commandButton value="Eliminar" action="#{reporteMensualBean.eliminarReserva(reserva)}" update=":formReporteMensual:dataTableId" />
+                <p:commandButton value="Eliminar" action="#{reporteMensualBean.eliminarReserva(reserva)}" update=":formReporteMensual:dataTableId">
+                        <p:confirm header="Alerta" message="Esta seguro que desea eliminar la reserva?"  icon="pi pi-exclamation-triangle"/>
+                </p:commandButton>
+
+
+                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true" width="350">
+                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no ui-button-flat"/>
+                    <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" />
+                </p:confirmDialog>
             </p:column>
+
         </p:dataTable>
     </h:form>
 </h:body>

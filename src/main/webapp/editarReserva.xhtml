@@ -19,16 +19,19 @@
             <h:outputLabel value="#{CargarReserva.idReservaActual}" rendered="#{not empty reservaBean.reservaActual}" />
 
             <p:outputLabel for="nombreEstudiante" value="Nombre del Estudiante:"/>
-            <p:inputText id="nombreEstudiante" value="#{CargarReserva.reservaActual.nombreEstudiante}" required="true"/>
+            <p:inputText id="nombreEstudiante" value="#{CargarReserva.reservaActual.nombreEstudiante}"/>
 
             <p:outputLabel for="cif" value="CIF del Estudiante:"/>
-            <p:inputText id="cif" value="#{CargarReserva.reservaActual.cif}" required="true"/>
+            <p:inputText id="cif" value="#{CargarReserva.reservaActual.cif}"/>
+
+            <p:outputLabel for="correo" value="Correo del estudiante:"/>
+            <p:inputText id="correo" value="#{CargarReserva.reservaActual.correo}"/>
 
             <p:outputLabel for="asunto" value="Asunto de la Reserva:"/>
-            <p:inputText id="asunto" value="#{CargarReserva.reservaActual.asuntoReserva}" required="true"/>
+            <p:inputText id="asunto" value="#{CargarReserva.reservaActual.asuntoReserva}"/>
 
             <p:outputLabel for="cantidadPersonas" value="Cantidad de Personas:"/>
-            <p:inputText id="cantidadPersonas" value="#{CargarReserva.reservaActual.cantidadPersonas}" required="true"/>
+            <p:inputText id="cantidadPersonas" value="#{CargarReserva.reservaActual.cantidadPersonas}"/>
 
             <p:outputLabel for="fechaEntrada" value="Fecha de Entrada:"/>
             <p:datePicker id="fechaEntrada"
@@ -42,7 +45,15 @@
                           pattern="dd.MM.yyyy HH:mm" showIcon="true" showTime="true"
                           mindate="#{CargarReserva.reservaActual.fechaSalida}" stepMinute="30" required="true"/>
 
-            <!-- Agregar campos para extras si es necesario -->
+            <p:outputLabel for="computadora" value="Computadora:"/>
+            <p:selectBooleanCheckbox id="computadora" value="#{CargarReserva.reservaActual.utilizaComputadora}"/>
+
+            <p:outputLabel for="pizarra" value="Pizarra:"/>
+            <p:selectBooleanCheckbox id="pizarra" value="#{CargarReserva.reservaActual.utilizaPizarra}"/>
+
+            <p:outputLabel for="proyector" value="Proyector:"/>
+            <p:selectBooleanCheckbox id="proyector" value="#{CargarReserva.reservaActual.utilizaProyector}"/>
+
 
             <h:panelGroup>
                 <p:commandButton value="Guardar" action="#{CargarReserva.guardarCambios()}" />

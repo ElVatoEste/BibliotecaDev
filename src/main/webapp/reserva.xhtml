@@ -34,22 +34,25 @@
                         oncomplete="PF('eventDialog').show();"/>
             </p:schedule>
 
-            <p:dialog widgetVar="eventDialog" header="Detalles del Evento" showEffect="fade" hideEffect="fade" modal="true" resizable="false" draggable="false">
+            <p:dialog widgetVar="eventDialog" header="Detalles del Evento" showEffect="fade" hideEffect="fade" modal="true" resizable="false" draggable="true">
                 <h:panelGrid id="eventDetails" columns="2" cellpadding="7" columnClasses="label, input">
 
                     <h:outputLabel for="nombreEstudiante" value="Nombre del Estudiante:"/>
-                    <h:inputText id="nombreEstudiante" value="#{reservaBean.reservaActual.nombreEstudiante}" required="true"/>
+                    <h:inputText id="nombreEstudiante" value="#{reservaBean.reservaActual.nombreEstudiante}"/>
 
                     <h:outputLabel for="cif" value="Cif del Estudiante:"/>
-                    <h:inputText id="cif" value="#{reservaBean.reservaActual.cif}" required="true"/>
+                    <h:inputText id="cif" value="#{reservaBean.reservaActual.cif}"/>
+
+                    <h:outputLabel for="correo" value="Correo del Estudiante:"/>
+                    <h:inputText id="correo" value="#{reservaBean.reservaActual.correo}"/>
 
                     <h:outputLabel for="asunto" value="Asunto de la Reserva:"/>
-                    <h:inputText id="asunto" value="#{reservaBean.reservaActual.asuntoReserva}" required="true"/>
+                    <h:inputText id="asunto" value="#{reservaBean.reservaActual.asuntoReserva}"/>
 
                     <h:outputLabel for="cantidadPersonas" value="Cantidad de Personas:"/>
                     <p:inputNumber id="cantidadPersonas"
                                    value="#{reservaBean.reservaActual.cantidadPersonas}"
-                                   minValue="1" maxValue="15" required="true" />
+                                   minValue="1" maxValue="15"/>
 
                     <h:outputLabel for="fechaEntrada" value="Fecha de Entrada:"/>
                     <p:datePicker id="fechaEntrada"
