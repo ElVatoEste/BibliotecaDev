@@ -54,6 +54,11 @@
             <p:outputLabel for="proyector" value="Proyector:"/>
             <p:selectBooleanCheckbox id="proyector" value="#{CargarReserva.reservaActual.utilizaProyector}"/>
 
+            <p:outputLabel for="asistencia" value="Asistió"/>
+            <p:selectOneRadio id="asistencia" value="#{CargarReserva.reservaActual.asistencia}">
+                <f:selectItem itemValue="true" itemLabel="Sí"/>
+                <f:selectItem itemValue="false" itemLabel="No"/>
+            </p:selectOneRadio>
 
             <h:panelGroup>
                 <p:commandButton value="Guardar" action="#{CargarReserva.guardarCambios()}" />

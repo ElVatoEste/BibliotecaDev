@@ -6,10 +6,13 @@
 
 <h:head>
     <title>Reporte Mensual de Reservas</title>
+
+    <link rel="stylesheet" type="text/css" href="resources/css/colores.css"/>
 </h:head>
 
 <h:body>
     <h:form id="formReporteMensual">
+
         <p:toolbar>
             <p:toolbarGroup>
                 <p:commandButton value="Regresar al calendario" action="#{reporteMensualBean.irAgenda}" icon="pi pi-calendar" styleClass="mr-2" />
@@ -23,6 +26,8 @@
         </p:toolbar>
 
         <h1 style="text-align: center;">Reporte Mensual de Reservas</h1>
+
+
 
         <p:dataTable id="dataTableId" value="#{reporteMensualBean.reservas}" var="reserva" emptyMessage="No hay reservas para este mes">
             <p:column headerText="Nombre del Estudiante" style="text-align: center;">
@@ -60,17 +65,28 @@
                     Computadora
                 </h:panelGroup>
             </p:column>
+
+            <p:column headerText="Asistió" style="text-align: center;">
+                <p:outputLabel value="Sí" rendered="#{reserva.asistencia != null and reserva.asistencia}" styleClass="asistencia-si" />
+                <p:outputLabel value="No" rendered="#{reserva.asistencia != null and not reserva.asistencia}" styleClass="asistencia-no" />
+            </p:column>
+
             <p:column headerText="Acciones" style="text-align: center;">
-                <p:commandButton value="Editar" action="#{reporteMensualBean.editarReserva(reserva)}" />
-                <p:commandButton value="Eliminar" action="#{reporteMensualBean.eliminarReserva(reserva)}" update=":formReporteMensual:dataTableId">
-                        <p:confirm header="Alerta" message="Esta seguro que desea eliminar la reserva?"  icon="pi pi-exclamation-triangle"/>
-                </p:commandButton>
+                        <p:commandButton value="Editar" action="#{reporteMensualBean.editarReserva(reserva)}"/>
 
+                        <p:commandButton value="Eliminar" action="#{reporteMensualBean.eliminarReserva(reserva)}" update=":formReporteMensual:dataTableId">
+                            <p:confirm header="Alerta" message="¿Está seguro que desea eliminar la reserva?"  icon="pi pi-exclamation-triangle"/>
+                        </p:commandButton>
 
-                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true" width="350">
+                        <p:commandButton value="Inasistencia" action="#{reporteMensualBean.marcarAsistencia(reserva, false)}" update=":formReporteMensual:dataTableId">
+                            <p:confirm header="Alerta" message="¿El estudiante faltó?" icon="pi pi-info-circle"/>
+                        </p:commandButton>
+
+                <p:confirmDialog  global="true" showEffect="fade" hideEffect="fade" responsive="true" width="350">
                     <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no ui-button-flat"/>
                     <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" />
                 </p:confirmDialog>
+
             </p:column>
 
         </p:dataTable>

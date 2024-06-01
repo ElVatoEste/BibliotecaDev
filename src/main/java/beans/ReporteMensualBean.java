@@ -112,4 +112,17 @@ public class ReporteMensualBean implements Serializable {
             FacesContext.getCurrentInstance().addMessage(null, message);
         }
     }
+    public void marcarAsistencia(Reserva reserva, boolean asistio) {
+        reserva.setAsistencia(asistio);
+        reservaDAO.update(reserva);
+        if (asistio) {
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Asistencia Marcada", "El estudiante asistió a la reserva.");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+        } else {
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Asistencia Marcada", "El estudiante no asistió a la reserva.");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+            }
+    }
+
+
 }
