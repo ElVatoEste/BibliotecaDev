@@ -1,6 +1,6 @@
 package beans;
 
-import entity.Reserva;
+import entity.*;
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.faces.application.FacesMessage;
@@ -122,8 +122,6 @@ public class ReservaBean implements Serializable {
     }
 
 
-
-
     public void onDateSelect(SelectEvent<LocalDateTime> selectEvent) {
         LocalDateTime selectedDate = selectEvent.getObject();
         LocalDateTime endDate = selectedDate.plusMinutes(30); // Añadir 30 minutos al inicio para obtener el final
@@ -180,7 +178,7 @@ public class ReservaBean implements Serializable {
             return null;
         }
 
-        reservaActual.setAsistencia(true);
+        reservaActual.setAsistencia(Reserva.AsistenciaEstado.PENDIENTE);
 
         reservaDAO.guardar(reservaActual);
 

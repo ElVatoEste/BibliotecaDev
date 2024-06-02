@@ -18,6 +18,13 @@
                 <p:commandButton value="Regresar al calendario" action="#{reporteMensualBean.irAgenda}" icon="pi pi-calendar" styleClass="mr-2" />
             </p:toolbarGroup>
 
+            <p:toolbarGroup align="center">
+                <p:commandButton value="Generar Excel" styleClass="mr-2 mb-2" icon="pi pi-file-excel">
+                    <p:dataExporter type="xlsx" target="dataTableId" fileName="ReporteMensual" pageOnly="true"/>
+                </p:commandButton>
+            </p:toolbarGroup>
+
+
             <p:toolbarGroup align="right">
                 <p:commandButton value="Mes anterior" action="#{reporteMensualBean.retrocederMes}" icon="pi pi-arrow-left" style="margin-right: 10px;" update=":formReporteMensual:dataTableId, :formReporteMensual:mesActual" />
                 <h:outputText value="#{reporteMensualBean.nombreMesActual}" id="mesActual" style="margin-right: 10px;" />
@@ -67,20 +74,28 @@
             </p:column>
 
             <p:column headerText="Asistió" style="text-align: center;">
-                <p:outputLabel value="Sí" rendered="#{reserva.asistencia != null and reserva.asistencia}" styleClass="asistencia-si" />
-                <p:outputLabel value="No" rendered="#{reserva.asistencia != null and not reserva.asistencia}" styleClass="asistencia-no" />
+                <p:outputLabel value="Sí" rendered="#{reserva.asistencia == 'ASISTENCIA'}" styleClass="asistencia-si" />
+                <p:outputLabel value="Pendiente" rendered="#{reserva.asistencia == 'PENDIENTE'}" styleClass="asistencia-pendiente" />
+                <p:outputLabel value="No" rendered="#{reserva.asistencia == 'INASISTENCIA'}" styleClass="asistencia-no" />
             </p:column>
 
-            <p:column headerText="Acciones" style="text-align: center;">
+            <p:column headerText="Acciones" style="text-align: center;" exportable="false">
                         <p:commandButton value="Editar" action="#{reporteMensualBean.editarReserva(reserva)}"/>
 
                         <p:commandButton value="Eliminar" action="#{reporteMensualBean.eliminarReserva(reserva)}" update=":formReporteMensual:dataTableId">
                             <p:confirm header="Alerta" message="¿Está seguro que desea eliminar la reserva?"  icon="pi pi-exclamation-triangle"/>
                         </p:commandButton>
 
-                        <p:commandButton value="Inasistencia" action="#{reporteMensualBean.marcarAsistencia(reserva, false)}" update=":formReporteMensual:dataTableId">
-                            <p:confirm header="Alerta" message="¿El estudiante faltó?" icon="pi pi-info-circle"/>
+                        <p:commandButton value="Asistencia" onclick="PF('dlgAsistencia').show();">
+                            <f:setPropertyActionListener value="#{reserva}" target="#{reporteMensualBean.selectedReserva}"/>
                         </p:commandButton>
+
+                <p:confirmDialog id="dlgAsistencia" message="¿El estudiante asistió?" severity="info" widgetVar="dlgAsistencia" width="350">
+                    <p:commandButton value="No" action="#{reporteMensualBean.marcarAsistencia(reserva, false)}"
+                                     styleClass="ui-confirmdialog-no ui-button-flat" update=":formReporteMensual:dataTableId" oncomplete="PF('dlgAsistencia').hide();"/>
+                    <p:commandButton value="Sí" action="#{reporteMensualBean.marcarAsistencia(reserva, true)}"
+                                     styleClass="ui-confirmdialog-yes" update=":formReporteMensual:dataTableId" oncomplete="PF('dlgAsistencia').hide();"/>
+                </p:confirmDialog>
 
                 <p:confirmDialog  global="true" showEffect="fade" hideEffect="fade" responsive="true" width="350">
                     <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no ui-button-flat"/>

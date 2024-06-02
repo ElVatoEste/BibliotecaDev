@@ -5,3 +5,7 @@
 .asistencia-no {
     color: red;
 }
+
+.asistencia-pendiente{
+    color: yellow;
+}

@@ -2,6 +2,7 @@ package beans;
 
 import entity.Reserva;
 import jakarta.annotation.PostConstruct;
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
@@ -9,6 +10,7 @@ import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import lombok.Getter;
+import lombok.Setter;
 import service.ReservaDAO;
 
 import java.io.IOException;
@@ -18,6 +20,7 @@ import java.time.format.TextStyle;
 import java.util.List;
 import java.util.Locale;
 
+
 @Named
 @ViewScoped
 public class ReporteMensualBean implements Serializable {
@@ -26,6 +29,7 @@ public class ReporteMensualBean implements Serializable {
     private ReservaDAO reservaDAO;
 
     @Getter
+    @Setter
     private List<Reserva> reservas;
     private LocalDate fechaActual;
 
@@ -113,15 +117,17 @@ public class ReporteMensualBean implements Serializable {
         }
     }
     public void marcarAsistencia(Reserva reserva, boolean asistio) {
-        reserva.setAsistencia(asistio);
-        reservaDAO.update(reserva);
         if (asistio) {
+            reserva.setAsistencia(Reserva.AsistenciaEstado.ASISTENCIA);
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Asistencia Marcada", "El estudiante asistió a la reserva.");
             FacesContext.getCurrentInstance().addMessage(null, message);
         } else {
+            reserva.setAsistencia(Reserva.AsistenciaEstado.INASISTENCIA);
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Asistencia Marcada", "El estudiante no asistió a la reserva.");
             FacesContext.getCurrentInstance().addMessage(null, message);
-            }
+        }
+        reservaDAO.update(reserva);
+        actualizarReservas(); // Actualizar la lista de reservas después de marcar la asistencia
     }
 
 

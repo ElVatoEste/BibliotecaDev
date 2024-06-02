@@ -16,7 +16,7 @@
         <h:panelGrid columns="2">
 
             <p:outputLabel value="ID de la Reserva:" rendered="#{not empty reservaBean.reservaActual}" />
-            <h:outputLabel value="#{CargarReserva.idReservaActual}" rendered="#{not empty reservaBean.reservaActual}" />
+            <p:outputLabel value="#{CargarReserva.idReservaActual}" rendered="#{not empty reservaBean.reservaActual}" />
 
             <p:outputLabel for="nombreEstudiante" value="Nombre del Estudiante:"/>
             <p:inputText id="nombreEstudiante" value="#{CargarReserva.reservaActual.nombreEstudiante}"/>
@@ -31,19 +31,19 @@
             <p:inputText id="asunto" value="#{CargarReserva.reservaActual.asuntoReserva}"/>
 
             <p:outputLabel for="cantidadPersonas" value="Cantidad de Personas:"/>
-            <p:inputText id="cantidadPersonas" value="#{CargarReserva.reservaActual.cantidadPersonas}"/>
+            <p:inputNumber id="cantidadPersonas"
+                           value="#{CargarReserva.reservaActual.cantidadPersonas}"
+                           minValue="1" maxValue="15"/>
 
             <p:outputLabel for="fechaEntrada" value="Fecha de Entrada:"/>
             <p:datePicker id="fechaEntrada"
                           value="#{CargarReserva.reservaActual.fechaEntrada}"
-                          pattern="dd.MM.yyyy HH:mm" showIcon="true" showTime="true"
-                          mindate="#{CargarReserva.reservaActual.fechaEntrada}" stepMinute="30" required="true"/>
+                          pattern="dd.MM.yyyy HH:mm" showIcon="true" showTime="true" stepMinute="30" required="true"/>
 
             <p:outputLabel for="fechaSalida" value="Fecha de Salida:"/>
             <p:datePicker id="fechaSalida"
                           value="#{CargarReserva.reservaActual.fechaSalida}"
-                          pattern="dd.MM.yyyy HH:mm" showIcon="true" showTime="true"
-                          mindate="#{CargarReserva.reservaActual.fechaSalida}" stepMinute="30" required="true"/>
+                          pattern="dd.MM.yyyy HH:mm" showIcon="true" showTime="true" stepMinute="30" required="true"/>
 
             <p:outputLabel for="computadora" value="Computadora:"/>
             <p:selectBooleanCheckbox id="computadora" value="#{CargarReserva.reservaActual.utilizaComputadora}"/>
@@ -54,10 +54,11 @@
             <p:outputLabel for="proyector" value="Proyector:"/>
             <p:selectBooleanCheckbox id="proyector" value="#{CargarReserva.reservaActual.utilizaProyector}"/>
 
-            <p:outputLabel for="asistencia" value="Asistió"/>
+            <p:outputLabel for="asistencia" value="Estado asistencia"/>
             <p:selectOneRadio id="asistencia" value="#{CargarReserva.reservaActual.asistencia}">
-                <f:selectItem itemValue="true" itemLabel="Sí"/>
-                <f:selectItem itemValue="false" itemLabel="No"/>
+                <f:selectItem itemValue="PENDIENTE" itemLabel="Pendiente"/>
+                <f:selectItem itemValue="ASISTENCIA" itemLabel="Si"/>
+                <f:selectItem itemValue="INASISTENCIA" itemLabel="No"/>
             </p:selectOneRadio>
 
             <h:panelGroup>

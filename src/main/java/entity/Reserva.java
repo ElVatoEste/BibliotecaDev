@@ -56,8 +56,9 @@
                 @Column(name = "utiliza_computadora", nullable = false)
                 private boolean utilizaComputadora;
 
-                @Column(name = "asistencia")
-                private boolean asistencia;
+                @Enumerated(EnumType.STRING)
+                @Column(name = "asistencia", nullable = false)
+                private AsistenciaEstado asistencia;
 
                 public Boolean getUtilizaPizarra() {
                     return utilizaPizarra;
@@ -80,6 +81,12 @@
 
                 public void setUtilizaComputadora(Boolean utilizaComputadora) {
                     this.utilizaComputadora = utilizaComputadora;
+                }
+
+                public enum AsistenciaEstado {
+                    PENDIENTE,
+                    ASISTENCIA,
+                    INASISTENCIA
                 }
 
 
