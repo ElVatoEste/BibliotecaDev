@@ -37,30 +37,39 @@
 
 
         <p:dataTable id="dataTableId" value="#{reporteMensualBean.reservas}" var="reserva" emptyMessage="No hay reservas para este mes">
+
             <p:column headerText="Nombre del Estudiante" style="text-align: center;">
                 #{reserva.nombreEstudiante}
             </p:column>
+
             <p:column headerText="CIF" style="text-align: center;">
                 #{reserva.cif}
             </p:column>
+
             <p:column headerText="Correo" style="text-align: center; width: 250px;">
                 #{reserva.correo}
             </p:column>
+
             <p:column headerText="Asunto" style="text-align: center;">
                 #{reserva.asuntoReserva}
             </p:column>
+
             <p:column headerText="Cantidad de Personas" style="text-align: center;">
                 #{reserva.cantidadPersonas}
             </p:column>
+
             <p:column headerText="Día de la Reserva" style="text-align: center;">
                 #{reserva.fechaEntrada.toLocalDate()}
             </p:column>
+
             <p:column headerText="Hora de Entrada" style="text-align: center;">
                 #{reserva.fechaEntrada.toLocalTime()}
             </p:column>
-            <p:column headerText="Hora de Salida" style="text-align: center;">
-                #{reserva.fechaSalida.toLocalTime()}
+
+            <p:column headerText="Hora de Salida" style="text-align: center;" >
+            #{reserva.fechaSalida.toLocalTime()}
             </p:column>
+
             <p:column headerText="Extras" style="text-align: center;">
                 <h:panelGroup rendered="#{reserva.utilizaPizarra}">
                     Pizarra
