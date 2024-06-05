@@ -20,7 +20,7 @@
 
             <p:toolbarGroup align="center">
                 <p:commandButton value="Generar Excel" styleClass="mr-2 mb-2" icon="pi pi-file-excel">
-                    <p:dataExporter type="xlsx" target="dataTableId" fileName="ReporteMensual" pageOnly="true"/>
+                    <p:dataExporter type="xlsx" target="dataTableId" fileName="ReporteMensual" visibleOnly="true" pageOnly="true"/>
                 </p:commandButton>
             </p:toolbarGroup>
 
@@ -39,35 +39,35 @@
         <p:dataTable id="dataTableId" value="#{reporteMensualBean.reservas}" var="reserva" emptyMessage="No hay reservas para este mes">
 
             <p:column headerText="Nombre del Estudiante" style="text-align: center;">
-                #{reserva.nombreEstudiante}
+                <h:outputText value="#{reserva.nombreEstudiante}"/>
             </p:column>
 
             <p:column headerText="CIF" style="text-align: center;">
-                #{reserva.cif}
+                <h:outputText value="#{reserva.cif}"/>
             </p:column>
 
             <p:column headerText="Correo" style="text-align: center; width: 250px;">
-                #{reserva.correo}
+                <h:outputText value="#{reserva.correo}"/>
             </p:column>
 
             <p:column headerText="Asunto" style="text-align: center;">
-                #{reserva.asuntoReserva}
+                <h:outputText value="#{reserva.asuntoReserva}"/>
             </p:column>
 
             <p:column headerText="Cantidad de Personas" style="text-align: center;">
-                #{reserva.cantidadPersonas}
+                <h:outputText value="#{reserva.cantidadPersonas}"/>
             </p:column>
 
             <p:column headerText="Día de la Reserva" style="text-align: center;">
-                #{reserva.fechaEntrada.toLocalDate()}
+                <h:outputText value="#{reserva.fechaEntrada.toLocalDate()}"/>
             </p:column>
 
             <p:column headerText="Hora de Entrada" style="text-align: center;">
-                #{reserva.fechaEntrada.toLocalTime()}
+                <h:outputText value="#{reserva.fechaEntrada.toLocalTime()}"/>
             </p:column>
 
             <p:column headerText="Hora de Salida" style="text-align: center;" >
-            #{reserva.fechaSalida.toLocalTime()}
+                <h:outputText value="#{reserva.fechaSalida.toLocalTime()}"/>
             </p:column>
 
             <p:column headerText="Extras" style="text-align: center;">
