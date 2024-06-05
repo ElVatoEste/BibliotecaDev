@@ -11,6 +11,7 @@ import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import lombok.Getter;
 import lombok.Setter;
+import service.EnvioCorreoDAO;
 import service.ReservaDAO;
 
 import java.io.IOException;
@@ -27,6 +28,9 @@ public class ReporteMensualBean implements Serializable {
 
     @Inject
     private ReservaDAO reservaDAO;
+
+    @Inject
+    private EnvioCorreoDAO EnvioDAO;
 
     @Getter
     @Setter
@@ -101,6 +105,7 @@ public class ReporteMensualBean implements Serializable {
                 reservaDAO.eliminar(reserva);
                 // Eliminar la reserva de la lista local de reservas
                 reservas.remove(reserva);
+
                 // Mostrar un mensaje de éxito o cualquier acción adicional
                 FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Éxito", "La reserva ha sido eliminada.");
                 FacesContext.getCurrentInstance().addMessage(null, message);
@@ -122,6 +127,7 @@ public class ReporteMensualBean implements Serializable {
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Asistencia Marcada", "El estudiante asistió a la reserva.");
             FacesContext.getCurrentInstance().addMessage(null, message);
         } else {
+            EnvioDAO.enviarCorreoCancelacion(reserva.getCorreo());
             reserva.setAsistencia(Reserva.AsistenciaEstado.INASISTENCIA);
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Asistencia Marcada", "El estudiante no asistió a la reserva.");
             FacesContext.getCurrentInstance().addMessage(null, message);

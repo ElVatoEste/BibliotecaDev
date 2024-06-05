@@ -8,9 +8,6 @@ import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
-import jakarta.mail.*;
-import jakarta.mail.internet.InternetAddress;
-import jakarta.mail.internet.MimeMessage;
 import lombok.Getter;
 import lombok.Setter;
 import org.primefaces.event.SelectEvent;
@@ -18,6 +15,7 @@ import org.primefaces.model.DefaultScheduleEvent;
 import org.primefaces.model.DefaultScheduleModel;
 import org.primefaces.model.ScheduleEvent;
 import org.primefaces.model.ScheduleModel;
+import service.EnvioCorreoDAO;
 import service.ReservaDAO;
 
 import java.io.IOException;
@@ -26,7 +24,6 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
-import java.util.Properties;
 import java.util.Random;
 
 
@@ -41,6 +38,10 @@ public class ReservaBean implements Serializable {
 
     @Inject
     private ReservaDAO reservaDAO;
+
+    @Inject
+    private EnvioCorreoDAO EnvioDAO;
+
 
     private Reserva reservaActual = new Reserva();
     private List<Reserva> reservas;
@@ -181,6 +182,7 @@ public class ReservaBean implements Serializable {
         reservaActual.setAsistencia(Reserva.AsistenciaEstado.PENDIENTE);
 
         reservaDAO.guardar(reservaActual);
+        EnvioDAO.enviarCorreoExitoso(reservaActual.getCorreo());
 
         reservaActual = new Reserva();
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Reserva guardada con éxito", null);

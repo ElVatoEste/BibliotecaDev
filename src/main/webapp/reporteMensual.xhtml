@@ -36,7 +36,7 @@
 
 
 
-        <p:dataTable id="dataTableId" value="#{reporteMensualBean.reservas}" var="reserva" emptyMessage="No hay reservas para este mes">
+        <p:dataTable id="dataTableId" value="#{reporteMensualBean.reservas}" styleClass="mt-2" var="reserva" emptyMessage="No hay reservas para este mes">
 
             <p:column headerText="Nombre del Estudiante" style="text-align: center;">
                 <h:outputText value="#{reserva.nombreEstudiante}"/>
