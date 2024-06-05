@@ -72,7 +72,7 @@
 
             <p:column headerText="Extras" style="text-align: center;">
                 <h:panelGroup rendered="#{reserva.utilizaPizarra}">
-                    Pizarra
+                    Pizarra <!--- Revision de datos -->
                 </h:panelGroup>
                 <h:panelGroup rendered="#{reserva.utilizaProyector}">
                     Proyector
@@ -95,9 +95,7 @@
                             <p:confirm header="Alerta" message="¿Está seguro que desea eliminar la reserva?"  icon="pi pi-exclamation-triangle"/>
                         </p:commandButton>
 
-                        <p:commandButton value="Asistencia" onclick="PF('dlgAsistencia').show();">
-                            <f:setPropertyActionListener value="#{reserva}" target="#{reporteMensualBean.selectedReserva}"/>
-                        </p:commandButton>
+                        <p:commandButton value="Asistencia" onclick="PF('dlgAsistencia').show();"/>
 
                 <p:confirmDialog id="dlgAsistencia" message="¿El estudiante asistió?" severity="info" widgetVar="dlgAsistencia" width="350">
                     <p:commandButton value="No" action="#{reporteMensualBean.marcarAsistencia(reserva, false)}"
