@@ -8,16 +8,16 @@ import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
-@Table(name = "reservas")
+@Table(name = "archivados")
 @Getter
 @Setter
 @NamedQueries({
         @NamedQuery(
-                name = "Reserva.findAll",
-                query = "SELECT r FROM Reserva r"
+                name = "Archivado.findAll",
+                query = "SELECT r FROM Archivado r"
         )
 })
-public class Reserva implements Serializable {
+public class Archivado implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -89,4 +89,8 @@ public class Reserva implements Serializable {
         INASISTENCIA
     }
 
+
+
+
 }
+

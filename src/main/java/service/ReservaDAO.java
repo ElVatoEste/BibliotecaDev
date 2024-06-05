@@ -1,5 +1,7 @@
 package service;
 
+import entity.Archivado;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -31,5 +33,8 @@ public interface ReservaDAO {
     boolean hayPizarraDisponible(LocalDateTime fechaEntrada, LocalDateTime fechaSalida);
 
     <T> List<T> obtenerReservasMensuales(int mesActual, int anioActual);
+
+    public void archivarReserva(Long idReserva, Archivado.AsistenciaEstado estadoAsistencia);
+
 
 }

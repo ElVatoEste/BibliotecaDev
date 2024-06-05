@@ -218,6 +218,4 @@ public class ReservaBean implements Serializable {
         }
     }
 
-
-
-    }
+}

@@ -1,8 +1,10 @@
     package service;
 
+    import entity.Archivado;
     import entity.Reserva;
     import jakarta.inject.Named;
     import jakarta.persistence.EntityManager;
+    import jakarta.persistence.EntityNotFoundException;
     import jakarta.persistence.TypedQuery;
 
     import java.io.Serializable;
@@ -144,6 +146,48 @@
                 return 0;
             }
         }
+
+        @Override
+        public void archivarReserva(Long idReserva, Archivado.AsistenciaEstado estadoAsistencia) {
+            EntityManager em = EntityManagerAdmin.getInstance();
+            try {
+                em.getTransaction().begin();
+
+                // Buscar la reserva por ID
+                Reserva reserva = em.find(Reserva.class, idReserva);
+                if (reserva == null) {
+                    throw new EntityNotFoundException("Reserva no encontrada con el ID: " + idReserva);
+                }
+
+                // Crear una instancia de Archivado y copiar los datos
+                Archivado archivado = new Archivado();
+                archivado.setNombreEstudiante(reserva.getNombreEstudiante());
+                archivado.setCif(reserva.getCif());
+                archivado.setCorreo(reserva.getCorreo());
+                archivado.setAsuntoReserva(reserva.getAsuntoReserva());
+                archivado.setCantidadPersonas(reserva.getCantidadPersonas());
+                archivado.setFechaEntrada(reserva.getFechaEntrada());
+                archivado.setFechaSalida(reserva.getFechaSalida());
+                archivado.setUtilizaPizarra(reserva.getUtilizaPizarra());
+                archivado.setUtilizaProyector(reserva.getUtilizaProyector());
+                archivado.setUtilizaComputadora(reserva.getUtilizaComputadora());
+                archivado.setAsistencia(estadoAsistencia);
+
+                // Persistir la entidad Archivado
+                em.persist(archivado);
+
+                // Eliminar la reserva original
+                em.remove(reserva);
+
+                em.getTransaction().commit();
+            } catch (Exception e) {
+                e.printStackTrace();
+                em.getTransaction().rollback();
+            } finally {
+                em.close();
+            }
+        }
+
 
 
 
