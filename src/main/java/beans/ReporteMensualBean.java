@@ -43,8 +43,6 @@ public class ReporteMensualBean implements Serializable {
 
     private LocalDate fechaActual;
 
-    Archivado archivado = new Archivado();
-
     public ReporteMensualBean() {
         // Inicializa con el mes y año actuales
         this.fechaActual = LocalDate.now();
@@ -154,6 +152,24 @@ public class ReporteMensualBean implements Serializable {
             }
         } else {
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_WARN, "Advertencia", "No se ha seleccionado ninguna reserva.");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+        }
+    }
+
+    public String getNombreArchivoReporte() {
+        String nombreMes = fechaActual.getMonth().getDisplayName(TextStyle.FULL, new Locale("es"));
+        int anio = fechaActual.getYear();
+        return "ReporteMensual_" + nombreMes + "_" + anio;
+    }
+
+
+    public void irArchivado() {
+        try {
+            FacesContext.getCurrentInstance().getExternalContext().redirect("reporteArchivado.xhtml");
+        } catch (IOException e) {
+            // Manejar cualquier excepción de redirección
+            e.printStackTrace();
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Ocurrió un error al intentar redirigir la vista de archivados.");
             FacesContext.getCurrentInstance().addMessage(null, message);
         }
     }

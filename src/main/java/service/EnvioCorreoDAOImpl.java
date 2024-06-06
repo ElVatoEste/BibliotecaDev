@@ -97,7 +97,7 @@ public class EnvioCorreoDAOImpl implements Serializable, EnvioCorreoDAO {
                 message.setSubject("Aviso reservación de sala VIP Rubén Darío.", "UTF-8");
                 message.setText(
                         "Estimado/a estudiante,\n\n" +
-                                "Lamentamos informarle que su reserva de la sala VIP Rubén Darío ha sido revocada debido a su no presentación a la hora asignada.\n\n" +
+                                "Lamentamos informarle que su reserva de la sala VIP Rubén Darío ha sido revocada debido a no presentarse a la hora asignada.\n\n" +
                                 "Si tiene alguna pregunta o necesita asistencia adicional, por favor, no dude en contactarnos.\n\n" +
                                 "Saludos cordiales."
                         , "UTF-8");

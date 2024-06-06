@@ -89,4 +89,23 @@ public class Reserva implements Serializable {
         INASISTENCIA
     }
 
+    public String getExtras() {
+        StringBuilder extras = new StringBuilder();
+        if (utilizaPizarra) {
+            extras.append("Pizarra");
+        }
+        if (utilizaProyector) {
+            if (extras.length() > 0) {
+                extras.append(", ");
+            }
+            extras.append("Proyector");
+        }
+        if (utilizaComputadora) {
+            if (extras.length() > 0) {
+                extras.append(", ");
+            }
+            extras.append("Computadora");
+        }
+        return extras.toString();
+    }
 }

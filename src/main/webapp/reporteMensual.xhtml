@@ -6,25 +6,21 @@
 
 <h:head>
     <title>Reporte Mensual de Reservas</title>
-
     <link rel="stylesheet" type="text/css" href="resources/css/colores.css"/>
 </h:head>
 
 <h:body>
     <h:form id="formReporteMensual">
-
         <p:toolbar>
             <p:toolbarGroup>
                 <p:commandButton value="Regresar al calendario" action="#{reporteMensualBean.irAgenda}" icon="pi pi-calendar" styleClass="mr-2" />
             </p:toolbarGroup>
-
             <p:toolbarGroup align="center">
-                <p:commandButton value="Generar Excel" styleClass="mr-2 mb-2" icon="pi pi-file-excel">
-                    <p:dataExporter type="xlsx" target="dataTableId" fileName="ReporteMensual" visibleOnly="true" pageOnly="true"/>
+                <p:commandButton value="Generar Excel" styleClass="mr-2 mb-2" icon="pi pi-file-excel" style="margin-right: 10px;">
+                    <p:dataExporter type="xlsx" target="dataTableId" fileName="#{reporteMensualBean.nombreArchivoReporte}" visibleOnly="true" pageOnly="true"/>
                 </p:commandButton>
+                <p:commandButton value="Reservas Archivadas" action="#{reporteMensualBean.irArchivado()}" styleClass="mr-2 mb-2" icon="pi pi-folder-open" style="margin-right: 10px;"/>
             </p:toolbarGroup>
-
-
             <p:toolbarGroup align="right">
                 <p:commandButton value="Mes anterior" action="#{reporteMensualBean.retrocederMes}" icon="pi pi-arrow-left" style="margin-right: 10px;" update=":formReporteMensual:dataTableId, :formReporteMensual:mesActual" />
                 <h:outputText value="#{reporteMensualBean.nombreMesActual}" id="mesActual" style="margin-right: 10px;" />
@@ -34,83 +30,86 @@
 
         <h1 style="text-align: center;">Reporte Mensual de Reservas</h1>
 
-
-
         <p:dataTable id="dataTableId" value="#{reporteMensualBean.reservas}" styleClass="mt-2" var="reserva" emptyMessage="No hay reservas para este mes">
-
-            <p:column headerText="Nombre del Estudiante" style="text-align: center;">
+            <p:column style="text-align: center;">
+                <f:facet name="header">
+                    <h:outputText value="Nombre del Estudiante"/>
+                </f:facet>
                 <h:outputText value="#{reserva.nombreEstudiante}"/>
             </p:column>
-
-            <p:column headerText="CIF" style="text-align: center;">
+            <p:column style="text-align: center;">
+                <f:facet name="header">
+                    <h:outputText value="CIF"/>
+                </f:facet>
                 <h:outputText value="#{reserva.cif}"/>
             </p:column>
-
-            <p:column headerText="Correo" style="text-align: center; width: 250px;">
+            <p:column style="text-align: center;">
+                <f:facet name="header">
+                    <h:outputText value="Correo"/>
+                </f:facet>
                 <h:outputText value="#{reserva.correo}"/>
             </p:column>
-
-            <p:column headerText="Asunto" style="text-align: center;">
+            <p:column style="text-align: center;">
+                <f:facet name="header">
+                    <h:outputText value="Asunto"/>
+                </f:facet>
                 <h:outputText value="#{reserva.asuntoReserva}"/>
             </p:column>
-
-            <p:column headerText="Cantidad de Personas" style="text-align: center;">
+            <p:column style="text-align: center;">
+                <f:facet name="header">
+                    <h:outputText value="Cantidad de Personas"/>
+                </f:facet>
                 <h:outputText value="#{reserva.cantidadPersonas}"/>
             </p:column>
-
-            <p:column headerText="Día de la Reserva" style="text-align: center;">
+            <p:column style="text-align: center;">
+                <f:facet name="header">
+                    <h:outputText value="Fecha"/>
+                </f:facet>
                 <h:outputText value="#{reserva.fechaEntrada.toLocalDate()}"/>
             </p:column>
-
-            <p:column headerText="Hora de Entrada" style="text-align: center;">
+            <p:column style="text-align: center;">
+                <f:facet name="header">
+                    <h:outputText value="Hora de entrada"/>
+                </f:facet>
                 <h:outputText value="#{reserva.fechaEntrada.toLocalTime()}"/>
             </p:column>
-
-            <p:column headerText="Hora de Salida" style="text-align: center;" >
+            <p:column style="text-align: center;">
+                <f:facet name="header">
+                    <h:outputText value="Hora de salida"/>
+                </f:facet>
                 <h:outputText value="#{reserva.fechaSalida.toLocalTime()}"/>
             </p:column>
 
-            <p:column headerText="Extras" style="text-align: center;">
-                <h:panelGroup rendered="#{reserva.utilizaPizarra}">
-                    Pizarra <!--- Revision de datos -->
-                </h:panelGroup>
-                <h:panelGroup rendered="#{reserva.utilizaProyector}">
-                    Proyector
-                </h:panelGroup>
-                <h:panelGroup rendered="#{reserva.utilizaComputadora}">
-                    Computadora
-                </h:panelGroup>
+            <p:column style="text-align: center;">
+                <f:facet name="header">
+                    <h:outputText value="Extras"/>
+                </f:facet>
+                <h:outputText value="#{reserva.extras}"/>
             </p:column>
 
             <p:column headerText="Asistió" style="text-align: center;">
-                <p:outputLabel value="Sí" rendered="#{reserva.asistencia == 'ASISTENCIA'}" styleClass="asistencia-si" />
+                <p:outputLabel value="Asistio" rendered="#{reserva.asistencia == 'ASISTENCIA'}" styleClass="asistencia-si" />
                 <p:outputLabel value="Pendiente" rendered="#{reserva.asistencia == 'PENDIENTE'}" styleClass="asistencia-pendiente" />
-                <p:outputLabel value="No" rendered="#{reserva.asistencia == 'INASISTENCIA'}" styleClass="asistencia-no" />
+                <p:outputLabel value="No asistio" rendered="#{reserva.asistencia == 'INASISTENCIA'}" styleClass="asistencia-no" />
             </p:column>
 
             <p:column headerText="Acciones" style="text-align: center;" exportable="false">
-                        <p:commandButton value="Editar" action="#{reporteMensualBean.editarReserva(reserva)}"/>
-
-                        <p:commandButton value="Eliminar" action="#{reporteMensualBean.eliminarReserva(reserva)}" update=":formReporteMensual:dataTableId">
-                            <p:confirm header="Alerta" message="¿Está seguro que desea eliminar la reserva?"  icon="pi pi-exclamation-triangle"/>
-                        </p:commandButton>
-
-                        <p:commandButton value="Asistencia" onclick="PF('dlgAsistencia').show();"/>
-
+                <p:commandButton value="Editar" action="#{reporteMensualBean.editarReserva(reserva)}"/>
+                <p:commandButton value="Eliminar" action="#{reporteMensualBean.eliminarReserva(reserva)}" update=":formReporteMensual:dataTableId">
+                    <p:confirm header="Alerta" message="¿Está seguro que desea eliminar la reserva?"  icon="pi pi-exclamation-triangle"/>
+                </p:commandButton>
+                <p:commandButton value="Asistencia" onclick="PF('dlgAsistencia').show();"/>
                 <p:confirmDialog id="dlgAsistencia" message="¿El estudiante asistió?" severity="info" widgetVar="dlgAsistencia" width="350">
                     <p:commandButton value="No" action="#{reporteMensualBean.marcarAsistencia(reserva, false)}"
                                      styleClass="ui-confirmdialog-no ui-button-flat" update=":formReporteMensual:dataTableId" oncomplete="PF('dlgAsistencia').hide();"/>
                     <p:commandButton value="Sí" action="#{reporteMensualBean.marcarAsistencia(reserva, true)}"
                                      styleClass="ui-confirmdialog-yes" update=":formReporteMensual:dataTableId" oncomplete="PF('dlgAsistencia').hide();"/>
                 </p:confirmDialog>
-
                 <p:confirmDialog  global="true" showEffect="fade" hideEffect="fade" responsive="true" width="350">
                     <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no ui-button-flat"/>
                     <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" />
                 </p:confirmDialog>
-
             </p:column>
-
         </p:dataTable>
     </h:form>
 </h:body>

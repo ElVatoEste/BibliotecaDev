@@ -148,7 +148,7 @@ public class ReservaBean implements Serializable {
         int totalPersonasReservadas = reservaDAO.obtenerTotalPersonasReservadas(
                 reservaActual.getFechaEntrada(), reservaActual.getFechaSalida());
 
-        if (totalPersonasReservadas + reservaActual.getCantidadPersonas() > 15) {
+        if (totalPersonasReservadas + reservaActual.getCantidadPersonas() > 16) {
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR,
                     "Error", "La cantidad de personas excede la capacidad máxima de la sala.");
             FacesContext.getCurrentInstance().addMessage(null, message);
