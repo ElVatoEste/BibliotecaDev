@@ -27,7 +27,7 @@ public class Archivado implements Serializable {
     @Column(name = "Nombre", length = 50)
     private String nombreEstudiante;
 
-    @Column(name = "cif")
+    @Column(name = "cif", nullable = true)
     private Long cif;
 
     @Column(name = "correo")

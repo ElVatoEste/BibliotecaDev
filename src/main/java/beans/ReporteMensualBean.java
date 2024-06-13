@@ -12,6 +12,8 @@ import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import lombok.Getter;
 import lombok.Setter;
+import org.primefaces.PrimeFaces;
+import org.primefaces.model.DialogFrameworkOptions;
 import service.EnvioCorreoDAO;
 import service.ReservaDAO;
 
@@ -41,7 +43,14 @@ public class ReporteMensualBean implements Serializable {
     @Setter
     private List<Archivado> archivados;
 
+
+    @Getter
+    @Setter
+    private Reserva selectedReserva;
+
     private LocalDate fechaActual;
+
+
 
     public ReporteMensualBean() {
         // Inicializa con el mes y año actuales
@@ -128,23 +137,22 @@ public class ReporteMensualBean implements Serializable {
         }
     }
     public void marcarAsistencia(Reserva reserva, boolean asistio) {
-        if (reserva != null) {
+        if (selectedReserva != null) {
             try {
                 if (asistio) {
-                    reserva.setAsistencia(Reserva.AsistenciaEstado.ASISTENCIA);
+                    selectedReserva.setAsistencia(Reserva.AsistenciaEstado.ASISTENCIA);
+                    reservaDAO.update(selectedReserva);
                     FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Asistencia Marcada", "El estudiante asistió a la reserva.");
                     FacesContext.getCurrentInstance().addMessage(null, message);
-                    reservaDAO.update(reserva);
                 } else {
-                    EnvioDAO.enviarCorreoCancelacion(reserva.getCorreo());
-                    reserva.setAsistencia(Reserva.AsistenciaEstado.INASISTENCIA);
+                    EnvioDAO.enviarCorreoCancelacion(selectedReserva.getCorreo());
+                    selectedReserva.setAsistencia(Reserva.AsistenciaEstado.INASISTENCIA);
+                    reservaDAO.archivarReserva(selectedReserva.getIdReserva(), Archivado.AsistenciaEstado.INASISTENCIA);
+                    eliminarReserva(selectedReserva);
                     FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Asistencia Marcada", "El estudiante no asistió a la reserva.");
                     FacesContext.getCurrentInstance().addMessage(null, message);
-                    reservaDAO.archivarReserva(reserva.getIdReserva(), Archivado.AsistenciaEstado.INASISTENCIA);
-                    eliminarReserva(reserva);
                 }
-
-                actualizarReservas(); // Actualizar la lista de reservas después de marcar la asistencia
+                actualizarReservas();
             } catch (Exception e) {
                 e.printStackTrace();
                 FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Ocurrió un error al procesar la asistencia.");
@@ -162,6 +170,10 @@ public class ReporteMensualBean implements Serializable {
         return "ReporteMensual_" + nombreMes + "_" + anio;
     }
 
+    public void abrirDialogoAsistencia(Reserva reserva) {
+        this.selectedReserva = reserva;
+        PrimeFaces.current().executeScript("PF('dlgAsistencia').show();");
+    }
 
     public void irArchivado() {
         try {

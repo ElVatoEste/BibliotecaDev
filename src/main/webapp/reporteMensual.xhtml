@@ -98,12 +98,17 @@
                 <p:commandButton value="Eliminar" action="#{reporteMensualBean.eliminarReserva(reserva)}" update=":formReporteMensual:dataTableId">
                     <p:confirm header="Alerta" message="¿Está seguro que desea eliminar la reserva?"  icon="pi pi-exclamation-triangle"/>
                 </p:commandButton>
-                <p:commandButton value="Asistencia" onclick="PF('dlgAsistencia').show();"/>
+
+
+                <p:commandButton value="Asistencia" action="#{reporteMensualBean.abrirDialogoAsistencia(reserva)}" update=":formReporteMensual">
+                    <f:setPropertyActionListener value="#{reserva}" target="#{reporteMensualBean.selectedReserva}"/>
+                </p:commandButton>
+
                 <p:confirmDialog id="dlgAsistencia" message="¿El estudiante asistió?" severity="info" widgetVar="dlgAsistencia" width="350">
-                    <p:commandButton value="No" action="#{reporteMensualBean.marcarAsistencia(reserva, false)}"
-                                     styleClass="ui-confirmdialog-no ui-button-flat" update=":formReporteMensual:dataTableId" oncomplete="PF('dlgAsistencia').hide();"/>
-                    <p:commandButton value="Sí" action="#{reporteMensualBean.marcarAsistencia(reserva, true)}"
-                                     styleClass="ui-confirmdialog-yes" update=":formReporteMensual:dataTableId" oncomplete="PF('dlgAsistencia').hide();"/>
+                    <p:commandButton value="No" action="#{reporteMensualBean.marcarAsistencia(reporteMensualBean.selectedReserva, false)}"
+                                     update=":formReporteMensual" styleClass="ui-confirmdialog-no ui-button-flat" oncomplete="PF('dlgAsistencia').hide();"/>
+                    <p:commandButton value="Sí" action="#{reporteMensualBean.marcarAsistencia(reporteMensualBean.selectedReserva, true)}"
+                                     update=":formReporteMensual" styleClass="ui-confirmdialog-yes" oncomplete="PF('dlgAsistencia').hide();"/>
                 </p:confirmDialog>
                 <p:confirmDialog  global="true" showEffect="fade" hideEffect="fade" responsive="true" width="350">
                     <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no ui-button-flat"/>
