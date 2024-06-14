@@ -28,7 +28,7 @@ public class Reserva implements Serializable {
     private String nombreEstudiante;
 
     @Column(name = "cif")
-    private Long cif;
+    private String cif;
 
     @Column(name = "correo")
     private String correo;
