@@ -43,22 +43,12 @@ public class CargaReservaBean implements Serializable {
         } else {
             System.out.println("No se proporcionó ningún ID de reserva en la URL.");
         }
-
-        if (reservaActual == null) {
-            reservaActual = new Reserva();
-            System.out.println("Inicializando nueva reserva.");
-        }
     }
 
     public void guardarCambios() {
-        System.out.println("Método guardarCambios() llamado.");
-        System.out.println("Datos de la reserva antes de guardar: " + reservaActual);
 
         try {
             if (idReservaActual != null) {
-                System.out.println("Cantidad de Personas: " + reservaActual.getCantidadPersonas());
-                System.out.println("Nombre del Estudiante: " + reservaActual.getNombreEstudiante());
-                System.out.println("Asunto de la reserva: " + reservaActual.getAsuntoReserva());
 
                 reservaDAO.update(reservaActual);
 

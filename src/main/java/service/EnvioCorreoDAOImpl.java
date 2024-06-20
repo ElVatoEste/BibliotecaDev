@@ -1,5 +1,7 @@
 package service;
 
+import jakarta.faces.application.FacesMessage;
+import jakarta.faces.context.FacesContext;
 import jakarta.inject.Named;
 import jakarta.mail.*;
 import jakarta.mail.internet.InternetAddress;
@@ -51,7 +53,8 @@ public class EnvioCorreoDAOImpl implements Serializable, EnvioCorreoDAO {
                                 "2. Tras pasar los primeros 15 minutos a la hora solicitada de su reserva, automáticamente pierde el derecho y su reserva será revocada.\n\n" +
                                 "3. Hacer uso debido de las instalaciones, manteniendo las normas éticas y de aseo.\n\n" +
                                 "4. En caso de haber solicitado algún dispositivo, queda en total responsabilidad el cuidado y buen manejo del mismo.\n\n" +
-                                "Saludos cordiales."
+                                "Saludos cordiales.\n\n" +
+                                "Este es un mensaje auto-generado. Por favor, no responda a este correo."
                         , "UTF-8");
                 System.out.println("sending...");
                 Transport.send(message);
@@ -59,6 +62,8 @@ public class EnvioCorreoDAOImpl implements Serializable, EnvioCorreoDAO {
             } catch (MessagingException me) {
                 System.err.println("Failed to send email");
                 me.printStackTrace();
+                FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se pudo enviar el correo de confirmación, revisar correo ingresado.");
+                FacesContext.getCurrentInstance().addMessage(null, facesMessage);
             }
         } catch (IOException ex) {
             System.err.println("Failed to load properties");
@@ -99,14 +104,18 @@ public class EnvioCorreoDAOImpl implements Serializable, EnvioCorreoDAO {
                         "Estimado/a estudiante,\n\n" +
                                 "Lamentamos informarle que su reserva de la sala VIP Rubén Darío ha sido revocada debido a no presentarse a la hora asignada.\n\n" +
                                 "Si tiene alguna pregunta o necesita asistencia adicional, por favor, no dude en contactarnos.\n\n" +
-                                "Saludos cordiales."
+                                "Saludos cordiales.\n\n" +
+                                "Este es un mensaje auto-generado. Por favor, no responda a este correo."
                         , "UTF-8");
                 System.out.println("sending...");
+
                 Transport.send(message);
                 System.out.println("Sent message successfully....");
             } catch (MessagingException me) {
                 System.err.println("Failed to send email");
                 me.printStackTrace();
+                FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se pudo enviar el correo de cancelacion, revisar correo ingresado.");
+                FacesContext.getCurrentInstance().addMessage(null, facesMessage);
             }
         } catch (IOException ex) {
             System.err.println("Failed to load properties");

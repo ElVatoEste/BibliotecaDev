@@ -26,7 +26,6 @@ public class Reserva implements Serializable {
 
     @Column(name = "Nombre", length = 50)
     private String nombreEstudiante;
-
     @Column(name = "cif")
     private String cif;
 
