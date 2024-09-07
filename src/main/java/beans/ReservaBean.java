@@ -184,7 +184,7 @@ public class ReservaBean implements Serializable {
         reservaActual.setAsistencia(Reserva.AsistenciaEstado.PENDIENTE);
 
         reservaDAO.guardar(reservaActual);
-        EnvioDAO.enviarCorreoExitoso(reservaActual.getCorreo());
+        EnvioDAO.enviarCorreoExitoso(reservaActual.getCorreo(), reservaActual.getFechaEntrada(), reservaActual.getFechaSalida());
 
         reservaActual = new Reserva();
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Reserva guardada con éxito", null);

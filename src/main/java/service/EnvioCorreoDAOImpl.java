@@ -10,6 +10,10 @@ import jakarta.mail.internet.MimeMessage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
+import java.util.Locale;
 import java.util.Properties;
 
 @Named("EnvioCorreo")
@@ -17,7 +21,10 @@ public class EnvioCorreoDAOImpl implements Serializable, EnvioCorreoDAO {
 
     private static final long serialVersionUID = 1L;
 
-    public void enviarCorreoExitoso(String correo) {
+    // Define el formateador de fecha con el nuevo formato
+    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("EEEE, dd 'de' MMMM h a", new Locale("es", "ES"));
+
+    public void enviarCorreoExitoso(String correo, LocalDateTime fechaEntrada, LocalDateTime fechaSalida) {
         System.out.println("TLSEmail Start");
 
         Properties props = new Properties();
@@ -46,16 +53,24 @@ public class EnvioCorreoDAOImpl implements Serializable, EnvioCorreoDAO {
                 message.setFrom(new InternetAddress(username));
                 message.addRecipient(Message.RecipientType.TO, new InternetAddress(correo, true));
                 message.setSubject("Reservación de sala VIP Rubén Darío. Para nuestra comunidad UAM", "UTF-8");
-                message.setText(
+
+                String cuerpoMensaje = String.format(
                         "Estimado/a estudiante,\n\n" +
                                 "Su reserva de la sala VIP Rubén Darío ha sido agendada exitosamente. A continuación, le presento las indicaciones a seguir:\n\n" +
                                 "1. Asistir puntual para confirmar su asistencia.\n\n" +
                                 "2. Tras pasar los primeros 15 minutos a la hora solicitada de su reserva, automáticamente pierde el derecho y su reserva será revocada.\n\n" +
                                 "3. Hacer uso debido de las instalaciones, manteniendo las normas éticas y de aseo.\n\n" +
                                 "4. En caso de haber solicitado algún dispositivo, queda en total responsabilidad el cuidado y buen manejo del mismo.\n\n" +
+                                "Detalles de la reserva:\n" +
+                                "Fecha y hora de entrada: %s\n" +
+                                "Fecha y hora de salida: %s\n\n" +
                                 "Saludos cordiales.\n\n" +
-                                "Este es un mensaje auto-generado. Por favor, no responda a este correo."
-                        , "UTF-8");
+                                "Este es un mensaje auto-generado. Por favor, no responda a este correo.",
+                        DATE_TIME_FORMATTER.format(fechaEntrada),
+                        DATE_TIME_FORMATTER.format(fechaSalida)
+                );
+
+                message.setText(cuerpoMensaje, "UTF-8");
                 System.out.println("sending...");
                 Transport.send(message);
                 System.out.println("Sent message successfully....");
