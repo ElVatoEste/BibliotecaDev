@@ -7,9 +7,17 @@
 <h:head>
     <title>Reporte Mensual de Reservas</title>
     <link rel="stylesheet" type="text/css" href="resources/css/colores.css"/>
+    <style>
+        .botonAccion {
+            width: 100px; /* Establecer un ancho fijo para todos los botones */
+            text-align: center;
+        }
+    </style>
 </h:head>
 
 <h:body>
+
+
     <h:form id="formReporteMensual">
         <p:toolbar>
             <p:toolbarGroup>
@@ -31,54 +39,63 @@
         <h1 style="text-align: center;">Reporte Mensual de Reservas</h1>
 
         <p:dataTable id="dataTableId" value="#{reporteMensualBean.reservas}" styleClass="mt-2" var="reserva" emptyMessage="No hay reservas para este mes">
+
             <p:column style="text-align: center;">
                 <f:facet name="header">
                     <h:outputText value="Nombre del Estudiante"/>
                 </f:facet>
                 <h:outputText value="#{reserva.nombreEstudiante}"/>
             </p:column>
+
             <p:column style="text-align: center;">
                 <f:facet name="header">
                     <h:outputText value="CIF"/>
                 </f:facet>
                 <h:outputText value="#{reserva.cif}"/>
             </p:column>
-            <p:column style="text-align: center;">
+
+            <p:column style="text-align: center; display: none;"  exportable="true">
                 <f:facet name="header">
                     <h:outputText value="Correo"/>
                 </f:facet>
                 <h:outputText value="#{reserva.correo}"/>
             </p:column>
+
             <p:column style="text-align: center;">
                 <f:facet name="header">
                     <h:outputText value="Asunto"/>
                 </f:facet>
                 <h:outputText value="#{reserva.asuntoReserva}"/>
             </p:column>
+
             <p:column style="text-align: center;">
                 <f:facet name="header">
                     <h:outputText value="Cantidad de Personas"/>
                 </f:facet>
                 <h:outputText value="#{reserva.cantidadPersonas}"/>
             </p:column>
+
             <p:column style="text-align: center;">
                 <f:facet name="header">
                     <h:outputText value="Fecha"/>
                 </f:facet>
                 <h:outputText value="#{reserva.fechaEntrada.toLocalDate()}"/>
             </p:column>
+
             <p:column style="text-align: center;">
                 <f:facet name="header">
-                    <h:outputText value="Hora de entrada"/>
+                    <h:outputText value="Entrada"/>
                 </f:facet>
                 <h:outputText value="#{reserva.fechaEntrada.toLocalTime()}"/>
             </p:column>
+
             <p:column style="text-align: center;">
                 <f:facet name="header">
-                    <h:outputText value="Hora de salida"/>
+                    <h:outputText value="Salida"/>
                 </f:facet>
                 <h:outputText value="#{reserva.fechaSalida.toLocalTime()}"/>
             </p:column>
+
 
             <p:column style="text-align: center;">
                 <f:facet name="header">
@@ -94,13 +111,15 @@
             </p:column>
 
             <p:column headerText="Acciones" style="text-align: center;" exportable="false">
-                <p:commandButton value="Editar" action="#{reporteMensualBean.editarReserva(reserva)}"/>
-                <p:commandButton value="Eliminar" action="#{reporteMensualBean.eliminarReserva(reserva)}" update=":formReporteMensual:dataTableId">
+                <div class="botonAccion">
+                <p:commandButton class="botonAccion" value="Editar" action="#{reporteMensualBean.editarReserva(reserva)}"/>
+                <p:commandButton class="botonAccion" value="Eliminar" action="#{reporteMensualBean.eliminarReserva(reserva)}" update=":formReporteMensual:dataTableId">
                     <p:confirm header="Alerta" message="¿Está seguro que desea eliminar la reserva?"  icon="pi pi-exclamation-triangle"/>
                 </p:commandButton>
+                </div>
 
 
-                <p:commandButton value="Asistencia" action="#{reporteMensualBean.abrirDialogoAsistencia(reserva)}" update=":formReporteMensual">
+                <p:commandButton class="botonAccion" value="Asistencia" action="#{reporteMensualBean.abrirDialogoAsistencia(reserva)}" update=":formReporteMensual">
                     <f:setPropertyActionListener value="#{reserva}" target="#{reporteMensualBean.selectedReserva}"/>
                 </p:commandButton>
 

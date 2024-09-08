@@ -67,6 +67,7 @@ public class Archivado implements Serializable {
     public Boolean getUtilizaProyector() {
         return utilizaProyector;
     }
+
     public Boolean getUtilizaComputadora() {
         return utilizaComputadora;
     }

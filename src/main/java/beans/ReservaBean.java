@@ -135,6 +135,13 @@ public class ReservaBean implements Serializable {
     }
 
     public String guardarReserva() {
+
+        if (reservaActual.getCorreo() == null || !reservaActual.getCorreo().matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")) {
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Correo electrónico no válido.");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+            return null;
+        }
+
         if (reservaActual.getUtilizaPizarra() == null) {
             reservaActual.setUtilizaPizarra(false);
         }
@@ -181,6 +188,14 @@ public class ReservaBean implements Serializable {
             return null;
         }
 
+        if (reservaActual.getFechaEntrada().isAfter(reservaActual.getFechaSalida())) {
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                    "Error", "La fecha de entrada no puede ser posterior a la fecha de salida.");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+            return null;
+        }
+
+
         reservaActual.setAsistencia(Reserva.AsistenciaEstado.PENDIENTE);
 
         reservaDAO.guardar(reservaActual);
@@ -192,8 +207,6 @@ public class ReservaBean implements Serializable {
 
         return "success";
     }
-
-
 
     public ScheduleModel getEventModel() {
         if (eventModel == null) {

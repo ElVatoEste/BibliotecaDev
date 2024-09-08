@@ -38,16 +38,16 @@
                 <h:panelGrid id="eventDetails" columns="2" cellpadding="7" columnClasses="label, input">
 
                     <h:outputLabel for="nombreEstudiante" value="Nombre del Estudiante:"/>
-                    <h:inputText id="nombreEstudiante" value="#{reservaBean.reservaActual.nombreEstudiante}"/>
+                    <p:inputText id="nombreEstudiante" value="#{reservaBean.reservaActual.nombreEstudiante}"/>
 
                     <h:outputLabel for="cif" value="Cif del Estudiante:"/>
-                    <h:inputText id="cif" value="#{reservaBean.reservaActual.cif}"/>
+                    <p:inputText id="cif" value="#{reservaBean.reservaActual.cif}"/>
 
                     <h:outputLabel for="correo" value="Correo del Estudiante:"/>
-                    <h:inputText id="correo" value="#{reservaBean.reservaActual.correo}" required="true"/>
+                    <p:inputText id="correo" value="#{reservaBean.reservaActual.correo}" required="true"/>
 
                     <h:outputLabel for="asunto" value="Asunto de la Reserva:"/>
-                    <h:inputText id="asunto" value="#{reservaBean.reservaActual.asuntoReserva}"/>
+                    <p:inputText id="asunto" value="#{reservaBean.reservaActual.asuntoReserva}"/>
 
                     <h:outputLabel for="cantidadPersonas" value="Cantidad de Personas:"/>
                     <p:inputNumber id="cantidadPersonas"

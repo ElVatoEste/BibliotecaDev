@@ -6,60 +6,117 @@
 
 <h:head>
     <title>Editar Reserva</title>
+    <link rel="stylesheet" href="https://primefaces.org/showcase/ui/primeicons.css" />
+    <link rel="stylesheet" href="https://unpkg.com/primeflex@latest/primeflex.css"/>
+    <style>
+        /* Estilo para centrar el contenedor */
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+
+        .form-container {
+            width: 700px;
+            background-color: #f9f9f9;
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-top: 50px;
+        }
+
+        .form-container h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .form-container .p-inputtext,
+        .form-container .p-inputnumber,
+        .form-container .p-datepicker {
+            width: 100%;
+        }
+
+        .form-container .p-checkbox {
+            margin-left: 10px;
+        }
+
+        .form-container .panelGrid .label,
+        .form-container .panelGrid .field {
+            margin-bottom: 8px; /* Reducir el espacio entre los inputs */
+        }
+
+        .form-container .form-buttons {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .form-container .form-buttons .p-button {
+            width: 120px;
+            margin: 0 5px;
+        }
+
+        /* Clase para centrar contenido */
+        .center {
+            margin-left: auto;
+            margin-right: auto;
+        }
+    </style>
 </h:head>
 
 <h:body>
-    <h1>Editar Reserva</h1>
+    <div class="form-container">
+        <h1>Editar Reserva</h1>
 
-    <h:form>
+        <h:form style="background: none">
+            <!-- Aplicar clase 'center' a la tabla -->
+            <h:panelGrid columns="2" columnClasses="label, field" cellpadding="5" styleClass="center">
+                <p:outputLabel for="nombreEstudiante" value="Nombre del Estudiante:"/>
+                <p:inputText id="nombreEstudiante" value="#{CargarReserva.reservaActual.nombreEstudiante}" required="true"/>
 
-        <h:panelGrid columns="2">
+                <p:outputLabel for="cif" value="CIF del Estudiante:"/>
+                <p:inputText id="cif" value="#{CargarReserva.reservaActual.cif}" required="true"/>
 
-            <p:outputLabel value="ID de la Reserva:" rendered="#{not empty reservaBean.reservaActual}" />
-            <p:outputLabel value="#{CargarReserva.idReservaActual}" rendered="#{not empty reservaBean.reservaActual}" />
+                <p:outputLabel for="correo" value="Correo del estudiante:"/>
+                <p:inputText id="correo" value="#{CargarReserva.reservaActual.correo}" required="true"/>
 
-            <p:outputLabel for="nombreEstudiante" value="Nombre del Estudiante:"/>
-            <p:inputText id="nombreEstudiante" value="#{CargarReserva.reservaActual.nombreEstudiante}"/>
+                <p:outputLabel for="asunto" value="Asunto de la Reserva:"/>
+                <p:inputText id="asunto" value="#{CargarReserva.reservaActual.asuntoReserva}" required="true"/>
 
-            <p:outputLabel for="cif" value="CIF del Estudiante:"/>
-            <p:inputText id="cif" value="#{CargarReserva.reservaActual.cif}"/>
+                <p:outputLabel for="cantidadPersonas" value="Cantidad de Personas:"/>
+                <p:inputNumber id="cantidadPersonas"
+                               value="#{CargarReserva.reservaActual.cantidadPersonas}"
+                               minValue="4" maxValue="16"/>
 
-            <p:outputLabel for="correo" value="Correo del estudiante:"/>
-            <p:inputText id="correo" value="#{CargarReserva.reservaActual.correo}"/>
+                <p:outputLabel for="fechaEntrada" value="Fecha de Entrada:"/>
+                <p:datePicker id="fechaEntrada"
+                              value="#{CargarReserva.reservaActual.fechaEntrada}"
+                              pattern="dd.MM.yyyy hh:mm a" showIcon="true" showTime="true" stepMinute="30" required="true"/>
 
-            <p:outputLabel for="asunto" value="Asunto de la Reserva:"/>
-            <p:inputText id="asunto" value="#{CargarReserva.reservaActual.asuntoReserva}"/>
+                <p:outputLabel for="fechaSalida" value="Fecha de Salida:"/>
+                <p:datePicker id="fechaSalida"
+                              value="#{CargarReserva.reservaActual.fechaSalida}"
+                              pattern="dd.MM.yyyy hh:mm a" showIcon="true" showTime="true" stepMinute="30" required="true"/>
 
-            <p:outputLabel for="cantidadPersonas" value="Cantidad de Personas:"/>
-            <p:inputNumber id="cantidadPersonas"
-                           value="#{CargarReserva.reservaActual.cantidadPersonas}"
-                           minValue="4" maxValue="16"/>
+                <p:outputLabel for="computadora" value="Computadora:"/>
+                <p:selectBooleanCheckbox id="computadora" value="#{CargarReserva.reservaActual.utilizaComputadora}"/>
 
-            <p:outputLabel for="fechaEntrada" value="Fecha de Entrada:"/>
-            <p:datePicker id="fechaEntrada"
-                          value="#{CargarReserva.reservaActual.fechaEntrada}"
-                          pattern="dd.MM.yyyy HH:mm" showIcon="true" showTime="true" stepMinute="30" required="true"/>
+                <p:outputLabel for="pizarra" value="Pizarra:"/>
+                <p:selectBooleanCheckbox id="pizarra" value="#{CargarReserva.reservaActual.utilizaPizarra}"/>
 
-            <p:outputLabel for="fechaSalida" value="Fecha de Salida:"/>
-            <p:datePicker id="fechaSalida"
-                          value="#{CargarReserva.reservaActual.fechaSalida}"
-                          pattern="dd.MM.yyyy HH:mm" showIcon="true" showTime="true" stepMinute="30" required="true"/>
+                <p:outputLabel for="proyector" value="Proyector:"/>
+                <p:selectBooleanCheckbox id="proyector" value="#{CargarReserva.reservaActual.utilizaProyector}"/>
 
-            <p:outputLabel for="computadora" value="Computadora:"/>
-            <p:selectBooleanCheckbox id="computadora" value="#{CargarReserva.reservaActual.utilizaComputadora}"/>
+            </h:panelGrid>
 
-            <p:outputLabel for="pizarra" value="Pizarra:"/>
-            <p:selectBooleanCheckbox id="pizarra" value="#{CargarReserva.reservaActual.utilizaPizarra}"/>
+            <div class="form-buttons">
+                <p:commandButton value="Guardar" action="#{CargarReserva.guardarCambios()}" styleClass="p-button-success" icon="pi pi-check"/>
+                <p:commandButton value="Cancelar" action="#{CargarReserva.cancelarEdicion()}" styleClass="p-button-danger" icon="pi pi-times"/>
+            </div>
 
-            <p:outputLabel for="proyector" value="Proyector:"/>
-            <p:selectBooleanCheckbox id="proyector" value="#{CargarReserva.reservaActual.utilizaProyector}"/>
-
-            <h:panelGroup>
-                <p:commandButton value="Guardar" action="#{CargarReserva.guardarCambios()}" />
-                <p:commandButton value="Cancelar" action="#{CargarReserva.cancelarEdicion()}" />
-            </h:panelGroup>
-
-        </h:panelGrid>
-    </h:form>
+        </h:form>
+    </div>
 </h:body>
 </html>
