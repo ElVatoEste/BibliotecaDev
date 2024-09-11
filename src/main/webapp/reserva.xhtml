@@ -5,9 +5,10 @@
       xmlns:p="http://primefaces.org/ui">
 
 <h:head>
-    <title>Solicitud de Reserva</title>
+    <title>Reservas</title>
     <link rel="stylesheet" href="https://primefaces.org/showcase/ui/primeicons.css" />
     <link rel="stylesheet" href="https://unpkg.com/primeflex@latest/primeflex.css"/>
+    <link rel="icon" type="image/png" href="resources/book.png"/>
 </h:head>
 
 <h:form>
@@ -44,7 +45,7 @@
                     <p:inputText id="cif" value="#{reservaBean.reservaActual.cif}"/>
 
                     <h:outputLabel for="correo" value="Correo del Estudiante:"/>
-                    <p:inputText id="correo" value="#{reservaBean.reservaActual.correo}" required="true"/>
+                    <p:inputText id="correo" value="#{reservaBean.reservaActual.correo}" />
 
                     <h:outputLabel for="asunto" value="Asunto de la Reserva:"/>
                     <p:inputText id="asunto" value="#{reservaBean.reservaActual.asuntoReserva}"/>
@@ -58,13 +59,13 @@
                     <p:datePicker id="fechaEntrada"
                                   value="#{reservaBean.reservaActual.fechaEntrada}"
                                   pattern="dd.MM.yyyy HH:mm" showIcon="true" showTime="true"
-                                  mindate="#{reservaBean.fechaMinima}" stepMinute="30" required="true"/>
+                                  mindate="#{reservaBean.fechaMinima}" stepMinute="30"/>
 
                     <h:outputLabel for="fechaSalida" value="Fecha de Salida:"/>
                     <p:datePicker id="fechaSalida"
                                   value="#{reservaBean.reservaActual.fechaSalida}"
                                   pattern="dd.MM.yyyy HH:mm" showIcon="true" showTime="true"
-                                  mindate="#{reservaBean.reservaActual.fechaEntrada}" stepMinute="30" required="true"/>
+                                  mindate="#{reservaBean.reservaActual.fechaEntrada}" stepMinute="30" />
 
                     <h:outputLabel value="Extras:"/>
                     <h:panelGroup>

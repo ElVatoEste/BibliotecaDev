@@ -21,120 +21,103 @@ public class EnvioCorreoDAOImpl implements Serializable, EnvioCorreoDAO {
 
     private static final long serialVersionUID = 1L;
 
-    // Define el formateador de fecha con el nuevo formato
-    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("EEEE, dd 'de' MMMM h a", new Locale("es", "ES"));
+    private Session session;
 
-    public void enviarCorreoExitoso(String correo, LocalDateTime fechaEntrada, LocalDateTime fechaSalida) {
-        System.out.println("TLSEmail Start");
+    // Inicializa el formateador de fecha
+    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("EEEE, dd 'de' MMMM h:mm a", new Locale("es", "ES"));
 
-        Properties props = new Properties();
-        try (InputStream input = getClass().getClassLoader().getResourceAsStream("mail.properties")) {
-            if (input == null) {
-                System.out.println("Sorry, unable to find mail.properties");
-                return;
-            }
-
-            // Carga el archivo de propiedades
-            props.load(input);
-
-            // Obtiene las credenciales
-            String username = props.getProperty("mail.smtp.user");
-            String password = props.getProperty("mail.smtp.password");
-
-            Session session = Session.getInstance(props, new jakarta.mail.Authenticator() {
-                @Override
-                protected PasswordAuthentication getPasswordAuthentication() {
-                    return new PasswordAuthentication(username, password);
+    // Inicializa la sesión SMTP una sola vez
+    private void initializeSession() {
+        if (session == null) {
+            Properties props = new Properties();
+            try (InputStream input = getClass().getClassLoader().getResourceAsStream("mail.properties")) {
+                if (input == null) {
+                    System.out.println("Sorry, unable to find mail.properties");
+                    return;
                 }
-            });
 
-            try {
-                MimeMessage message = new MimeMessage(session);
-                message.setFrom(new InternetAddress(username));
-                message.addRecipient(Message.RecipientType.TO, new InternetAddress(correo, true));
-                message.setSubject("Reservación de sala VIP Rubén Darío. Para nuestra comunidad UAM", "UTF-8");
+                props.load(input);
+                String username = props.getProperty("mail.smtp.user");
+                String password = props.getProperty("mail.smtp.password");
 
-                String cuerpoMensaje = String.format(
-                        "Estimado/a estudiante,\n\n" +
-                                "Su reserva de la sala VIP Rubén Darío ha sido agendada exitosamente. A continuación, le presento las indicaciones a seguir:\n\n" +
-                                "1. Asistir puntual para confirmar su asistencia.\n\n" +
-                                "2. Tras pasar los primeros 15 minutos a la hora solicitada de su reserva, automáticamente pierde el derecho y su reserva será revocada.\n\n" +
-                                "3. Hacer uso debido de las instalaciones, manteniendo las normas éticas y de aseo.\n\n" +
-                                "4. En caso de haber solicitado algún dispositivo, queda en total responsabilidad el cuidado y buen manejo del mismo.\n\n" +
-                                "Detalles de la reserva:\n" +
-                                "Fecha y hora de entrada: %s\n" +
-                                "Fecha y hora de salida: %s\n\n" +
-                                "Saludos cordiales.\n\n" +
-                                "Este es un mensaje auto-generado. Por favor, no responda a este correo.",
-                        DATE_TIME_FORMATTER.format(fechaEntrada),
-                        DATE_TIME_FORMATTER.format(fechaSalida)
-                );
-
-                message.setText(cuerpoMensaje, "UTF-8");
-                System.out.println("sending...");
-                Transport.send(message);
-                System.out.println("Sent message successfully....");
-            } catch (MessagingException me) {
-                System.err.println("Failed to send email");
-                me.printStackTrace();
-                FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se pudo enviar el correo de confirmación, revisar correo ingresado.");
-                FacesContext.getCurrentInstance().addMessage(null, facesMessage);
+                session = Session.getInstance(props, new jakarta.mail.Authenticator() {
+                    @Override
+                    protected PasswordAuthentication getPasswordAuthentication() {
+                        return new PasswordAuthentication(username, password);
+                    }
+                });
+            } catch (IOException ex) {
+                System.err.println("Failed to load properties");
+                ex.printStackTrace();
             }
-        } catch (IOException ex) {
-            System.err.println("Failed to load properties");
-            ex.printStackTrace();
         }
     }
 
-    public void enviarCorreoCancelacion(String correo) {
-        System.out.println("TLSEmail Start");
+    // Método genérico para enviar correos
+    private void sendEmail(String to, String subject, String htmlMessage) {
+        initializeSession();
 
-        Properties props = new Properties();
-        try (InputStream input = getClass().getClassLoader().getResourceAsStream("mail.properties")) {
-            if (input == null) {
-                System.out.println("Sorry, unable to find mail.properties");
-                return;
-            }
+        try {
+            MimeMessage message = new MimeMessage(session);
+            message.setFrom(new InternetAddress(session.getProperty("mail.smtp.user")));
+            message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
+            message.setSubject(subject, "UTF-8");
+            message.setContent(htmlMessage, "text/html; charset=UTF-8");
 
-            // Carga el archivo de propiedades
-            props.load(input);
-
-            // Obtiene las credenciales
-            String username = props.getProperty("mail.smtp.user");
-            String password = props.getProperty("mail.smtp.password");
-
-            Session session = Session.getInstance(props, new jakarta.mail.Authenticator() {
-                @Override
-                protected PasswordAuthentication getPasswordAuthentication() {
-                    return new PasswordAuthentication(username, password);
+            // Envío de mensaje asíncrono
+            new Thread(() -> {
+                try {
+                    System.out.println("Sending email...");
+                    Transport.send(message);
+                    System.out.println("Email sent successfully");
+                } catch (MessagingException e) {
+                    e.printStackTrace();
                 }
-            });
-
-            try {
-                MimeMessage message = new MimeMessage(session);
-                message.setFrom(new InternetAddress(username));
-                message.addRecipient(Message.RecipientType.TO, new InternetAddress(correo, true));
-                message.setSubject("Aviso reservación de sala VIP Rubén Darío.", "UTF-8");
-                message.setText(
-                        "Estimado/a estudiante,\n\n" +
-                                "Lamentamos informarle que su reserva de la sala VIP Rubén Darío ha sido revocada debido a no presentarse a la hora asignada.\n\n" +
-                                "Si tiene alguna pregunta o necesita asistencia adicional, por favor, no dude en contactarnos.\n\n" +
-                                "Saludos cordiales.\n\n" +
-                                "Este es un mensaje auto-generado. Por favor, no responda a este correo."
-                        , "UTF-8");
-                System.out.println("sending...");
-
-                Transport.send(message);
-                System.out.println("Sent message successfully....");
-            } catch (MessagingException me) {
-                System.err.println("Failed to send email");
-                me.printStackTrace();
-                FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se pudo enviar el correo de cancelacion, revisar correo ingresado.");
-                FacesContext.getCurrentInstance().addMessage(null, facesMessage);
-            }
-        } catch (IOException ex) {
-            System.err.println("Failed to load properties");
-            ex.printStackTrace();
+            }).start();
+        } catch (MessagingException e) {
+            e.printStackTrace();
         }
+    }
+
+    public void enviarCorreoExitoso(String correo, LocalDateTime fechaEntrada, LocalDateTime fechaSalida) {
+        String cuerpoMensaje = String.format(
+                "<html>" +
+                        "<body>" +
+                        "<p>Estimado/a estudiante,</p>" +
+                        "<p>Su reserva de la sala VIP Rubén Darío ha sido agendada exitosamente. A continuación, le presento las indicaciones a seguir:</p>" +
+                        "<ol>" +
+                        "<li><strong>Asistir puntual</strong> para confirmar su asistencia.</li>" +
+                        "<li>Tras pasar los primeros 15 minutos a la hora solicitada de su reserva, automáticamente pierde el derecho y su reserva será revocada.</li>" +
+                        "<li>Hacer uso debido de las instalaciones, manteniendo las normas éticas y de aseo.</li>" +
+                        "<li>En caso de haber solicitado algún dispositivo, queda en total responsabilidad el cuidado y buen manejo del mismo.</li>" +
+                        "</ol>" +
+                        "<p><strong>Detalles de la reserva:</strong></p>" +
+                        "<p>Fecha y hora de entrada: %s</p>" +
+                        "<p>Fecha y hora de salida: %s</p>" +
+                        "<br>" +
+                        "<p>Saludos cordiales.</p>" +
+                        "<p><i>Este es un mensaje auto-generado. Por favor, no responda a este correo.</i></p>" +
+                        "</body>" +
+                        "</html>",
+                DATE_TIME_FORMATTER.format(fechaEntrada),
+                DATE_TIME_FORMATTER.format(fechaSalida)
+        );
+
+        sendEmail(correo, "Reservación de sala VIP Rubén Darío. Para nuestra comunidad UAM", cuerpoMensaje);
+    }
+
+    public void enviarCorreoCancelacion(String correo) {
+        String cuerpoMensaje = "<html>" +
+                "<body>" +
+                "<p>Estimado/a estudiante,</p>" +
+                "<p>Lamentamos informarle que su reserva de la sala VIP Rubén Darío ha sido revocada debido a su no presentación a la hora asignada.</p>" +
+                "<p>Si tiene alguna pregunta o necesita asistencia adicional, no dude en contactarnos.</p>" +
+                "<br>" +
+                "<p>Saludos cordiales,</p>" +
+                "<p><i>Este es un mensaje auto-generado. Por favor, no responda a este correo.</i></p>" +
+                "</body>" +
+                "</html>";
+
+        sendEmail(correo, "Aviso sobre la reservación de sala VIP Rubén Darío", cuerpoMensaje);
     }
 }

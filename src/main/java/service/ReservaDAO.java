@@ -34,7 +34,7 @@ public interface ReservaDAO {
 
     <T> List<T> obtenerReservasMensuales(int mesActual, int anioActual);
 
-    public void archivarReserva(Long idReserva, Archivado.AsistenciaEstado estadoAsistencia);
+    void archivarReserva(Long idReserva, Archivado.AsistenciaEstado estadoAsistencia);
 
 
 }
