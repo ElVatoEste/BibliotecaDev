@@ -1,6 +1,7 @@
 package beans;
 
 import entity.Archivado;
+import entity.Reserva;
 import jakarta.annotation.PostConstruct;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
@@ -17,6 +18,9 @@ import java.time.LocalDate;
 import java.time.format.TextStyle;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 @Named
 @ViewScoped
@@ -39,9 +43,33 @@ public class ReporteMensualArchivadoBean implements Serializable {
 
     @PostConstruct
     private void actualizarArchivados() {
+
         int mesActual = fechaActual.getMonthValue();
         int anioActual = fechaActual.getYear();
-        archivados = archivadoDAO.obtenerArchivadosMensuales(mesActual, anioActual);
+
+        // Crear un pool de hilos con un número de hilos igual al número de núcleos disponibles
+        ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+
+        try {
+            // Ejecutar la carga de reservas en un hilo separado
+            executorService.submit(() -> {
+                // Cargar las reservas para el mes actual
+                List<Archivado> archivadosCargados = archivadoDAO.obtenerArchivadosMensuales(mesActual, anioActual);
+
+                // Bloquear el acceso a la lista de reservas para evitar problemas de concurrencia
+                synchronized (this) {
+                    this.archivados = archivadosCargados;
+                }
+            });
+        } finally {
+            // Finalizar el pool de hilos
+            executorService.shutdown();
+            try {
+                executorService.awaitTermination(5, TimeUnit.SECONDS);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public void avanzarMes() {

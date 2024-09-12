@@ -164,12 +164,12 @@ public class ReservaDAOImpl implements ReservaDAO, Serializable {
     }
 
     @Override
-    public List<Reserva> obtenerReservasMensuales(int mesActual, int anioActual) {
+    public List<Reserva> obtenerReservasMensuales(int mes, int anio) {
         try {
-            String queryStr = "SELECT r FROM Reserva r WHERE MONTH(r.fechaEntrada) = :mes AND YEAR(r.fechaEntrada) = :anio";
+            String queryStr = "SELECT r FROM Reserva r WHERE MONTH(r.fechaEntrada) = :mes AND YEAR(r.fechaEntrada) = :anio ORDER BY r.fechaEntrada ASC";
             TypedQuery<Reserva> query = em.createQuery(queryStr, Reserva.class);
-            query.setParameter("mes", mesActual);
-            query.setParameter("anio", anioActual);
+            query.setParameter("mes", mes);
+            query.setParameter("anio", anio);
             return query.getResultList();
         } catch (Exception e) {
             e.printStackTrace();

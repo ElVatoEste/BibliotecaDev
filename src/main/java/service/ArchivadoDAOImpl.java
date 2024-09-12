@@ -32,7 +32,7 @@ public class ArchivadoDAOImpl implements ArchivadoDAO, Serializable {
     public List<Archivado> obtenerArchivadosMensuales(int mesActual, int anioActual) {
         EntityManager em = EntityManagerAdmin.getInstance();
         try {
-            String queryStr = "SELECT r FROM Archivado r WHERE MONTH(r.fechaEntrada) = :mes AND YEAR(r.fechaEntrada) = :anio";
+            String queryStr = "SELECT r FROM Archivado r WHERE MONTH(r.fechaEntrada) = :mes AND YEAR(r.fechaEntrada) = :anio ORDER BY r.fechaEntrada ASC";
             TypedQuery<Archivado> query = em.createQuery(queryStr, Archivado.class);
             query.setParameter("mes", mesActual);
             query.setParameter("anio", anioActual);
