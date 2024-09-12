@@ -2,6 +2,7 @@ package service;
 
 import entity.Archivado;
 import entity.Reserva;
+import jakarta.ejb.Stateless;
 import jakarta.inject.Named;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
@@ -13,6 +14,7 @@ import java.util.List;
 import java.util.function.Consumer;
 
 @Named("ReservaDAOImpl")
+@Stateless
 public class ReservaDAOImpl implements ReservaDAO, Serializable {
 
     private final EntityManager em;
@@ -114,11 +116,14 @@ public class ReservaDAOImpl implements ReservaDAO, Serializable {
     @Override
     public int obtenerTotalPersonasReservadas(LocalDateTime inicio, LocalDateTime fin) {
         try {
+            // Restar 1 minuto a la fecha de fin
+            LocalDateTime finAjustado = fin.minusMinutes(1);
+
             String queryStr = "SELECT SUM(r.cantidadPersonas) FROM Reserva r WHERE " +
                     "(r.fechaEntrada < :fin AND r.fechaSalida > :inicio)";
             TypedQuery<Long> query = em.createQuery(queryStr, Long.class);
             query.setParameter("inicio", inicio);
-            query.setParameter("fin", fin);
+            query.setParameter("fin", finAjustado);  // Usar la fecha de fin ajustada
             Long result = query.getSingleResult();
             return result != null ? result.intValue() : 0;
         } catch (Exception e) {
@@ -126,6 +131,7 @@ public class ReservaDAOImpl implements ReservaDAO, Serializable {
             return 0;
         }
     }
+
 
     @Override
     public void archivarReserva(Long idReserva, Archivado.AsistenciaEstado estadoAsistencia) {

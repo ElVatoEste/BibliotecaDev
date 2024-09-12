@@ -25,10 +25,9 @@ import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
-
-
-
-//Correo
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 @Named
 @RequestScoped
@@ -41,7 +40,6 @@ public class ReservaBean implements Serializable {
 
     @Inject
     private EnvioCorreoDAO EnvioDAO;
-
 
     private Reserva reservaActual = new Reserva();
     private List<Reserva> reservas;
@@ -64,44 +62,33 @@ public class ReservaBean implements Serializable {
         eventModel = new DefaultScheduleModel();
         reservas = reservaDAO.obtenerTodas("Reserva.findAll", Reserva.class);
 
+        // Crear un pool de hilos con un número de hilos igual al número de núcleos disponibles
+        ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+
         for (Reserva reserva : reservas) {
-            String borderColor = generarColorAleatorio();
-            DefaultScheduleEvent<?> event = DefaultScheduleEvent.builder()
-                    .title(reserva.getNombreEstudiante())
-                    .description(reserva.getAsuntoReserva())
-                    .startDate(reserva.getFechaEntrada())
-                    .endDate(reserva.getFechaSalida())
-                    .borderColor(borderColor)
-                    .build();
-            eventModel.addEvent(event);
+            executorService.submit(() -> {
+                String borderColor = generarColorAleatorio();
+                DefaultScheduleEvent<?> event = DefaultScheduleEvent.builder()
+                        .title(reserva.getNombreEstudiante())
+                        .description(reserva.getAsuntoReserva())
+                        .startDate(reserva.getFechaEntrada())
+                        .endDate(reserva.getFechaSalida())
+                        .borderColor(borderColor)
+                        .build();
+                // Synchronized para evitar conflictos en la modificación de eventModel
+                synchronized (eventModel) {
+                    eventModel.addEvent(event);
+                }
+            });
         }
-    }
 
-    public void addEvent() {
-        String borderColor = generarColorAleatorio();
-
-        DefaultScheduleEvent<?> newEvent = DefaultScheduleEvent.builder()
-                .title(newEventTitle)
-                .description(newEventDescription)
-                .startDate(newEventStartDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime())
-                .endDate(newEventEndDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime())
-                .borderColor(borderColor)
-                .build();
-
-        eventModel.addEvent(newEvent);
-
-        Reserva reserva = new Reserva();
-        reserva.setNombreEstudiante(newEventTitle);
-        reserva.setAsuntoReserva(newEventDescription);
-        reserva.setFechaEntrada(newEvent.getStartDate());
-        reserva.setFechaSalida(newEvent.getEndDate());
-
-
-        reservaDAO.insert(reserva);
-        System.out.println("ID asignado: " + reserva.getIdReserva());
-
-        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Evento agregado con éxito", null);
-        FacesContext.getCurrentInstance().addMessage(null, message);
+        // Finalizar el pool de hilos
+        executorService.shutdown();
+        try {
+            executorService.awaitTermination(5, TimeUnit.SECONDS);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     public void onEventSelect(SelectEvent<ScheduleEvent<?>> selectEvent) {
@@ -159,7 +146,7 @@ public class ReservaBean implements Serializable {
 
         if (reservaActual.getCantidadPersonas() > espacioDisponible) {
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR,
-                    "Error", "La cantidad de personas excede la capacidad máxima de la sala. Espacio disponible: " + espacioDisponible);
+                    "Error", "La cantidad de personas excede la capacidad máxima de la sala. Espacio disponible: " + totalPersonasReservadas);
             FacesContext.getCurrentInstance().addMessage(null, message);
             return null;
         }

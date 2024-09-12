@@ -23,6 +23,9 @@ import java.time.LocalDate;
 import java.time.format.TextStyle;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 
 @Named
@@ -61,7 +64,30 @@ public class ReporteMensualBean implements Serializable {
     private void actualizarReservas() {
         int mesActual = fechaActual.getMonthValue();
         int anioActual = fechaActual.getYear();
-        reservas = reservaDAO.obtenerReservasMensuales(mesActual, anioActual);
+
+        // Crear un pool de hilos con un número de hilos igual al número de núcleos disponibles
+        ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+
+        try {
+            // Ejecutar la carga de reservas en un hilo separado
+            executorService.submit(() -> {
+                // Cargar las reservas para el mes actual
+                List<Reserva> reservasCargadas = reservaDAO.obtenerReservasMensuales(mesActual, anioActual);
+
+                // Bloquear el acceso a la lista de reservas para evitar problemas de concurrencia
+                synchronized (this) {
+                    this.reservas = reservasCargadas;
+                }
+            });
+        } finally {
+            // Finalizar el pool de hilos
+            executorService.shutdown();
+            try {
+                executorService.awaitTermination(5, TimeUnit.SECONDS);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public void avanzarMes() {
@@ -141,7 +167,8 @@ public class ReporteMensualBean implements Serializable {
             try {
                 if (asistio) {
                     selectedReserva.setAsistencia(Reserva.AsistenciaEstado.ASISTENCIA);
-                    reservaDAO.update(selectedReserva);
+                    reservaDAO.archivarReserva(selectedReserva.getIdReserva(), Archivado.AsistenciaEstado.ASISTENCIA);
+                    eliminarReserva(selectedReserva);
                     FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Asistencia Marcada", "El estudiante asistió a la reserva.");
                     FacesContext.getCurrentInstance().addMessage(null, message);
                 } else {

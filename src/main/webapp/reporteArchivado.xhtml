@@ -32,53 +32,73 @@
         <h1 style="text-align: center;">Reporte Mensual de Reservas Archivadas</h1>
 
         <p:dataTable id="dataTableId" value="#{reporteMensualArchivadoBean.archivados}" styleClass="mt-2" var="archivado" emptyMessage="No hay reservas archivadas para este mes">
+
             <p:column style="text-align: center;">
                 <f:facet name="header">
                     <h:outputText value="Nombre del Estudiante"/>
                 </f:facet>
                 <h:outputText value="#{archivado.nombreEstudiante}"/>
             </p:column>
+
             <p:column style="text-align: center;">
                 <f:facet name="header">
                     <h:outputText value="CIF"/>
                 </f:facet>
                 <h:outputText value="#{archivado.cif}"/>
             </p:column>
-            <p:column style="text-align: center;">
+
+            <p:column style="text-align: center; display: none;"  exportable="true">
                 <f:facet name="header">
                     <h:outputText value="Correo"/>
                 </f:facet>
                 <h:outputText value="#{archivado.correo}"/>
             </p:column>
+
             <p:column style="text-align: center;">
                 <f:facet name="header">
                     <h:outputText value="Asunto"/>
                 </f:facet>
                 <h:outputText value="#{archivado.asuntoReserva}"/>
             </p:column>
+
             <p:column style="text-align: center;">
                 <f:facet name="header">
                     <h:outputText value="Cantidad de Personas"/>
                 </f:facet>
                 <h:outputText value="#{archivado.cantidadPersonas}"/>
             </p:column>
+
             <p:column style="text-align: center;">
                 <f:facet name="header">
                     <h:outputText value="Fecha"/>
                 </f:facet>
                 <h:outputText value="#{archivado.fechaEntrada.toLocalDate()}"/>
             </p:column>
+
             <p:column style="text-align: center;">
                 <f:facet name="header">
-                    <h:outputText value="Hora de entrada"/>
+                    <h:outputText value="Entrada"/>
                 </f:facet>
                 <h:outputText value="#{archivado.fechaEntrada.toLocalTime()}"/>
             </p:column>
+
             <p:column style="text-align: center;">
                 <f:facet name="header">
-                    <h:outputText value="Hora de salida"/>
+                    <h:outputText value="Salida"/>
                 </f:facet>
                 <h:outputText value="#{archivado.fechaSalida.toLocalTime()}"/>
+            </p:column>
+
+            <p:column style="text-align: center;">
+                <f:facet name="header">
+                    <h:outputText value="Extras"/>
+                </f:facet>
+                <h:outputText value="#{archivado.extras}"/>
+            </p:column>
+
+            <p:column headerText="Asistió" style="text-align: center;">
+                <p:outputLabel value="Asistio" rendered="#{archivado.asistencia == 'ASISTENCIA'}" styleClass="asistencia-si" />
+                <p:outputLabel value="No asistio" rendered="#{archivado.asistencia == 'INASISTENCIA'}" styleClass="asistencia-no" />
             </p:column>
 
 
