@@ -10,6 +10,7 @@ import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import lombok.Getter;
 import lombok.Setter;
+import org.primefaces.PrimeFaces;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.DefaultScheduleEvent;
 import org.primefaces.model.DefaultScheduleModel;
@@ -92,6 +93,10 @@ public class ReservaBean implements Serializable {
     }
 
     public void onEventSelect(SelectEvent<ScheduleEvent<?>> selectEvent) {
+
+        PrimeFaces.current().ajax().update("form:display");
+        PrimeFaces.current().executeScript("PF('eventDialog').show()");
+
         if (selectEvent != null && selectEvent.getObject() != null) {
             event = selectEvent.getObject();
             selectedEvent = null; // Reiniciar la reserva seleccionada
@@ -112,14 +117,34 @@ public class ReservaBean implements Serializable {
 
     public void onDateSelect(SelectEvent<LocalDateTime> selectEvent) {
         LocalDateTime selectedDate = selectEvent.getObject();
-        LocalDateTime endDate = selectedDate.plusMinutes(30); // Añadir 30 minutos al inicio para obtener el final
 
-        DefaultScheduleEvent<?> newEvent = DefaultScheduleEvent.builder()
-                .startDate(selectedDate)
-                .endDate(endDate)
-                .build();
-        eventModel.addEvent(newEvent);
+        // Obtener la hora actual
+        LocalDateTime now = LocalDateTime.now();
+
+        // Asegurarse de que los minutos de la hora actual estén alineados a los intervalos de 30 minutos
+        int minute = now.getMinute();
+        int adjustMinutes = (minute % 30 == 0) ? 0 : 30 - (minute % 30);
+
+        // Ajustar la hora actual a los próximos 30 minutos
+        LocalDateTime adjustedStartDateTime = now.plusMinutes(adjustMinutes);
+
+        // Combinar la fecha seleccionada con la hora ajustada
+        LocalDateTime startDateTime = LocalDateTime.of(selectedDate.toLocalDate(), adjustedStartDateTime.toLocalTime());
+        LocalDateTime endDateTime = startDateTime.plusMinutes(30); // Añadir 30 minutos al inicio para obtener el final
+
+        // Inicializar una nueva reserva
+        reservaActual = new Reserva();
+
+        // Asignar las fechas seleccionadas a la reserva actual
+        reservaActual.setFechaEntrada(startDateTime);
+        reservaActual.setFechaSalida(endDateTime);
+
+        // Mostrar el diálogo para que el usuario complete los demás detalles
+        PrimeFaces.current().ajax().update("form:eventDetails");
+        PrimeFaces.current().executeScript("PF('eventDialog').show();");
     }
+
+
 
     public String guardarReserva() {
 
