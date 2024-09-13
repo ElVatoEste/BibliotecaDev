@@ -8,7 +8,8 @@
     <title>Reservas</title>
     <link rel="stylesheet" href="https://primefaces.org/showcase/ui/primeicons.css" />
     <link rel="stylesheet" href="https://unpkg.com/primeflex@latest/primeflex.css"/>
-    <link rel="icon" type="image/png" href="resources/book.png"/>
+    <link rel="icon" type="image/png" href="resources/logo.png"/>
+    <link rel="stylesheet" type="text/css" href="resources/css/chart.css"/>
 </h:head>
 
 <h:form>
@@ -26,7 +27,8 @@
             <p:growl id="messages" showDetail="true" autoUpdate="true"/>
 
             <p:schedule id="schedule" value="#{reservaBean.eventModel}" widgetVar="myschedule"
-                        timeZone="#{reservaBean.serverTimeZone}" clientTimeZone="#{reservaBean.serverTimeZone}">
+                        timeZone="#{reservaBean.serverTimeZone}" clientTimeZone="#{reservaBean.serverTimeZone}"
+                        styleClass="default-text-ui">
                 <p:ajax event="dateSelect" listener="#{reservaBean.onDateSelect}" update="eventDetails"
                         oncomplete="PF('eventDialog').show();"/>
                 <p:ajax event="eventSelect" listener="#{reservaBean.onEventSelect}" update="eventDetails"
