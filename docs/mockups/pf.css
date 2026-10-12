@@ -1,0 +1,396 @@
+/* Replica estatica del tema PrimeFaces 13 "saga-blue" usado por BibliotecaWeb.
+   Sin dependencias externas: fuentes de sistema + iconos SVG inline. */
+
+:root {
+    --primary: #2196F3;
+    --primary-hover: #1E88E5;
+    --primary-active: #1976D2;
+    --success: #689F38;
+    --success-hover: #5B8C32;
+    --danger: #D32F2F;
+    --danger-hover: #C62828;
+    --text: #495057;
+    --text-strong: #343a40;
+    --border: #dee2e6;
+    --border-input: #ced4da;
+    --surface-a: #ffffff;
+    --surface-b: #f8f9fa;
+    --surface-hover: #e9ecef;
+    --radius: 3px;
+    --shadow-overlay: 0 11px 15px -7px rgba(0,0,0,.2), 0 24px 38px 3px rgba(0,0,0,.14), 0 9px 46px 8px rgba(0,0,0,.12);
+}
+
+* { box-sizing: border-box; }
+
+html { font-size: 16px; }
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial,
+                 "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    font-size: 14px;
+    font-weight: normal;
+    color: var(--text);
+    background: var(--surface-a);
+    -webkit-font-smoothing: antialiased;
+}
+
+h1 {
+    font-family: inherit;
+    font-size: 2.5rem;
+    font-weight: 400;
+    color: var(--text-strong);
+    margin: 1.5rem 0 1rem;
+}
+
+/* ---------- Botones (ui-button / p-button) ---------- */
+.ui-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: .5rem;
+    padding: .5rem 1rem;
+    font-family: inherit;
+    font-size: 1rem;
+    line-height: 1;
+    color: #ffffff;
+    background: var(--primary);
+    border: 1px solid var(--primary);
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: background-color .2s, border-color .2s, box-shadow .2s;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+.ui-button:hover { background: var(--primary-hover); border-color: var(--primary-hover); }
+.ui-button:focus { outline: 0; box-shadow: 0 0 0 .2rem #a6d5fa; }
+
+.ui-button.success { background: var(--success); border-color: var(--success); }
+.ui-button.success:hover { background: var(--success-hover); border-color: var(--success-hover); }
+
+.ui-button.danger { background: var(--danger); border-color: var(--danger); }
+.ui-button.danger:hover { background: var(--danger-hover); border-color: var(--danger-hover); }
+
+.ui-button.flat {
+    background: transparent;
+    border-color: transparent;
+    color: var(--primary);
+}
+.ui-button.flat:hover { background: rgba(33,150,243,.04); border-color: transparent; }
+
+.ui-button .icon { width: 14px; height: 14px; flex: 0 0 14px; }
+.icon { stroke: currentColor; fill: none; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+
+.mr-2 { margin-right: .5rem; }
+.mb-2 { margin-bottom: .5rem; }
+.mt-2 { margin-top: .5rem; }
+.mt-3 { margin-top: 1rem; }
+
+/* ---------- Toolbar ---------- */
+.ui-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: .5rem;
+    padding: 1rem;
+    background: var(--surface-b);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+}
+.ui-toolbar-group { display: flex; align-items: center; flex-wrap: wrap; }
+.ui-toolbar-group.right { margin-left: auto; }
+
+/* ---------- Inputs ---------- */
+.ui-inputtext {
+    font-family: inherit;
+    font-size: 1rem;
+    color: var(--text);
+    background: var(--surface-a);
+    padding: .5rem;
+    border: 1px solid var(--border-input);
+    border-radius: var(--radius);
+    transition: border-color .2s, box-shadow .2s;
+    appearance: none;
+}
+.ui-inputtext:hover { border-color: var(--primary); }
+.ui-inputtext:focus { outline: 0; border-color: var(--primary); box-shadow: 0 0 0 .2rem #a6d5fa; }
+.ui-inputtext::placeholder { color: #6c757d; }
+
+/* input con boton de calendario (p:datePicker showIcon) */
+.ui-calendar { display: inline-flex; width: 100%; }
+.ui-calendar .ui-inputtext {
+    flex: 1 1 auto;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+.ui-calendar .ui-datepicker-trigger {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.357rem;
+    padding: 0;
+    color: #fff;
+    background: var(--primary);
+    border: 1px solid var(--primary);
+    border-top-right-radius: var(--radius);
+    border-bottom-right-radius: var(--radius);
+    cursor: pointer;
+}
+
+/* input numerico (p:inputNumber) */
+.ui-inputnumber { display: inline-flex; width: 100%; }
+.ui-inputnumber .ui-inputtext { flex: 1 1 auto; }
+
+/* checkbox (h:selectBooleanCheckbox con estilo PrimeFaces) */
+.ui-chkbox {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    background: var(--surface-a);
+    border: 2px solid var(--border-input);
+    border-radius: var(--radius);
+    vertical-align: middle;
+    transition: background-color .2s, border-color .2s;
+}
+.ui-chkbox.checked { background: var(--primary); border-color: var(--primary); color: #fff; }
+.ui-chkbox .icon { width: 12px; height: 12px; stroke-width: 2.5; }
+.ui-chkbox.checked .icon { display: block; }
+.ui-chkbox .icon { display: none; }
+
+label { font-size: 1rem; color: var(--text); }
+
+/* ---------- panelGrid ---------- */
+.ui-panelgrid { border-collapse: collapse; }
+.ui-panelgrid td { padding: 7px; vertical-align: middle; }
+.ui-panelgrid td.label { white-space: nowrap; }
+
+/* ---------- DataTable ---------- */
+.ui-datatable { width: 100%; }
+.ui-datatable table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: auto;
+}
+.ui-datatable th {
+    padding: 1rem;
+    font-weight: 700;
+    color: var(--text);
+    background: var(--surface-b);
+    border: 1px solid #e9ecef;
+    border-width: 0 0 2px 0;
+    text-align: center;
+    white-space: nowrap;
+}
+.ui-datatable td {
+    padding: 1rem;
+    color: var(--text);
+    background: var(--surface-a);
+    border: 1px solid #e9ecef;
+    border-width: 0 0 1px 0;
+    text-align: center;
+}
+.ui-datatable tbody tr:hover td { background: #e9ecef; }
+.ui-datatable .empty-message { text-align: center; padding: 1rem; }
+
+/* colores.css del proyecto */
+.asistencia-si { color: green; }
+.asistencia-no { color: red; }
+.asistencia-pendiente { color: #d0d018; }
+
+/* reporteMensual.xhtml -> .botonAccion */
+.botonAccion { width: 100px; text-align: center; }
+
+/* ---------- Dialog / ConfirmDialog ---------- */
+.ui-mask {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+}
+.ui-dialog {
+    background: var(--surface-a);
+    border: 0 none;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-overlay);
+    max-width: 95vw;
+}
+.ui-dialog-titlebar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.5rem;
+    background: var(--surface-a);
+    color: var(--text-strong);
+    border-bottom: 0 none;
+    border-top-left-radius: var(--radius);
+    border-top-right-radius: var(--radius);
+    cursor: move;
+}
+.ui-dialog-title { font-weight: 700; font-size: 1.25rem; }
+.ui-dialog-titlebar-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    color: #6c757d;
+    background: transparent;
+    border: 0 none;
+    border-radius: 50%;
+    cursor: pointer;
+}
+.ui-dialog-titlebar-icon:hover { color: var(--text); background: var(--surface-hover); }
+.ui-dialog-content { padding: 0 1.5rem 2rem 1.5rem; }
+.ui-dialog-footer {
+    padding: 0 1.5rem 1.5rem 1.5rem;
+    text-align: right;
+    display: flex;
+    justify-content: flex-end;
+    gap: .5rem;
+}
+.ui-confirmdialog .ui-dialog-content {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0 1.5rem 2rem 1.5rem;
+}
+.ui-confirmdialog .confirm-icon { width: 2rem; height: 2rem; flex: 0 0 2rem; }
+.ui-confirmdialog .confirm-message { font-size: 1rem; }
+
+.flex { display: flex; }
+.justify-content-between { justify-content: space-between; }
+
+/* ---------- Schedule (p:schedule / FullCalendar) ---------- */
+.default-text-ui {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial,
+                 "Noto Sans", sans-serif;
+    font-size: 1rem;
+    text-decoration: none;
+}
+.card { padding: 1rem; }
+
+.fc { --fc-border: #ddd; }
+.fc-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.5em;
+    gap: .75em;
+    flex-wrap: wrap;
+}
+.fc-toolbar-chunk { display: flex; align-items: center; gap: .75em; }
+.fc-toolbar-title { font-size: 1.75em; font-weight: 700; margin: 0; color: var(--text-strong); }
+.fc-button-group { display: inline-flex; }
+.fc-button {
+    font-family: inherit;
+    font-size: 1em;
+    line-height: 1.5;
+    padding: .4em .65em;
+    color: #fff;
+    background: #2C3E50;
+    border: 1px solid #2C3E50;
+    border-radius: .25em;
+    cursor: pointer;
+}
+.fc-button-group .fc-button { border-radius: 0; margin-left: -1px; }
+.fc-button-group .fc-button:first-child { border-top-left-radius: .25em; border-bottom-left-radius: .25em; margin-left: 0; }
+.fc-button-group .fc-button:last-child { border-top-right-radius: .25em; border-bottom-right-radius: .25em; }
+.fc-button:disabled { opacity: .65; cursor: default; }
+.fc-button.fc-button-active { background: #1a252f; border-color: #151e27; }
+.fc-button .icon { width: 12px; height: 12px; }
+
+table.fc-scrollgrid {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+    border: 1px solid var(--fc-border);
+}
+.fc-col-header-cell {
+    padding: 2px 4px;
+    font-weight: 400;
+    font-size: 1em;
+    text-align: center;
+    border: 1px solid var(--fc-border);
+    background: transparent;
+}
+.fc-daygrid-day {
+    border: 1px solid var(--fc-border);
+    vertical-align: top;
+    height: 106px;
+    padding: 0;
+}
+/* chart.css del proyecto */
+.fc-day:hover { background-color: #f2f2f2; border: 1px solid #c0c0c0; }
+
+.fc-daygrid-day-top { display: flex; justify-content: flex-end; padding: 4px 4px 0 4px; }
+.fc-daygrid-day-number { font-size: 1em; color: var(--text); text-decoration: none; }
+.fc-day-other .fc-daygrid-day-number { opacity: .3; }
+.fc-day-today { background: rgba(255,220,40,.15); }
+
+.fc-daygrid-day-events { padding: 2px 2px 4px 2px; display: flex; flex-direction: column; gap: 1px; }
+.fc-daygrid-event {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 0 2px;
+    font-size: .95em;
+    line-height: 1.35;
+    border-radius: 3px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    cursor: pointer;
+}
+.fc-daygrid-event:hover { background: rgba(0,0,0,.06); }
+.fc-daygrid-event-dot {
+    width: 0; height: 0;
+    flex: 0 0 auto;
+    border: 4px solid #3788d8;
+    border-radius: 4px;
+}
+.fc-event-time { font-weight: 700; color: var(--text); }
+.fc-event-title { font-weight: normal; color: var(--text); overflow: hidden; text-overflow: ellipsis; }
+.fc-daygrid-more-link { font-size: .85em; padding: 0 2px; color: var(--text); cursor: pointer; }
+
+/* ---------- Growl ---------- */
+.ui-growl { position: fixed; top: 20px; right: 20px; width: 25em; z-index: 200; }
+.ui-growl-item {
+    display: flex;
+    gap: 1rem;
+    padding: 1rem;
+    background: #B3E5FC;
+    border: solid #0891cf;
+    border-width: 0 0 0 6px;
+    border-radius: var(--radius);
+    color: #044868;
+    box-shadow: 0 2px 4px -1px rgba(0,0,0,.2), 0 4px 5px 0 rgba(0,0,0,.14), 0 1px 10px 0 rgba(0,0,0,.12);
+}
+.ui-growl-item .icon { width: 2rem; height: 2rem; flex: 0 0 2rem; }
+.ui-growl-title { font-weight: 700; margin: 0 0 .5rem 0; }
+.ui-growl-detail { margin: 0; }
+
+/* ---------- Barra del mockup (no forma parte de la app) ---------- */
+.mock-bar {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: .5rem 1rem;
+    font-size: 12px;
+    color: #6c757d;
+    background: #f1f3f5;
+    border-bottom: 1px solid var(--border);
+}
+.mock-bar a { color: var(--primary); text-decoration: none; }
+.mock-bar a:hover { text-decoration: underline; }
+.mock-bar .file { font-family: Consolas, "Courier New", monospace; color: var(--text-strong); }
+
+/* ajustes finos */
+.ui-datepicker-trigger .icon { width: 14px; height: 14px; }
+.ui-panelgrid td.input .extras { display: flex; align-items: center; gap: .35rem; white-space: nowrap; }

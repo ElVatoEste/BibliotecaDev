@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<title>Reservas</title>
+<link rel="stylesheet" href="pf.css"/>
+</head>
+<body>
+
+<div class="mock-bar">
+    <strong>Mockup estatico</strong>
+    <span class="file">src/main/webapp/reserva.xhtml</span>
+    <a href="index.html">indice</a>
+    <a href="reserva-dialogo.html">con dialogo abierto</a>
+    <a href="reporteMensual.html">reporte mensual</a>
+</div>
+
+<!-- h:form + p:toolbar -->
+<div class="ui-toolbar" style="margin-bottom: 20px; align-content: center;">
+    <div class="ui-toolbar-group"></div>
+    <div class="ui-toolbar-group right">
+        <button type="button" class="ui-button mr-2">
+            <svg class="icon" viewBox="0 0 16 16"><path d="M2 3a1 1 0 0 1 1-1h4.5a2 2 0 0 1 2 2v9a1.5 1.5 0 0 0-1.5-1.5H2z"/><path d="M14 3a1 1 0 0 0-1-1H8.5a2 2 0 0 0-2 2v9A1.5 1.5 0 0 1 8 11.5h6z"/></svg>
+            Generar Reporte
+        </button>
+    </div>
+</div>
+
+<div class="card">
+    <!-- p:schedule -->
+    <div class="fc default-text-ui">
+        <div class="fc-toolbar">
+            <div class="fc-toolbar-chunk">
+                <div class="fc-button-group">
+                    <button type="button" class="fc-button" title="Previous month">
+                        <svg class="icon" viewBox="0 0 16 16"><path d="M10 3 5 8l5 5"/></svg>
+                    </button>
+                    <button type="button" class="fc-button" title="Next month">
+                        <svg class="icon" viewBox="0 0 16 16"><path d="M6 3l5 5-5 5"/></svg>
+                    </button>
+                </div>
+                <button type="button" class="fc-button" disabled>today</button>
+            </div>
+            <div class="fc-toolbar-chunk">
+                <h2 class="fc-toolbar-title">September 2026</h2>
+            </div>
+            <div class="fc-toolbar-chunk">
+                <div class="fc-button-group">
+                    <button type="button" class="fc-button fc-button-active">month</button>
+                    <button type="button" class="fc-button">week</button>
+                    <button type="button" class="fc-button">day</button>
+                </div>
+            </div>
+        </div>
+
+        <table class="fc-scrollgrid">
+            <thead>
+            <tr>
+                <th class="fc-col-header-cell">Sun</th>
+                <th class="fc-col-header-cell">Mon</th>
+                <th class="fc-col-header-cell">Tue</th>
+                <th class="fc-col-header-cell">Wed</th>
+                <th class="fc-col-header-cell">Thu</th>
+                <th class="fc-col-header-cell">Fri</th>
+                <th class="fc-col-header-cell">Sat</th>
+            </tr>
+            </thead>
+            <tbody>
+            <!-- Semana 1: 30 ago - 5 sep -->
+            <tr>
+                <td class="fc-daygrid-day fc-day fc-day-other"><div class="fc-daygrid-day-top"><span class="fc-daygrid-day-number">30</span></div></td>
+                <td class="fc-daygrid-day fc-day fc-day-other"><div class="fc-daygrid-day-top"><span class="fc-daygrid-day-number">31</span></div></td>
+                <td class="fc-daygrid-day fc-day">
+                    <div class="fc-daygrid-day-top"><span class="fc-daygrid-day-number">1</span></div>
+                    <div class="fc-daygrid-day-events">
+                        <div class="fc-daygrid-event"><span class="fc-daygrid-event-dot" style="border-color:#4C9F70"></span><span class="fc-event-time">9a</span><span class="fc-event-title">Maria Jose Ortiz</span></div>
+                    </div>
+                </td>
+                <td class="fc-daygrid-day fc-day">
+                    <div class="fc-daygrid-day-top"><span class="fc-daygrid-day-number">2</span></div>
+                    <div class="fc-daygrid-day-events">
+                        <div class="fc-daygrid-event"><span class="fc-daygrid-event-dot" style="border-color:#C4553B"></span><span class="fc-event-time">10:30a</span><span class="fc-event-title">Luis Fernando Rocha</span></div>
+                        <div class="fc-daygrid-event"><span class="fc-daygrid-event-dot" style="border-color:#8E6BC4"></span><span class="fc-event-time">2p</span><span class="fc-event-title">Grupo Calculo II</span></div>
+                    </div>
+                </td>
+                <td class="fc-daygrid-day fc-day">
+                    <div class="fc-daygrid-day-top"><span class="fc-daygrid-day-number">3</span></div>
+                    <div class="fc-daygrid-day-events">
+                        <div class="fc-daygrid-event"><span class="fc-daygrid-event-dot" style="border-color:#3788d8"></span><span class="fc-event-time">8a</span><span class="fc-event-title">Carla Mendoza</span></div>
+                    </div>
+                </td>
+                <td class="fc-daygrid-day fc-day fc-day-today">
+                    <div class="fc-daygrid-day-top"><span class="fc-daygrid-day-number">4</span></div>
+                    <div class="fc-daygrid-day-events">
+                        <div class="fc-daygrid-event"><span class="fc-daygrid-event-dot" style="border-color:#D9A441"></span><span class="fc-event-time">11a</span><span class="fc-event-title">Jonathan Escalante</span></div>
+                        <div class="fc-daygrid-event"><span class="fc-daygrid-event-dot" style="border-color:#4C9F70"></span><span class="fc-event-time">3:30p</span><span class="fc-event-title">Andrea Bermudez</span></div>
+                    </div>
+                </td>
+                <td class="fc-daygrid-day fc-day"><div class="fc-daygrid-day-top"><span class="fc-daygrid-day-number">5</span></div></td>
+            </tr>
+            <!-- Semana 2 -->
+            <tr>
+                <td class="fc-daygrid-day fc-day"><div class="fc-daygrid-day-top"><span class="fc-daygrid-day-number">6</span></div></td>
+                <td class="fc-daygrid-day fc-day">
+                    <div class="fc-daygrid-day-top"><span class="fc-daygrid-day-number">7</span></div>
+                    <div class="fc-daygrid-day-events">
+                        <div class="fc-daygrid-event"><span class="fc-daygrid-event-dot" style="border-color:#3788d8"></span><span class="fc-event-time">9a</span><span class="fc-event-title">Kevin Traña</span></div>
+                    </div>
+                </td>
+                <td class="fc-daygrid-day fc-day">
+                    <div class="fc-daygrid-day-top"><span class="fc-daygrid-day-number">8</span></div>
+                    <div class="fc-daygrid-day-events">
+                        <div class="fc-daygrid-event"><span class="fc-daygrid-event-dot" style="border-color:#C4553B"></span><span class="fc-event-time">10a</span><span class="fc-event-title">Seminario Redes</span></div>
+                        <div class="fc-daygrid-event"><span class="fc-daygrid-event-dot" style="border-color:#8E6BC4"></span><span class="fc-event-time">1p</span><span class="fc-event-title">Daniela Sequeira</span></div>
+                        <div class="fc-daygrid-event"><span class="fc-daygrid-event-dot" style="border-color:#4C9F70"></span><span class="fc-event-time">4p</span><span class="fc-event-title">Marlon Gutierrez</span></div>
+                    </div>
+                </td>
+                <td class="fc-daygrid-day fc-day">
+                    <div class="fc-daygrid-day-top"><span class="fc-daygrid-day-number">9</span></div>
+                    <div class="fc-daygrid-day-events">
+                        <div class="fc-daygrid-event"><span class="fc-daygrid-event-dot" style="border-color:#D9A441"></span><span class="fc-event-time">8:30a</span><span class="fc-event-title">Sofia Alvarado</span></div>
+                    </div>
+                </td>
+                <td class="fc-daygrid-day fc-day"><div class="fc-daygrid-day-top"><span class="fc-daygrid-day-number">10</span></div></td>
+                <td class="fc-daygrid-day fc-day">
+                    <div class="fc-daygrid-day-top"><span class="fc-daygrid-day-number">11</span></div>
+                    <div class="fc-daygrid-day-events">
+                        <div class="fc-daygrid-event"><span class="fc-daygrid-event-dot" style="border-color:#3788d8"></span><span class="fc-event-time">2p</span><span class="fc-event-title">Grupo Tesis IS</span></div>
+                    </div>
+                </td>
+                <td class="fc-daygrid-day fc-day"><div class="fc-daygrid-day-top"><span class="fc-daygrid-day-number">12</span></div></td>
+            </tr>
+            <!-- Semana 3 -->
+            <tr>
+                <td class="fc-daygrid-day fc-day"><div class="fc-daygrid-day-top"><span class="fc-daygrid-day-number">13</span></div></td>
+                <td class="fc-daygrid-day fc-day">
+                    <div class="fc-daygrid-day-top"><span class="fc-daygrid-day-number">14</span></div>
+                    <div class="fc-daygrid-day-events">
+                        <div class="fc-daygrid-event"><span class="fc-daygrid-event-dot" style="border-color:#4C9F70"></span><span class="fc-event-time">9a</span><span class="fc-event-title">Alexander Nuñez</span></div>
+                        <div class="fc-daygrid-event"><span class="fc-daygrid-event-dot" style="border-color:#C4553B"></span><span class="fc-event-time">11:30a</span><span class="fc-event-title">Paola Rivas</span></div>
+                    </div>
+                </td>
+                <td class="fc-daygrid-day fc-day">
+                    <div class="fc-daygrid-day-top"><span class="fc-daygrid-day-number">15</span></div>
+                    <div class="fc-daygrid-day-events">
+                        <div class="fc-daygrid-event"><span class="fc-daygrid-event-dot" style="border-color:#8E6BC4"></span><span class="fc-event-time">10a</span><span class="fc-event-title">Defensa Monografia</span></div>
+                    </div>
+                </td>
+                <td class="fc-daygrid-day fc-day"><div class="fc-daygrid-day-top"><span class="fc-daygrid-day-number">16</span></div></td>
+                <td class="fc-daygrid-day fc-day">
+                    <div class="fc-daygrid-day-top"><span class="fc-daygrid-day-number">17</span></div>
+                    <div class="fc-daygrid-day-events">
+                        <div class="fc-daygrid-event"><span class="fc-daygrid-event-dot" style="border-color:#3788d8"></span><span class="fc-event-time">1p</span><span class="fc-event-title">Ricardo Lopez</span></div>
+                        <div class="fc-daygrid-event"><span class="fc-daygrid-event-dot" style="border-color:#D9A441"></span><span class="fc-event-time">3p</span><span class="fc-event-title">Elena Castillo</span></div>
+                        <div class="fc-daygrid-event"><span class="fc-daygrid-event-dot" style="border-color:#4C9F70"></span><span class="fc-event-time">5p</span><span class="fc-event-title">Club de Robotica</span></div>
+                    </div>
+                </td>
+                <td class="fc-daygrid-day fc-day">
+                    <div class="fc-daygrid-day-top"><span class="fc-daygrid-day-number">18</span></div>
+                    <div class="fc-daygrid-day-events">
+                        <div class="fc-daygrid-event"><span class="fc-daygrid-event-dot" style="border-color:#C4553B"></span><span class="fc-event-time">8a</span><span class="fc-event-title">Hazel Morales</span></div>
+                    </div>
+                </td>
+                <td class="fc-daygrid-day fc-day"><div class="fc-daygrid-day-top"><span class="fc-daygrid-day-number">19</span></div></td>
+            </tr>
+            <!-- Semana 4 -->
+            <tr>
+                <td class="fc-daygrid-day fc-day"><div class="fc-daygrid-day-top"><span class="fc-daygrid-day-number">20</span></div></td>
+                <td class="fc-daygrid-day fc-day">
+                    <div class="fc-daygrid-day-top"><span class="fc-daygrid-day-number">21</span></div>
+                    <div class="fc-daygrid-day-events">
+                        <div class="fc-daygrid-event"><span class="fc-daygrid-event-dot" style="border-color:#3788d8"></span><span class="fc-event-time">9:30a</span><span class="fc-event-title">Bryan Zamora</span></div>
+                    </div>
+                </td>
+                <td class="fc-daygrid-day fc-day"><div class="fc-daygrid-day-top"><span class="fc-daygrid-day-number">22</span></div></td>
+                <td class="fc-daygrid-day fc-day">
+                    <div class="fc-daygrid-day-top"><span class="fc-daygrid-day-number">23</span></div>
+                    <div class="fc-daygrid-day-events">
+                        <div class="fc-daygrid-event"><span class="fc-daygrid-event-dot" style="border-color:#8E6BC4"></span><span class="fc-event-time">10a</span><span class="fc-event-title">Grupo Base de Datos</span></div>
+                        <div class="fc-daygrid-event"><span class="fc-daygrid-event-dot" style="border-color:#4C9F70"></span><span class="fc-event-time">2:30p</span><span class="fc-event-title">Norma Vallejos</span></div>
+                    </div>
+                </td>
+                <td class="fc-daygrid-day fc-day">
+                    <div class="fc-daygrid-day-top"><span class="fc-daygrid-day-number">24</span></div>
+                    <div class="fc-daygrid-day-events">
+                        <div class="fc-daygrid-event"><span class="fc-daygrid-event-dot" style="border-color:#D9A441"></span><span class="fc-event-time">11a</span><span class="fc-event-title">Diego Sanchez</span></div>
+                    </div>
+                </td>
+                <td class="fc-daygrid-day fc-day"><div class="fc-daygrid-day-top"><span class="fc-daygrid-day-number">25</span></div></td>
+                <td class="fc-daygrid-day fc-day"><div class="fc-daygrid-day-top"><span class="fc-daygrid-day-number">26</span></div></td>
+            </tr>
+            <!-- Semana 5 -->
+            <tr>
+                <td class="fc-daygrid-day fc-day"><div class="fc-daygrid-day-top"><span class="fc-daygrid-day-number">27</span></div></td>
+                <td class="fc-daygrid-day fc-day">
+                    <div class="fc-daygrid-day-top"><span class="fc-daygrid-day-number">28</span></div>
+                    <div class="fc-daygrid-day-events">
+                        <div class="fc-daygrid-event"><span class="fc-daygrid-event-dot" style="border-color:#C4553B"></span><span class="fc-event-time">8a</span><span class="fc-event-title">Yerling Pavon</span></div>
+                    </div>
+                </td>
+                <td class="fc-daygrid-day fc-day">
+                    <div class="fc-daygrid-day-top"><span class="fc-daygrid-day-number">29</span></div>
+                    <div class="fc-daygrid-day-events">
+                        <div class="fc-daygrid-event"><span class="fc-daygrid-event-dot" style="border-color:#3788d8"></span><span class="fc-event-time">1p</span><span class="fc-event-title">Comite Editorial</span></div>
+                    </div>
+                </td>
+                <td class="fc-daygrid-day fc-day"><div class="fc-daygrid-day-top"><span class="fc-daygrid-day-number">30</span></div></td>
+                <td class="fc-daygrid-day fc-day fc-day-other"><div class="fc-daygrid-day-top"><span class="fc-daygrid-day-number">1</span></div></td>
+                <td class="fc-daygrid-day fc-day fc-day-other"><div class="fc-daygrid-day-top"><span class="fc-daygrid-day-number">2</span></div></td>
+                <td class="fc-daygrid-day fc-day fc-day-other"><div class="fc-daygrid-day-top"><span class="fc-daygrid-day-number">3</span></div></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+</body>
+</html>

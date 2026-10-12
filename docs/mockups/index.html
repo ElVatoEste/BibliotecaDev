@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<title>BibliotecaWeb — mockups de UI</title>
+<link rel="stylesheet" href="pf.css"/>
+<style>
+    .wrap { max-width: 820px; margin: 2rem auto; padding: 0 1rem; }
+    .ui-datatable td { text-align: left; }
+    .ui-datatable th { text-align: left; }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+    <h1>BibliotecaWeb — mockups de UI</h1>
+    <p>
+        Replicas estaticas de las pantallas JSF/PrimeFaces del proyecto, hechas para tomar capturas
+        sin levantar Tomcat ni SQL Server. Mismo layout, mismo tema (saga-blue) y mismos textos que
+        los <code>.xhtml</code>. Sin dependencias externas: se abren con doble clic.
+    </p>
+
+    <div class="ui-datatable">
+        <table>
+            <thead>
+            <tr><th>Pantalla</th><th>Fuente</th></tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td><a href="reserva.html">Reservas — calendario</a></td>
+                <td><code>reserva.xhtml</code></td>
+            </tr>
+            <tr>
+                <td><a href="reserva-dialogo.html">Reservas — dialogo "Detalles del Evento"</a></td>
+                <td><code>reserva.xhtml</code> (p:dialog + p:growl)</td>
+            </tr>
+            <tr>
+                <td><a href="reporteMensual.html">Reporte mensual</a></td>
+                <td><code>reporteMensual.xhtml</code></td>
+            </tr>
+            <tr>
+                <td><a href="reporteMensual-asistencia.html">Reporte mensual — confirmar asistencia</a></td>
+                <td><code>reporteMensual.xhtml</code> (p:confirmDialog)</td>
+            </tr>
+            <tr>
+                <td><a href="reporteArchivado.html">Reservas archivadas</a></td>
+                <td><code>reporteArchivado.xhtml</code></td>
+            </tr>
+            <tr>
+                <td><a href="editarReserva.html">Editar reserva</a></td>
+                <td><code>editarReserva.xhtml</code></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <p style="margin-top:2rem; color:#6c757d; font-size:12px;">
+        La barra gris superior de cada pagina es solo navegacion del mockup; no existe en la app real.
+        Ocultala antes de la captura con <code>document.querySelector('.mock-bar').remove()</code>.
+    </p>
+</div>
+
+</body>
+</html>

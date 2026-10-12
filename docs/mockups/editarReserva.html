@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<title>Editar Reserva</title>
+<link rel="stylesheet" href="pf.css"/>
+<style>
+    /* Estilos inline propios de editarReserva.xhtml */
+    body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        background-color: #f0f0f0;
+        flex-direction: column;
+    }
+
+    .form-container {
+        width: 700px;
+        background-color: #f9f9f9;
+        padding: 10px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        margin-top: 50px;
+    }
+
+    .form-container h1 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .form-container .ui-inputtext,
+    .form-container .ui-inputnumber,
+    .form-container .ui-calendar {
+        width: 100%;
+    }
+
+    .form-container .ui-chkbox {
+        margin-left: 10px;
+    }
+
+    .form-container .form-buttons {
+        text-align: center;
+        margin-top: 20px;
+    }
+
+    .form-container .form-buttons .ui-button {
+        width: 120px;
+        margin: 0 5px;
+        display: inline-flex;
+    }
+
+    .center { margin-left: auto; margin-right: auto; }
+
+    .mock-bar { position: fixed; top: 0; left: 0; right: 0; }
+</style>
+</head>
+<body>
+
+<div class="mock-bar">
+    <strong>Mockup estatico</strong>
+    <span class="file">src/main/webapp/editarReserva.xhtml</span>
+    <a href="index.html">indice</a>
+    <a href="reporteMensual.html">reporte mensual</a>
+</div>
+
+<div class="form-container">
+    <h1>Editar Reserva</h1>
+
+    <form style="background: none;" onsubmit="return false;">
+        <table class="ui-panelgrid center" style="width:100%;">
+            <tbody>
+            <tr>
+                <td class="label"><label for="nombreEstudiante">Nombre del Estudiante:</label></td>
+                <td class="field"><input id="nombreEstudiante" class="ui-inputtext" type="text" value="Jonathan Escalante"/></td>
+            </tr>
+            <tr>
+                <td class="label"><label for="cif">CIF del Estudiante:</label></td>
+                <td class="field"><input id="cif" class="ui-inputtext" type="text" value="2021-0453U"/></td>
+            </tr>
+            <tr>
+                <td class="label"><label for="correo">Correo del estudiante:</label></td>
+                <td class="field"><input id="correo" class="ui-inputtext" type="text" value="jonathan.escalante@estudiante.edu.ni"/></td>
+            </tr>
+            <tr>
+                <td class="label"><label for="asunto">Asunto de la Reserva:</label></td>
+                <td class="field"><input id="asunto" class="ui-inputtext" type="text" value="Reunion de proyecto de Ingenieria de Software"/></td>
+            </tr>
+            <tr>
+                <td class="label"><label for="cantidadPersonas">Cantidad de Personas:</label></td>
+                <td class="field"><span class="ui-inputnumber"><input id="cantidadPersonas" class="ui-inputtext" type="text" value="6"/></span></td>
+            </tr>
+            <tr>
+                <td class="label"><label for="fechaEntrada">Fecha de Entrada:</label></td>
+                <td class="field">
+                    <span class="ui-calendar">
+                        <input id="fechaEntrada" class="ui-inputtext" type="text" value="04.09.2026 11:00 AM"/>
+                        <button type="button" class="ui-datepicker-trigger">
+                            <svg class="icon" viewBox="0 0 16 16"><rect x="2" y="3" width="12" height="11" rx="1"/><path d="M2 6.5h12M5.5 2v2.5M10.5 2v2.5"/></svg>
+                        </button>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="label"><label for="fechaSalida">Fecha de Salida:</label></td>
+                <td class="field">
+                    <span class="ui-calendar">
+                        <input id="fechaSalida" class="ui-inputtext" type="text" value="04.09.2026 01:00 PM"/>
+                        <button type="button" class="ui-datepicker-trigger">
+                            <svg class="icon" viewBox="0 0 16 16"><rect x="2" y="3" width="12" height="11" rx="1"/><path d="M2 6.5h12M5.5 2v2.5M10.5 2v2.5"/></svg>
+                        </button>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="label"><label for="computadora">Computadora:</label></td>
+                <td class="field"><span class="ui-chkbox"><svg class="icon" viewBox="0 0 16 16"><path d="M3 8.5l3.5 3.5L13 4.5"/></svg></span></td>
+            </tr>
+            <tr>
+                <td class="label"><label for="pizarra">Pizarra:</label></td>
+                <td class="field"><span class="ui-chkbox checked"><svg class="icon" viewBox="0 0 16 16"><path d="M3 8.5l3.5 3.5L13 4.5"/></svg></span></td>
+            </tr>
+            <tr>
+                <td class="label"><label for="proyector">Proyector:</label></td>
+                <td class="field"><span class="ui-chkbox checked"><svg class="icon" viewBox="0 0 16 16"><path d="M3 8.5l3.5 3.5L13 4.5"/></svg></span></td>
+            </tr>
+            </tbody>
+        </table>
+
+        <div class="form-buttons">
+            <button type="button" class="ui-button success">
+                <svg class="icon" viewBox="0 0 16 16"><path d="M3 8.5l3.5 3.5L13 4.5"/></svg>
+                Guardar
+            </button>
+            <button type="button" class="ui-button danger">
+                <svg class="icon" viewBox="0 0 16 16"><path d="M3 3l10 10M13 3L3 13"/></svg>
+                Cancelar
+            </button>
+        </div>
+    </form>
+</div>
+
+</body>
+</html>
